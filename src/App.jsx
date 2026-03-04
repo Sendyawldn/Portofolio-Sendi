@@ -783,62 +783,100 @@ function App() {
           </div>
         </section>
 
-        {/* EXPERIENCE SECTION */}
-        <section id="experience" className="py-20 px-4 relative">
+        {/* --- EXPERIENCE SECTION (PREMIUM GLOWING TIMELINE) --- */}
+        <section id="experience" className="py-24 relative px-4 z-10">
           <div className="container max-w-5xl mx-auto">
-            <div className="text-center mb-16">
-              <div className="text-indigo-400 font-mono text-sm mb-2">
+            {/* Header Section */}
+            <div className="text-center mb-20 reveal">
+              <div className="text-indigo-400 font-mono text-sm mb-3 tracking-widest">
                 // experience.log
               </div>
-              <h2 className="text-4xl font-bold">Pengalaman & Perjalanan</h2>
+              <h2 className="text-4xl md:text-5xl font-bold text-white">
+                Pengalaman &{" "}
+                <span className="text-gradient-hero">Perjalanan</span>
+              </h2>
             </div>
 
-            <div id="timeline-container" className="relative max-w-3xl mx-auto">
-              {/* Garis Dasar (Gelap) */}
-              <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-1 bg-slate-700 md:-translate-x-1/2"></div>
-              {/* Garis Cahaya (Menyala saat di scroll) */}
-              <div
-                id="timeline-glow"
-                className="absolute left-6 md:left-1/2 top-0 w-1 bg-gradient-to-b from-indigo-500 to-cyan-500 md:-translate-x-1/2 h-0 shadow-[0_0_15px_rgba(99,102,241,0.8)]"
-              ></div>
+            {/* Timeline Container Baru */}
+            <div className="timeline-container">
+              {/* Item 1: Magang PT Teng Fei */}
+              <div className="relative pl-12 md:pl-0 mb-12 flex flex-col md:flex-row md:justify-between items-center w-full reveal group">
+                <div className="timeline-dot group-hover:bg-[#6366f1] group-hover:scale-125"></div>
 
-              {/* Item 1: Magang */}
-              <div className="relative pl-16 md:pl-0 md:w-1/2 md:pr-12 py-6 mb-8 md:text-right group">
-                <div className="absolute left-4 md:left-full top-8 w-5 h-5 bg-slate-900 border-4 border-indigo-500 rounded-full md:-translate-x-1/2 z-10 group-hover:bg-indigo-500 transition-colors"></div>
-                <div className="bg-slate-800/80 p-6 rounded-2xl border border-slate-700 shadow-xl hover:border-indigo-500/50 transition-all">
-                  <span className="text-indigo-400 font-mono text-sm">
-                    Baru-baru ini
-                  </span>
-                  <h3 className="text-xl font-bold mt-1 text-white">
+                {/* Waktu & Posisi (Kiri di Laptop) */}
+                <div className="md:w-5/12 text-left md:text-right md:pr-10 w-full mb-4 md:mb-0">
+                  <h3 className="text-2xl font-bold text-white group-hover:text-indigo-400 transition-colors">
                     Internship
                   </h3>
-                  <h4 className="text-slate-300 font-medium mb-3">
-                    PT Teng Fei Energy Technology
-                  </h4>
-                  <p className="text-slate-400 text-sm leading-relaxed">
-                    Membantu pengelolaan operasional dan mempelajari sistem
-                    teknologi perusahaan energi. Berkontribusi dalam pembuatan
-                    dokumentasi sejarah perusahaan.
+                  <p className="text-indigo-400 font-mono text-sm mt-1">
+                    Baru-baru ini
                   </p>
+                </div>
+
+                {/* Deskripsi Kartu (Kanan di Laptop) */}
+                <div className="md:w-5/12 w-full pl-0 md:pl-10">
+                  <div className="timeline-card">
+                    <h4 className="text-indigo-300 font-medium mb-3">
+                      PT Teng Fei Energy Technology
+                    </h4>
+                    <p className="text-slate-300 text-sm leading-relaxed mb-4">
+                      Membantu pengelolaan operasional dan mempelajari sistem
+                      teknologi perusahaan energi. Berkontribusi dalam pembuatan
+                      dokumentasi sejarah perusahaan.
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              {/* Item 2: GEMASTIK */}
-              <div className="relative pl-16 md:pl-0 md:w-1/2 md:ml-auto md:pl-12 py-6 group">
-                <div className="absolute left-4 md:left-0 top-8 w-5 h-5 bg-slate-900 border-4 border-cyan-500 rounded-full md:-translate-x-1/2 z-10 group-hover:bg-cyan-500 transition-colors"></div>
-                <div className="bg-slate-800/80 p-6 rounded-2xl border border-slate-700 shadow-xl hover:border-cyan-500/50 transition-all">
-                  <span className="text-cyan-400 font-mono text-sm">2025</span>
-                  <h3 className="text-xl font-bold mt-1 text-white">
+              {/* Item 2: GEMASTIK UBSI */}
+              <div className="relative pl-12 md:pl-0 mb-12 flex flex-col md:flex-row-reverse md:justify-between items-center w-full reveal group">
+                <div className="timeline-dot border-[#22d3ee] shadow-[0_0_15px_#22d3ee] group-hover:bg-[#22d3ee] group-hover:scale-125"></div>
+
+                <div className="md:w-5/12 text-left md:pl-10 w-full mb-4 md:mb-0">
+                  <h3 className="text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors">
                     GEMASTIK 2025
                   </h3>
-                  <h4 className="text-slate-300 font-medium mb-3">
-                    Kolaborasi Tim Kampus UBSI
-                  </h4>
-                  <p className="text-slate-400 text-sm leading-relaxed">
-                    Menyiapkan proposal inovasi proyek untuk kompetisi GEMASTIK
-                    2025. Menggabungkan solusi perangkat lunak dengan kebutuhan
-                    industri terkini.
+                  <p className="text-cyan-400 font-mono text-sm mt-1">2025</p>
+                </div>
+
+                <div className="md:w-5/12 w-full pr-0 md:pr-10">
+                  <div className="timeline-card border-cyan-500/20 hover:border-cyan-400">
+                    <h4 className="text-cyan-300 font-medium mb-3">
+                      Kolaborasi Tim Kampus UBSI
+                    </h4>
+                    <p className="text-slate-300 text-sm leading-relaxed mb-4">
+                      Menyiapkan proposal inovasi proyek untuk kompetisi
+                      GEMASTIK 2025. Menggabungkan solusi perangkat lunak dengan
+                      kebutuhan industri terkini.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Item 3: LPM Tlajung Udik (Tambahan) */}
+              <div className="relative pl-12 md:pl-0 flex flex-col md:flex-row md:justify-between items-center w-full reveal group">
+                <div className="timeline-dot border-[#10b981] shadow-[0_0_15px_#10b981] group-hover:bg-[#10b981] group-hover:scale-125"></div>
+
+                <div className="md:w-5/12 text-left md:text-right md:pr-10 w-full mb-4 md:mb-0">
+                  <h3 className="text-2xl font-bold text-white group-hover:text-emerald-400 transition-colors">
+                    Anggota LPM
+                  </h3>
+                  <p className="text-emerald-400 font-mono text-sm mt-1">
+                    2024 - Sekarang
                   </p>
+                </div>
+
+                <div className="md:w-5/12 w-full pl-0 md:pl-10">
+                  <div className="timeline-card border-emerald-500/20 hover:border-emerald-400">
+                    <h4 className="text-emerald-300 font-medium mb-3">
+                      Desa Tlajung Udik
+                    </h4>
+                    <p className="text-slate-300 text-sm leading-relaxed mb-4">
+                      Berkontribusi aktif dalam merencanakan program desa dan
+                      menyusun draf proposal kegiatan untuk mendukung
+                      pemberdayaan warga lokal.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

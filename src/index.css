@@ -381,6 +381,7 @@ body {
 }
 
 /* --- 3D ORB SKILL ICONS (ALAM GAMBAR 1) --- */
+/* SESUDAH - ini yang bener */
 .orb-icon {
   width: 65px;
   height: 65px;
@@ -388,25 +389,23 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
   color: white;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
 }
 
-/* --- FIX TOTAL POSISI ICON MIRING --- */
 .orb-icon i {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* Kunci utamanya di sini bang */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0;
   padding: 0;
-  line-height: 1; /* Biar gak ada ruang kosong bawaan font */
-  z-index: 10;
-  font-size: 34px; /* Agak dikecilin dikit biar gak mentok pinggiran */
+  line-height: 1;
+  font-size: 28px;
   color: #ffffff;
+  position: static;
+  transform: none;
 }
 
 /* Efek timbul (3D) dengan kombinasi shadow luar dan dalam */
@@ -458,4 +457,76 @@ body {
 .orb-data {
   background: #10b981;
   box-shadow: 0 10px 20px rgba(16, 185, 129, 0.5);
+}
+
+/* --- GLOWING TIMELINE EXPERIENCE --- */
+.timeline-container {
+  position: relative;
+  max-width: 56rem; /* max-w-4xl */
+  margin: 0 auto;
+}
+
+/* Garis Neon di Tengah */
+.timeline-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 24px; /* Posisi untuk tampilan Mobile */
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    #6366f1,
+    #22d3ee,
+    transparent
+  );
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.6);
+}
+
+@media (min-width: 768px) {
+  .timeline-container::before {
+    left: 50%;
+    transform: translateX(-50%); /* Geser persis ke tengah untuk Laptop */
+  }
+}
+
+/* Titik Bulatan (Nodes) di Garis */
+.timeline-dot {
+  width: 20px;
+  height: 20px;
+  background: #020617; /* Sesuai warna background abang */
+  border: 4px solid #6366f1; /* Warna Indigo */
+  border-radius: 50%;
+  position: absolute;
+  left: 15px;
+  top: 1.5rem;
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.8);
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .timeline-dot {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Kartu Pengalaman */
+.timeline-card {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-card:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
 }
