@@ -846,161 +846,118 @@ function App() {
         </section>
 
         {/* SKILLS SECTION */}
-        <section id="skills" className="py-20 px-4 relative z-10">
+        <section id="skills" className="py-24 relative px-4 z-10">
           <div className="container max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <div className="text-cyan-400 font-mono text-sm mb-2">
-                // tech_stack.js
+            {/* Header Section */}
+            <div className="text-center mb-16 reveal">
+              <div className="text-cyan-400 font-mono text-sm mb-3 tracking-widest">
+                // tech_stack.exe
               </div>
-              <h2 className="text-4xl font-bold text-white">
-                Keahlian & Teknologi
+              <h2 className="text-4xl md:text-5xl font-bold text-white">
+                Technical <span className="text-gradient-hero">Mastery</span>
               </h2>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Web Dev Card */}
-              <div className="glass-panel p-8 rounded-2xl hover:border-indigo-500/50 transition-colors">
-                <h3 className="text-xl font-bold text-white mb-6">
-                  Web Development
-                </h3>
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-slate-300">Laravel & PHP</span>
-                      <span className="text-indigo-400">85%</span>
-                    </div>
-                    <div className="w-full bg-slate-700 rounded-full h-2">
-                      <div
-                        className="bg-indigo-500 h-2 rounded-full"
-                        style={{ width: "85%" }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-slate-300">JavaScript (React)</span>
-                      <span className="text-indigo-400">80%</span>
-                    </div>
-                    <div className="w-full bg-slate-700 rounded-full h-2">
-                      <div
-                        className="bg-indigo-500 h-2 rounded-full"
-                        style={{ width: "80%" }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-slate-300">Tailwind CSS</span>
-                      <span className="text-indigo-400">90%</span>
-                    </div>
-                    <div className="w-full bg-slate-700 rounded-full h-2">
-                      <div
-                        className="bg-indigo-500 h-2 rounded-full"
-                        style={{ width: "90%" }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Data & AI Card */}
-              <div className="glass-panel p-8 rounded-2xl hover:border-cyan-500/50 transition-colors">
-                <h3 className="text-xl font-bold text-white mb-6">
-                  Data & AI Engineering
-                </h3>
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-slate-300">Python</span>
-                      <span className="text-cyan-400">75%</span>
-                    </div>
-                    <div className="w-full bg-slate-700 rounded-full h-2">
-                      <div
-                        className="bg-cyan-500 h-2 rounded-full"
-                        style={{ width: "75%" }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-slate-300">
-                        Data Mining (Orange/KNIME)
-                      </span>
-                      <span className="text-cyan-400">80%</span>
-                    </div>
-                    <div className="w-full bg-slate-700 rounded-full h-2">
-                      <div
-                        className="bg-cyan-500 h-2 rounded-full"
-                        style={{ width: "80%" }}
-                      ></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-slate-300">
-                        Machine Learning Basics
-                      </span>
-                      <span className="text-cyan-400">70%</span>
-                    </div>
-                    <div className="w-full bg-slate-700 rounded-full h-2">
-                      <div
-                        className="bg-cyan-500 h-2 rounded-full"
-                        style={{ width: "70%" }}
-                      ></div>
-                    </div>
+            {/* --- KUMPULAN ICON 3D (ALA GAMBAR 1) --- */}
+            <div className="flex flex-wrap justify-center gap-6 mb-20 reveal">
+              {[
+                {
+                  name: "React.js",
+                  icon: "fab fa-react",
+                  colorClass: "orb-react",
+                },
+                {
+                  name: "Laravel",
+                  icon: "fab fa-laravel",
+                  colorClass: "orb-laravel",
+                },
+                {
+                  name: "Tailwind CSS",
+                  icon: "fab fa-css3-alt",
+                  colorClass: "orb-tailwind",
+                },
+                {
+                  name: "Python",
+                  icon: "fab fa-python",
+                  colorClass: "orb-python",
+                },
+                {
+                  name: "Machine Learning",
+                  icon: "fas fa-brain",
+                  colorClass: "orb-ml",
+                },
+                {
+                  name: "Docker",
+                  icon: "fab fa-docker",
+                  colorClass: "orb-docker",
+                },
+                {
+                  name: "Git/GitHub",
+                  icon: "fab fa-github",
+                  colorClass: "orb-git",
+                },
+                {
+                  name: "Data Mining",
+                  icon: "fas fa-database",
+                  colorClass: "orb-data",
+                },
+              ].map((skill, index) => (
+                <div
+                  key={index}
+                  className="tooltip tooltip-primary tooltip-top cursor-pointer"
+                  data-tip={skill.name}
+                >
+                  <div className={`orb-icon ${skill.colorClass} shadow-lg`}>
+                    <i className={skill.icon}></i>
                   </div>
                 </div>
-              </div>
+              ))}
+            </div>
 
-              {/* Tools & Lainnya Card */}
-              <div className="glass-panel p-8 rounded-2xl hover:border-teal-500/50 transition-colors">
-                <h3 className="text-xl font-bold text-white mb-6">
-                  Tools & Lainnya
-                </h3>
-                <div className="flex flex-wrap gap-2">
+            {/* Tools & Soft Skills (Bagian Bawah Tetap Sama) */}
+            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
+              <div className="glass-panel p-8 rounded-3xl">
+                <h4 className="text-white font-bold mb-6 flex items-center">
+                  <span className="mr-3">🛠️</span> Ecosystem & Tools
+                </h4>
+                <div className="flex flex-wrap gap-3">
                   {[
                     "Git/GitHub",
                     "Docker",
-                    "ProjectLibre",
-                    "Trading Analysis",
-                    "English (TOEFL Prep)",
+                    "XAUUSD Analysis",
+                    "Postman",
+                    "Vite",
                   ].map((tool) => (
                     <span
                       key={tool}
-                      className="px-3 py-1 bg-slate-900/50 border border-slate-700 text-slate-300 text-sm rounded-lg"
+                      className="px-4 py-2 bg-indigo-500/5 border border-indigo-500/20 text-indigo-300 text-xs rounded-xl hover:bg-indigo-500/20 transition-colors cursor-pointer"
                     >
                       {tool}
                     </span>
                   ))}
                 </div>
               </div>
-            </div>
 
-            {/* Soft Skills */}
-            <div className="mt-12 glass-panel p-8 rounded-2xl">
-              <h3 className="text-2xl font-bold text-white mb-8 text-center">
-                Soft Skills
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                {[
-                  { name: "Problem Solving", icon: "🧠" },
-                  { name: "Teamwork", icon: "🤝" },
-                  { name: "Time Management", icon: "⏳" },
-                  { name: "Fast Learner", icon: "⚡" },
-                  { name: "Adaptability", icon: "🔄" },
-                ].map((skill) => (
-                  <div
-                    key={skill.name}
-                    className="bg-slate-800/50 p-4 rounded-xl border border-slate-700 hover:-translate-y-1 hover:border-indigo-500 transition-all text-center group"
-                  >
-                    <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">
-                      {skill.icon}
+              <div className="glass-panel p-8 rounded-3xl">
+                <h4 className="text-white font-bold mb-6 flex items-center">
+                  <span className="mr-3">🧠</span> Core Strengths
+                </h4>
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    "Problem Solving",
+                    "Fast Learner",
+                    "Analytical",
+                    "Teamwork",
+                  ].map((soft) => (
+                    <div
+                      key={soft}
+                      className="text-slate-400 text-sm flex items-center"
+                    >
+                      <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full mr-2"></span>
+                      {soft}
                     </div>
-                    <div className="text-slate-300 text-sm font-medium">
-                      {skill.name}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>

@@ -282,3 +282,180 @@ body {
     transform: translateY(0px);
   }
 }
+
+/* --- SKILL CARD WITH PROGRESS --- */
+.skill-card {
+  position: relative;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.skill-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Spotlight Effect */
+.skill-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    300px circle at var(--mouse-x) var(--mouse-y),
+    rgba(99, 102, 241, 0.1),
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.skill-card:hover::before {
+  opacity: 1;
+}
+
+/* Label Persentase di Pojok */
+.skill-perc {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-family: "monospace";
+  font-size: 0.75rem;
+  color: var(--primary-neon);
+  opacity: 0.6;
+}
+
+/* --- COMPONENT: EVERVAULT CARD --- */
+.evervault-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: var(--glass-bg);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  transition: border-color 0.5s ease;
+}
+
+/* Efek "Cahaya Bocor" di pojok kartu */
+.evervault-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    800px circle at var(--mouse-x) var(--mouse-y),
+    rgba(99, 102, 241, 0.15),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.evervault-card:hover::before {
+  opacity: 1;
+}
+
+.evervault-card:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+/* Animasi Icon di Tengah */
+.card-icon {
+  font-size: 3rem;
+  z-index: 2;
+  filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.3));
+  transition: all 0.5s ease;
+}
+
+.evervault-card:hover .card-icon {
+  transform: scale(1.2) rotate(5deg);
+  filter: drop-shadow(0 0 20px var(--primary-neon));
+}
+
+/* --- 3D ORB SKILL ICONS (ALAM GAMBAR 1) --- */
+.orb-icon {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+}
+
+/* --- FIX TOTAL POSISI ICON MIRING --- */
+.orb-icon i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Kunci utamanya di sini bang */
+  margin: 0;
+  padding: 0;
+  line-height: 1; /* Biar gak ada ruang kosong bawaan font */
+  z-index: 10;
+  font-size: 34px; /* Agak dikecilin dikit biar gak mentok pinggiran */
+  color: #ffffff;
+}
+
+/* Efek timbul (3D) dengan kombinasi shadow luar dan dalam */
+.orb-icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow:
+    inset -6px -6px 10px rgba(0, 0, 0, 0.4),
+    /* Bayangan gelap di bawah-dalam */ inset 6px 6px 10px
+      rgba(255, 255, 255, 0.4); /* Pantulan cahaya di atas-dalam */
+  pointer-events: none;
+}
+
+.orb-icon:hover {
+  transform: translateY(-8px) scale(1.1);
+}
+
+/* Warna-warna spesifik tiap teknologi biar nge-jreng */
+.orb-react {
+  background: #3b82f6;
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.5);
+}
+.orb-laravel {
+  background: #ef4444;
+  box-shadow: 0 10px 20px rgba(239, 68, 68, 0.5);
+}
+.orb-python {
+  background: #eab308;
+  box-shadow: 0 10px 20px rgba(234, 179, 8, 0.5);
+}
+.orb-tailwind {
+  background: #06b6d4;
+  box-shadow: 0 10px 20px rgba(6, 182, 212, 0.5);
+}
+.orb-docker {
+  background: #2563eb;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.5);
+}
+.orb-git {
+  background: #f97316;
+  box-shadow: 0 10px 20px rgba(249, 115, 22, 0.5);
+}
+.orb-ml {
+  background: #a855f7;
+  box-shadow: 0 10px 20px rgba(168, 85, 247, 0.5);
+}
+.orb-data {
+  background: #10b981;
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.5);
+}
