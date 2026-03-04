@@ -1,111 +1,251 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { cn } from "../../lib/utils"; // Impor utilitas yang sudah kita buat
+// src/components/ReactBits/Lanyard.jsx
+import { useEffect, useRef, useState } from "react";
+import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
+import {
+  useGLTF,
+  useTexture,
+  Environment,
+  Lightformer,
+} from "@react-three/drei";
+import {
+  BallCollider,
+  CuboidCollider,
+  Physics,
+  RigidBody,
+  useRopeJoint,
+  useSphericalJoint,
+} from "@react-three/rapier";
+import { MeshLineGeometry, MeshLineMaterial } from "meshline";
+import * as THREE from "three";
 
-// Komponen Pembantu untuk Logo (diambil dari ReactBits)
-const LanyardLogo = ({ src, alt, className }) => (
-  <div
-    className={cn(
-      "w-20 h-20 rounded-full border-4 border-white overflow-hidden shadow-lg",
-      className,
-    )}
-  >
-    <img src={src} alt={alt} className="w-full h-full object-cover" />
-  </div>
-);
+extend({ MeshLineGeometry, MeshLineMaterial });
 
-// Komponen Pembantu untuk Link (diambil dari ReactBits)
-const LanyardLink = ({ href, children, className }) => (
-  <a
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    className={cn(
-      "text-sm font-medium text-white/80 hover:text-white transition-colors duration-200 flex items-center gap-2",
-      className,
-    )}
-  >
-    {children}
-  </a>
-);
+useGLTF.preload("/card.glb");
 
-// --- KOMPONEN UTAMA: PREMIUM LANYARD (ADAPTASI DARI REACTBITS) ---
-const Lanyard = ({ className }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2, duration: 0.6 }}
-      className={cn(
-        "relative flex flex-col items-center gap-6 p-8 w-80 max-w-full rounded-[2.5rem]",
-        "background:rgba(15,23,42,0.6)",
-        "backdrop-filter:blur(12px)",
-        "border:2px_solid_rgba(99,102,241,0.2)",
-        "box-shadow:0_20px_40px_rgba(0,0,0,0.5)",
-        className,
-      )}
-    >
-      {/* Efek Cahaya di Belakang */}
-      <div className="absolute inset-0 rounded-[2.5rem] background:radial-gradient(400px_circle_at_var(--mouse-x)_var(--mouse-y),rgba(99,102,241,0.15),transparent_80%)" />
+function Band({ maxSpeed = 50, minSpeed = 10 }) {
+  const band = useRef(),
+    fixed = useRef(),
+    j1 = useRef(),
+    j2 = useRef(),
+    j3 = useRef(),
+    card = useRef();
 
-      {/* Bagian Atas Lanyard (Tali) */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full w-20 h-40 background:linear-gradient(to_bottom,transparent,rgba(99,102,241,0.2),rgba(99,102,241,0.6)) rounded-b-2xl border-t-4 border-indigo-500 shadow-lg z-0" />
+  const vec = new THREE.Vector3(),
+    ang = new THREE.Vector3(),
+    rot = new THREE.Vector3(),
+    dir = new THREE.Vector3();
 
-      {/* Pengait */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-8 background:#020617 rounded-full border-4 border-indigo-500 z-10 shadow-[0_0_15px_rgba(99,102,241,0.8)] flex items-center justify-center">
-        <div className="w-2 h-2 rounded-full background:indigo-500" />
-      </div>
+  const segmentProps = {
+    type: "dynamic",
+    canSleep: true,
+    colliders: false,
+    angularDamping: 2,
+    linearDamping: 2,
+  };
 
-      {/* Konten Lanyard */}
-      <div className="relative z-10 w-full flex flex-col items-center gap-6 pt-6">
-        {/* Logo/Foto Abang */}
-        <LanyardLogo
-          src="https://via.placeholder.com/150"
-          alt="Logo Zen"
-          className="shadow-[0_0_20px_rgba(99,102,241,0.5)] border-indigo-500"
-        />
+  const { nodes, materials } = useGLTF("/card.glb");
+  const texture = useTexture("/lanyard.png");
+  const { width, height } = useThree((s) => s.size);
 
-        {/* Nama & Role */}
-        <div className="text-center">
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">
-            ZEN
-          </h1>
-          <p className="text-indigo-400 font-mono text-xs mt-2 tracking-widest uppercase">
-            STUDENT / DEVELOPER
-          </p>
-        </div>
-
-        {/* Divider */}
-        <div className="h-0.5 w-full bg-indigo-500/30 rounded-full" />
-
-        {/* Detail */}
-        <div className="w-full space-y-3">
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-slate-400 font-medium">Status:</span>
-            <span className="text-white font-semibold">PREMIUM</span>
-          </div>
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-slate-400 font-medium">Tech Stack:</span>
-            <span className="text-white font-semibold">REACT / LARAVEL</span>
-          </div>
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-slate-400 font-medium">Desa:</span>
-            <span className="text-white font-semibold">TLAJUNG UDIK</span>
-          </div>
-        </div>
-
-        {/* Link Sosial */}
-        <div className="flex items-center gap-4 mt-4">
-          <LanyardLink href="https://github.com/USERNAME_ABANG">
-            <i className="fab fa-github"></i> GitHub
-          </LanyardLink>
-          <LanyardLink href="https://linkedin.com/in/USERNAME_ABANG">
-            <i className="fab fa-linkedin"></i> LinkedIn
-          </LanyardLink>
-        </div>
-      </div>
-    </motion.div>
+  const [curve] = useState(
+    () =>
+      new THREE.CatmullRomCurve3([
+        new THREE.Vector3(),
+        new THREE.Vector3(),
+        new THREE.Vector3(),
+        new THREE.Vector3(),
+      ]),
   );
-};
+  const [dragged, drag] = useState(false);
+  const [hovered, hover] = useState(false);
 
-export default Lanyard;
+  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
+  useSphericalJoint(j3, card, [
+    [0, 0, 0],
+    [0, 1.45, 0],
+  ]);
+
+  useEffect(() => {
+    if (hovered) {
+      document.body.style.cursor = dragged ? "grabbing" : "grab";
+      return () => void (document.body.style.cursor = "auto");
+    }
+  }, [hovered, dragged]);
+
+  useFrame((state, delta) => {
+    if (dragged) {
+      vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
+      dir.copy(vec).sub(state.camera.position).normalize();
+      vec.add(dir.multiplyScalar(state.camera.position.length()));
+      [card, j1, j2, j3, fixed].forEach((ref) => ref.current?.wakeUp());
+      card.current?.setNextKinematicTranslation({
+        x: vec.x - dragged.x,
+        y: vec.y - dragged.y,
+        z: vec.z - dragged.z,
+      });
+    }
+    if (fixed.current) {
+      [j1, j2].forEach((ref) => {
+        if (!ref.current.lerped)
+          ref.current.lerped = new THREE.Vector3().copy(
+            ref.current.translation(),
+          );
+        const clampedDist = Math.max(
+          0.1,
+          Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())),
+        );
+        ref.current.lerped.lerp(
+          ref.current.translation(),
+          delta * (minSpeed + clampedDist * (maxSpeed - minSpeed)),
+        );
+      });
+      curve.points[0].copy(j3.current.translation());
+      curve.points[1].copy(j2.current.lerped);
+      curve.points[2].copy(j1.current.lerped);
+      curve.points[3].copy(fixed.current.translation());
+      band.current.geometry.setPoints(curve.getPoints(32));
+      ang.copy(card.current.angvel());
+      rot.copy(card.current.rotation());
+      card.current.setAngvel(
+        { x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z },
+        false,
+      );
+    }
+  });
+
+  curve.curveType = "chordal";
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
+  return (
+    <>
+      {/* ✅ Fixed = titik gantung tali, taruh di atas (y=4) */}
+      <RigidBody
+        ref={fixed}
+        {...segmentProps}
+        type="fixed"
+        position={[0, 4, 0]}
+      />
+
+      {/* ✅ j1, j2, j3 = ruas tali, turun dari titik fixed */}
+      <RigidBody position={[0.5, 3.5, 0]} ref={j1} {...segmentProps}>
+        <BallCollider args={[0.1]} />
+      </RigidBody>
+      <RigidBody position={[0.5, 3, 0]} ref={j2} {...segmentProps}>
+        <BallCollider args={[0.1]} />
+      </RigidBody>
+      <RigidBody position={[0.5, 2.5, 0]} ref={j3} {...segmentProps}>
+        <BallCollider args={[0.1]} />
+      </RigidBody>
+
+      {/* ✅ Card = kartu ID, posisi awal di tengah-bawah canvas */}
+      <RigidBody
+        position={[0, 1.5, 0]}
+        ref={card}
+        {...segmentProps}
+        type={dragged ? "kinematicPosition" : "dynamic"}
+      >
+        <CuboidCollider args={[0.8, 1.125, 0.01]} />
+        <group
+          scale={2.25}
+          position={[0, -1.2, -0.05]}
+          onPointerOver={() => hover(true)}
+          onPointerOut={() => hover(false)}
+          onPointerUp={(e) => {
+            e.target.releasePointerCapture(e.pointerId);
+            drag(false);
+          }}
+          onPointerDown={(e) => {
+            e.target.setPointerCapture(e.pointerId);
+            drag(
+              new THREE.Vector3()
+                .copy(e.point)
+                .sub(vec.copy(card.current.translation())),
+            );
+          }}
+        >
+          <mesh geometry={nodes.card.geometry}>
+            <meshPhysicalMaterial
+              map={materials.base.map}
+              map-anisotropy={16}
+              clearcoat={1}
+              clearcoatRoughness={0.15}
+              roughness={0.3}
+              metalness={0.5}
+            />
+          </mesh>
+          <mesh
+            geometry={nodes.clip.geometry}
+            material={materials.metal}
+            material-roughness={0.3}
+          />
+          <mesh geometry={nodes.clamp.geometry} material={materials.metal} />
+        </group>
+      </RigidBody>
+
+      <mesh ref={band}>
+        <meshLineGeometry />
+        <meshLineMaterial
+          color="white"
+          depthTest={false}
+          resolution={[width, height]}
+          useMap
+          map={texture}
+          repeat={[-3, 1]}
+          lineWidth={1}
+        />
+      </mesh>
+    </>
+  );
+}
+
+export default function Lanyard({
+  position = [0, 0, 13],
+  gravity = [0, -20, 0],
+}) {
+  return (
+    <Canvas
+      // ✅ Kamera menghadap tengah, z=13 agar kartu terlihat pas
+      camera={{ position: [0, 0, 13], fov: 25 }}
+      style={{ width: "100%", height: "100%" }}
+      gl={{ alpha: true, antialias: true }}
+    >
+      <ambientLight intensity={Math.PI} />
+      {/* ✅ Gravitasi dikurangi dari -40 ke -20 biar kartu tidak jatuh terlalu cepat */}
+      <Physics interpolate gravity={gravity} timeStep={1 / 60}>
+        <Band />
+      </Physics>
+      <Environment blur={0.75}>
+        <Lightformer
+          intensity={2}
+          color="white"
+          position={[0, -1, 5]}
+          rotation={[0, 0, Math.PI / 3]}
+          scale={[100, 0.1, 1]}
+        />
+        <Lightformer
+          intensity={3}
+          color="white"
+          position={[-1, -1, 1]}
+          rotation={[0, 0, Math.PI / 3]}
+          scale={[100, 0.1, 1]}
+        />
+        <Lightformer
+          intensity={10}
+          color="white"
+          position={[10, 2, 0]}
+          rotation={[0, Math.PI / 2, Math.PI / 3]}
+          scale={[100, 10, 1]}
+        />
+        <Lightformer
+          intensity={5}
+          color="white"
+          position={[-10, 2, 0]}
+          rotation={[0, -Math.PI / 2, Math.PI / 3]}
+          scale={[100, 10, 1]}
+        />
+      </Environment>
+    </Canvas>
+  );
+}

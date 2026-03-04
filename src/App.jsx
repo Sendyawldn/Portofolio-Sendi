@@ -523,7 +523,7 @@ function App() {
                     portfolio.js
                   </span>
                 </div>
-                <div className="text-slate-300">
+                {/* <div className="text-slate-300">
                   <span className="text-pink-400">const</span>{" "}
                   <span className="text-blue-400">developer</span> = {"{"}{" "}
                   <br />
@@ -541,14 +541,21 @@ function App() {
                   <span className="text-green-400">"☕ always"</span>
                   <br />
                   {"}"};
-                </div>
+                </div> */}
               </div>
             </div>
 
             {/* Area Kanan: Premium Lanyard ReactBits */}
-            <div className="hidden md:flex justify-center relative w-full lg:w-5/12 z-20 reveal h-[600px] cursor-grab active:cursor-grabbing">
-              {/* Lanyard 3D butuh tinggi yang pasti biar canvasnya muncul */}
-              <Lanyard position={[0, 0, 15]} gravity={[0, -40, 0]} />
+            <div
+              className="hidden md:block"
+              style={{
+                width: "500px",
+                height: "600px",
+                position: "relative",
+                flexShrink: 0,
+              }}
+            >
+              <Lanyard position={[0, 0, 13]} gravity={[0, -20, 0]} />
             </div>
           </div>
         </section>
