@@ -3,7 +3,11 @@ import daisyui from "daisyui";
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: "class",
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/components/ReactBits/**/*.{js,jsx}",
+  ],
   theme: {
     extend: {
       fontFamily: {

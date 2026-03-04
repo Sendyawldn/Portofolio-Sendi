@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "@studio-freight/lenis";
+import Lanyard from "./components/ReactBits/Lanyard";
+import DecryptedText from "./components/ReactBits/DecryptedText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -543,91 +545,10 @@ function App() {
               </div>
             </div>
 
-            {/* Area Kanan: ID Card Flip DENGAN FISIKA ASLI */}
-            <div className="hidden md:flex justify-center relative perspective-[1500px]">
-              <div
-                ref={idCardWrapperRef}
-                className="w-[min(280px,65vw)] h-[min(480px,110vw)] flex flex-col items-center cursor-grab transform-origin-top will-change-transform select-none touch-none z-10"
-              >
-                {/* Lanyard & Clip */}
-                <div className="w-5 h-[70px] bg-gradient-to-r from-slate-800 via-slate-600 to-slate-800 rounded-sm z-[5] shadow-inner mb-[-10px]"></div>
-                <div className="w-12 h-7 bg-gradient-to-br from-slate-200 via-slate-400 to-slate-300 rounded-md z-[6] border border-slate-500 flex items-center justify-center mb-[-4px] shadow-lg">
-                  <div className="w-5 h-3 bg-gradient-to-b from-slate-600 to-slate-800 rounded-sm"></div>
-                </div>
-
-                {/* Holder ID Card Utama */}
-                <div
-                  ref={idCardContainerRef}
-                  className="relative w-full h-[85%] preserve-3d transition-transform duration-500 origin-center"
-                >
-                  {/* Sisi Depan */}
-                  <div className="absolute inset-0 backface-hidden rounded-[20px] shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 border border-slate-600 flex flex-col items-center pt-8 pb-6 px-4">
-                    <div className="w-full h-2 bg-gradient-to-r from-indigo-500 to-cyan-500 absolute top-0 left-0"></div>
-                    <div className="w-24 h-24 rounded-full border-4 border-slate-600 bg-slate-800 flex items-center justify-center shadow-xl z-10 mb-6 overflow-hidden text-slate-500">
-                      [Foto Profil]
-                    </div>
-                    <h2 className="text-2xl font-bold text-white mb-1">
-                      Sendi Awaludin
-                    </h2>
-                    <p className="text-indigo-400 font-mono text-sm mb-6">
-                      Mahasiswa Aktif
-                    </p>
-                    <div className="mt-auto flex items-center gap-2 text-xs text-slate-400 animate-pulse">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-                        />
-                      </svg>
-                      Tarik/Ketuk Kartu
-                    </div>
-                  </div>
-
-                  {/* Sisi Belakang */}
-                  <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-[20px] shadow-[0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden bg-slate-800 border border-slate-600 flex flex-col p-6">
-                    <div className="w-full h-8 bg-black mb-4 -mx-6 px-6 relative -top-6 rounded-t-2xl opacity-50"></div>
-                    <h3 className="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2">
-                      BIODATA MAHASISWA
-                    </h3>
-                    <div className="space-y-3 text-sm text-slate-300 flex-grow">
-                      <div>
-                        <strong className="text-indigo-400 block text-xs">
-                          Pendidikan
-                        </strong>
-                        Universitas Bina Sarana Informatika (TI)
-                      </div>
-                      <div>
-                        <strong className="text-indigo-400 block text-xs">
-                          Domisili
-                        </strong>
-                        Gunung Putri, Jawa Barat
-                      </div>
-                      <div>
-                        <strong className="text-indigo-400 block text-xs">
-                          Usia
-                        </strong>
-                        23 Tahun
-                      </div>
-                      <div>
-                        <strong className="text-indigo-400 block text-xs">
-                          GitHub
-                        </strong>
-                        github.com/Sendyawldn
-                      </div>
-                    </div>
-                    <div className="w-16 h-16 bg-white rounded flex items-center justify-center self-end mt-4">
-                      <span className="text-black text-xs font-bold">QR</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            {/* Area Kanan: Premium Lanyard ReactBits */}
+            <div className="hidden md:flex justify-center relative w-full lg:w-5/12 z-20 reveal h-[600px] cursor-grab active:cursor-grabbing">
+              {/* Lanyard 3D butuh tinggi yang pasti biar canvasnya muncul */}
+              <Lanyard position={[0, 0, 15]} gravity={[0, -40, 0]} />
             </div>
           </div>
         </section>
@@ -715,9 +636,10 @@ function App() {
               <div className="text-indigo-400 font-mono text-sm">
                 // about_me.js
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Tentang Saya
-              </h2>
+              <DecryptedText
+                text="Tentang Saya"
+                className="text-4xl md:text-5xl font-bold text-white"
+              />
               <p className="text-gray-400 leading-relaxed">
                 Saya adalah mahasiswa Teknologi Informasi yang berdomisili di
                 Gunung Putri. Saya memiliki ketertarikan yang kuat pada
@@ -747,9 +669,10 @@ function App() {
               <div className="text-indigo-400 font-mono text-sm mb-2">
                 // internship_goals.js
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Tujuan Magang
-              </h2>
+              <DecryptedText
+                text="Tujuan Magang & Keahlian"
+                className="text-4xl md:text-5xl font-bold text-white"
+              />
             </div>
             <div className="glass-panel rounded-3xl p-8 md:p-12 shadow-xl">
               <p className="text-slate-300 text-lg leading-relaxed mb-8 text-center max-w-3xl mx-auto">
@@ -791,10 +714,10 @@ function App() {
               <div className="text-indigo-400 font-mono text-sm mb-3 tracking-widest">
                 // experience.log
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-white">
-                Pengalaman &{" "}
-                <span className="text-gradient-hero">Perjalanan</span>
-              </h2>
+              <DecryptedText
+                text="Pengalaman & Perjalanan"
+                className="text-4xl md:text-5xl font-bold text-white"
+              />
             </div>
 
             {/* Timeline Container Baru */}
@@ -891,9 +814,10 @@ function App() {
               <div className="text-cyan-400 font-mono text-sm mb-3 tracking-widest">
                 // tech_stack.exe
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-white">
-                Technical <span className="text-gradient-hero">Mastery</span>
-              </h2>
+              <DecryptedText
+                text="Technical Mastery"
+                className="text-4xl md:text-5xl font-bold text-white"
+              />
             </div>
 
             {/* --- KUMPULAN ICON 3D (ALA GAMBAR 1) --- */}
@@ -1008,9 +932,10 @@ function App() {
               <div className="text-pink-400 font-mono text-sm mb-2">
                 // projects.config.js
               </div>
-              <h2 className="text-4xl font-bold text-white mb-4">
-                Proyek Unggulan
-              </h2>
+              <DecryptedText
+                text="Proyek & Eksperimen"
+                className="text-4xl md:text-5xl font-bold text-white"
+              />
               <p className="text-slate-400 max-w-2xl mx-auto">
                 Koleksi proyek eksperimen dan kompetisi yang mencerminkan
                 semangat saya dalam ngulik teknologi baru, dari Web3 hingga
@@ -1109,9 +1034,10 @@ function App() {
                 <div className="text-indigo-400 font-mono text-sm mb-2">
                   // contact.form.js
                 </div>
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                  Hubungi Saya
-                </h2>
+                <DecryptedText
+                  text="Hubungi Saya"
+                  className="text-4xl md:text-5xl font-bold text-white"
+                />
                 <p className="text-slate-400 leading-relaxed">
                   Punya pertanyaan, tawaran proyek, atau sekadar ingin diskusi
                   soal Web Dev dan pergerakan market XAUUSD? Jangan ragu untuk
