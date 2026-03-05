@@ -1,4 +1,3 @@
-// src/components/ReactBits/SplitText.jsx
 import { useMemo, useEffect, useRef } from "react";
 import { motion, useAnimation, useInView } from "motion/react";
 
@@ -15,7 +14,8 @@ export default function SplitText({
   threshold = 0.01,
   rootMargin = "0px",
   textAlign = "left",
-  animateOnMount = false, // ← hero pakai ini = true, langsung main
+  animateOnMount = false,
+  mountDelay = 100,
   onLetterAnimationComplete,
 }) {
   const controls = useAnimation();
@@ -24,11 +24,10 @@ export default function SplitText({
 
   useEffect(() => {
     if (animateOnMount) {
-      // Langsung trigger tanpa nunggu scroll
-      const t = setTimeout(() => controls.start("visible"), 100);
+      const t = setTimeout(() => controls.start("visible"), mountDelay);
       return () => clearTimeout(t);
     }
-  }, [animateOnMount, controls]);
+  }, [animateOnMount, controls, mountDelay]);
 
   useEffect(() => {
     if (!animateOnMount && inView) controls.start("visible");

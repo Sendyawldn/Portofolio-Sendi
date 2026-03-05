@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 // ── ReactBits Components ──
@@ -14,6 +14,7 @@ import TiltedCard from "./components/ReactBits/TiltedCard";
 import StarBorder from "./components/ReactBits/StarBorder";
 import CircularText from "./components/ReactBits/CircularText";
 import Lanyard from "./components/ReactBits/Lanyard";
+import imgProfil from "./assets/profile-sendi.webp"; // <--- Sesuaikan nama filenya
 
 // ── Data ──
 const NAV_LINKS = [
@@ -79,6 +80,24 @@ const PROJECTS = [
     accent: "#10b981",
     grad: "linear-gradient(135deg, #051510 0%, #020a08 100%)",
   },
+  {
+    title: "Sistem Informasi Desa Tlajung Udik",
+    cat: "WEB DEVELOPMENT",
+    desc: "Platform digital terintegrasi untuk mendigitalkan administrasi desa, transparansi program kerja LPM, dan portal informasi warga.",
+    icon: "🏘️",
+    accent: "#10b981" /* Emerald Green */,
+    grad: "linear-gradient(180deg, rgba(16,185,129,0.1), transparent)",
+    tags: ["Laravel", "Tailwind CSS", "MySQL"],
+  },
+  {
+    title: "XAUUSD & Crypto Tracker Dashboard",
+    cat: "DATA VISUALIZATION",
+    desc: "Aplikasi web responsif untuk memantau pergerakan harga emas (XAUUSD) dan aset kripto secara real-time menggunakan integrasi Public API.",
+    icon: "📈",
+    accent: "#f59e0b" /* Amber Gold */,
+    grad: "linear-gradient(180deg, rgba(245,158,11,0.1), transparent)",
+    tags: ["React.js", "REST API", "Chart.js"],
+  },
 ];
 
 const TIMELINE = [
@@ -102,6 +121,20 @@ const TIMELINE = [
     period: "2024 – Sekarang",
     desc: "Berkontribusi aktif dalam merencanakan program desa dan menyusun draf proposal kegiatan untuk mendukung pemberdayaan warga lokal.",
     color: "#10b981",
+  },
+  {
+    title: "Freelance Web Developer",
+    company: "Klien UMKM Lokal",
+    period: "2023 – 2024",
+    desc: "Membangun website company profile yang responsif dan merancang antarmuka sistem kasir sederhana untuk membantu proses digitalisasi bisnis kecil.",
+    color: "#f59e0b", // Amber / Kuning
+  },
+  {
+    title: "Peserta IT Bootcamp",
+    company: "Frontend & Web3 Development",
+    period: "2023",
+    desc: "Mengikuti pelatihan intensif pengembangan web modern menggunakan React, Tailwind CSS, serta pengenalan dasar-dasar ekosistem Web3 dan Blockchain.",
+    color: "#ec4899", // Pink
   },
 ];
 
@@ -182,6 +215,40 @@ export default function App() {
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
+  };
+
+  // Ref untuk menangkap elemen pembungkus proyek
+  const scrollRef = React.useRef(null);
+
+  // Logic untuk Drag-to-Scroll
+  const handleMouseDown = (e) => {
+    const slider = scrollRef.current;
+    slider.isDown = true;
+    slider.classList.add("active");
+    slider.startX = e.pageX - slider.offsetLeft;
+    slider.scrollLeftStart = slider.scrollLeft;
+    slider.style.cursor = "grabbing"; // Ubah kursor jadi tangan mengepal
+  };
+
+  const handleMouseLeave = () => {
+    const slider = scrollRef.current;
+    slider.isDown = false;
+    slider.style.cursor = "grab";
+  };
+
+  const handleMouseUp = () => {
+    const slider = scrollRef.current;
+    slider.isDown = false;
+    slider.style.cursor = "grab";
+  };
+
+  const handleMouseMove = (e) => {
+    const slider = scrollRef.current;
+    if (!slider.isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - slider.startX) * 2; // Kecepatan geser (angka 2 bisa diubah)
+    slider.scrollLeft = slider.scrollLeftStart - walk;
   };
 
   return (
@@ -336,7 +403,7 @@ export default function App() {
             >
               ZEN
             </span>
-            <span style={{ color: "#f472b6" }}>.</span>
+            <span style={{ color: "#bf00f0" }}>.</span>
           </button>
 
           {/* Links */}
@@ -511,66 +578,76 @@ export default function App() {
                 paddingBottom: 48,
               }}
             >
-              {/* Badge — ShinyText (ReactBits) */}
+              {/* Badge — Modern Status Pill */}
               <AnimatedContent delay={0.1}>
                 <div
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: 8,
+                    gap: 10,
                     padding: "6px 16px",
                     borderRadius: 999,
-                    background: "rgba(99,102,241,0.08)",
-                    border: "1px solid rgba(99,102,241,0.2)",
+                    background: "rgba(255, 255, 255, 0.03)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    backdropFilter: "blur(12px)",
                     width: "fit-content",
                   }}
                 >
+                  {/* Titik hijau dengan soft pulse */}
+                  <div
+                    style={{
+                      position: "relative",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: "50%",
+                        background: "#10db77",
+                        zIndex: 2,
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        width: 14,
+                        height: 14,
+                        borderRadius: "50%",
+                        background: "rgba(16,219,119,0.3)",
+                        animation: "pulse 2s infinite",
+                      }}
+                    />
+                  </div>
+
+                  {/* Teks rapi non-monospace */}
                   <span
                     style={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: "50%",
-                      background: "#10db77",
-                      boxShadow: "0 0 10px #10db77",
-                      animation: "pulse 2s infinite",
-                      flexShrink: 0,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: "#e2e8f0",
+                      letterSpacing: "0.03em",
+                      fontFamily: "'Inter', sans-serif",
                     }}
-                  />
-                  <ShinyText
-                    text="// OPEN TO INTERNSHIP"
-                    speed={4}
-                    style={{
-                      fontSize: 11,
-                      letterSpacing: "0.12em",
-                      fontFamily: "monospace",
-                    }}
-                  />
+                  >
+                    Open to Internship
+                  </span>
                 </div>
               </AnimatedContent>
 
-              {/* Nama — SplitText (ReactBits) */}
-              <div>
-                <SplitText
-                  text="Sendi"
-                  className="hero-name-line"
-                  delay={60}
-                  duration={0.7}
-                  from={{ opacity: 0, y: 60, filter: "blur(8px)" }}
-                  to={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  splitBy="characters"
-                  textAlign="left"
-                />
-                <SplitText
-                  text="Awaludin"
-                  className="hero-name-line"
-                  delay={60}
-                  duration={0.7}
-                  from={{ opacity: 0, y: 60, filter: "blur(8px)" }}
-                  to={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  splitBy="characters"
-                  textAlign="left"
-                />
-              </div>
+              {/* Nama — Animasi Custom Framer Motion */}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 2.5, duration: 0.8, ease: "easeOut" }}
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                <span className="hero-name-line">Sendi</span>
+                <span className="hero-name-line">Awaludin</span>
+              </motion.div>
 
               {/* Typing role */}
               <AnimatedContent delay={0.8}>
@@ -646,60 +723,94 @@ export default function App() {
                 </div>
               </AnimatedContent>
 
-              {/* Code snippet */}
+              {/* Holographic Status Badge */}
               <AnimatedContent delay={1.4}>
                 <div
                   style={{
-                    background: "rgba(8,14,35,0.8)",
-                    backdropFilter: "blur(20px)",
-                    border: "1px solid rgba(99,102,241,0.15)",
-                    borderRadius: 12,
-                    padding: "16px 20px",
-                    fontFamily: "monospace",
-                    fontSize: 12,
+                    background: "rgba(8,14,35,0.6)",
+                    backdropFilter: "blur(24px)",
+                    border: "1px solid rgba(99,102,241,0.2)",
+                    borderRadius: 16,
+                    padding: "20px",
                     width: "fit-content",
+                    position: "relative",
+                    overflow: "hidden",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 16,
                   }}
                 >
+                  {/* Efek Cahaya Latar */}
                   <div
                     style={{
+                      position: "absolute",
+                      top: -20,
+                      left: -20,
+                      width: 80,
+                      height: 80,
+                      background: "rgba(34,211,238,0.2)",
+                      filter: "blur(30px)",
+                      borderRadius: "50%",
+                    }}
+                  />
+
+                  {/* Avatar / Ikon Identitas */}
+                  <div
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: "12px",
+                      background: "linear-gradient(135deg, #6366f1, #22d3ee)",
                       display: "flex",
-                      gap: 6,
-                      marginBottom: 12,
-                      paddingBottom: 8,
-                      borderBottom: "1px solid rgba(99,102,241,0.1)",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 24,
+                      color: "white",
+                      boxShadow: "0 8px 16px rgba(99,102,241,0.3)",
+                      position: "relative",
+                      zIndex: 2,
                     }}
                   >
-                    {["#ef4444", "#eab308", "#22c55e"].map((c, i) => (
-                      <div
-                        key={i}
-                        style={{
-                          width: 10,
-                          height: 10,
-                          borderRadius: "50%",
-                          background: c,
-                        }}
-                      />
-                    ))}
-                    <span
-                      style={{ color: "#334155", marginLeft: 8, fontSize: 10 }}
-                    >
-                      portfolio.js
-                    </span>
+                    <i className="fas fa-user-astronaut"></i>
                   </div>
-                  <div style={{ color: "#94a3b8", lineHeight: 1.8 }}>
-                    <span style={{ color: "#f472b6" }}>const</span>{" "}
-                    <span style={{ color: "#22d3ee" }}>dev</span> = {"{"}
-                    <br />
-                    &nbsp;&nbsp;name:{" "}
-                    <span style={{ color: "#a3e635" }}>"Sendi Awaludin"</span>,
-                    <br />
-                    &nbsp;&nbsp;alias:{" "}
-                    <span style={{ color: "#a3e635" }}>"Zen"</span>,<br />
-                    &nbsp;&nbsp;stack: [
-                    <span style={{ color: "#a3e635" }}>"React"</span>,{" "}
-                    <span style={{ color: "#a3e635" }}>"AI"</span>,{" "}
-                    <span style={{ color: "#a3e635" }}>"Forex"</span>]<br />
-                    {"}"};
+
+                  {/* Teks Status */}
+                  <div style={{ position: "relative", zIndex: 2 }}>
+                    <h4
+                      style={{
+                        color: "white",
+                        fontSize: 14,
+                        fontWeight: 700,
+                        margin: "0 0 4px 0",
+                      }}
+                    >
+                      Sendi Awaludin
+                    </h4>
+                    <p
+                      style={{
+                        color: "#94a3b8",
+                        fontSize: 12,
+                        margin: 0,
+                        fontFamily: "monospace",
+                      }}
+                    >
+                      <span style={{ color: "#22d3ee" }}>Exploring:</span> Web3
+                      & AI
+                    </p>
+                    <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+                      <span
+                        style={{
+                          fontSize: 10,
+                          padding: "2px 8px",
+                          borderRadius: 12,
+                          background: "rgba(16,185,129,0.1)",
+                          color: "#10b981",
+                          border: "1px solid rgba(16,185,129,0.2)",
+                        }}
+                      >
+                        Available for work
+                      </span>
+                    </div>
                   </div>
                 </div>
               </AnimatedContent>
@@ -878,32 +989,29 @@ export default function App() {
                     overflow: "hidden",
                   }}
                 >
+                  {/* Foto Asli */}
+                  <img
+                    src={imgProfil}
+                    alt="Sendi Awaludin"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      position: "absolute",
+                      inset: 0,
+                    }}
+                  />
+
+                  {/* Efek gelap di bagian bawah foto agar menyatu */}
                   <div
                     style={{
                       position: "absolute",
                       inset: 0,
                       background:
-                        "radial-gradient(circle at 50% 30%, rgba(99,102,241,0.15), transparent 70%)",
+                        "linear-gradient(to top, #020510, transparent 40%)",
                     }}
                   />
-                  <div style={{ fontSize: 72, marginBottom: 16 }}>👨‍💻</div>
-                  <p
-                    style={{
-                      fontFamily: "monospace",
-                      fontSize: 12,
-                      color: "#334155",
-                    }}
-                  >
-                    [ foto_profil.jpg ]
-                  </p>
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background:
-                        "linear-gradient(to top, #020510, transparent 60%)",
-                    }}
-                  />
+
                   {/* Badge floating */}
                   <div
                     style={{
@@ -984,30 +1092,45 @@ export default function App() {
                   waktu luang saya aktif mempelajari pergerakan pasar XAUUSD.
                 </p>
               </AnimatedContent>
+              {/* Quick Facts / Latar Belakang */}
               <AnimatedContent delay={0.3}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 10,
+                    marginTop: 8,
+                  }}
+                >
                   {[
-                    "React.js",
-                    "Laravel",
-                    "Python",
-                    "ML/AI",
-                    "Docker",
-                    "XAUUSD",
-                  ].map((tag) => (
-                    <span
-                      key={tag}
+                    { icon: "🎓", text: "Mahasiswa IT UBSI", color: "#6366f1" },
+                    {
+                      icon: "📍",
+                      text: "Gunung Putri, Jawa Barat",
+                      color: "#22d3ee",
+                    },
+                    { icon: "📈", text: "XAUUSD Analyst", color: "#f59e0b" },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
                       style={{
-                        padding: "5px 12px",
-                        borderRadius: 8,
+                        padding: "6px 14px",
+                        borderRadius: 12,
                         fontSize: 12,
-                        fontFamily: "monospace",
-                        background: "rgba(99,102,241,0.1)",
-                        border: "1px solid rgba(99,102,241,0.2)",
-                        color: "#818cf8",
+                        fontWeight: 600,
+                        background: `rgba(255,255,255,0.03)`,
+                        border: `1px solid ${item.color}40`,
+                        color: "#e2e8f0",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                        fontFamily: "'Inter', sans-serif",
                       }}
                     >
-                      {tag}
-                    </span>
+                      <span style={{ fontSize: 14 }}>{item.icon}</span>
+                      <span style={{ color: item.color }}>{item.text}</span>
+                    </div>
                   ))}
                 </div>
               </AnimatedContent>
@@ -1096,12 +1219,10 @@ export default function App() {
                           height: 72,
                           borderRadius: "50%",
                           background: sk.bg,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
                           border: `1px solid ${sk.color}30`,
                           transition: "all 0.3s",
                           boxShadow: `0 8px 24px ${sk.color}40`,
+                          position: "relative",
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.boxShadow = `0 12px 36px ${sk.color}70`;
@@ -1115,7 +1236,14 @@ export default function App() {
                       >
                         <i
                           className={sk.icon}
-                          style={{ fontSize: 28, color: sk.color }}
+                          style={{
+                            fontSize: 28,
+                            color: sk.color,
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                          }}
                         />
                       </div>
                       <span
@@ -1131,6 +1259,136 @@ export default function App() {
                   </Magnet>
                 </AnimatedContent>
               ))}
+              {/* Pembungkus Soft Skills - Jarak Didekatkan & Garis Dihapus */}
+              <div style={{ marginTop: 24 }}>
+                <AnimatedContent className="text-center-block">
+                  <h3
+                    style={{
+                      color: "white",
+                      fontSize: 28,
+                      fontWeight: 800,
+                      textAlign: "center",
+                      marginBottom: 32 /* Jarak bawah judul juga dirapatkan */,
+                    }}
+                  >
+                    Soft Skills
+                  </h3>
+                </AnimatedContent>
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    gap: 20,
+                  }}
+                >
+                  {[
+                    {
+                      name: "Kepemimpinan",
+                      icon: "fas fa-users-cog",
+                      color: "#f59e0b",
+                      desc: "Pengalaman memimpin organisasi & masyarakat desa",
+                    },
+                    {
+                      name: "Komunikasi",
+                      icon: "fas fa-comments",
+                      color: "#3b82f6",
+                      desc: "Penyusunan draf proposal & presentasi ide program",
+                    },
+                    {
+                      name: "Manajemen Waktu",
+                      icon: "fas fa-clock",
+                      color: "#8b5cf6",
+                      desc: "Disiplin tinggi mengatur jadwal, rutinitas & pola hidup",
+                    },
+                    {
+                      name: "Kerja Sama Tim",
+                      icon: "fas fa-hands-helping",
+                      color: "#10b981",
+                      desc: "Kolaborasi efektif dalam proyek kelompok & organisasi",
+                    },
+                    {
+                      name: "Problem Solving",
+                      icon: "fas fa-lightbulb",
+                      color: "#eab308",
+                      desc: "Pendekatan logis untuk mencari solusi sistem & algoritma",
+                    },
+                  ].map((skill, i) => (
+                    <AnimatedContent
+                      key={`soft-${i}`}
+                      delay={i * 0.1}
+                      threshold={0.1}
+                    >
+                      <div
+                        style={{
+                          background: "rgba(15, 23, 42, 0.6)",
+                          backdropFilter: "blur(12px)",
+                          border: `1px solid ${skill.color}30`,
+                          borderRadius: 16,
+                          padding: "20px 24px",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 16,
+                          width: 310,
+                          transition: "all 0.3s",
+                          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = "translateY(-4px)";
+                          e.currentTarget.style.borderColor = skill.color;
+                          e.currentTarget.style.boxShadow = `0 8px 24px ${skill.color}40`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = "translateY(0)";
+                          e.currentTarget.style.borderColor = `${skill.color}30`;
+                          e.currentTarget.style.boxShadow =
+                            "0 4px 12px rgba(0,0,0,0.2)";
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: 48,
+                            height: 48,
+                            borderRadius: 12,
+                            background: `${skill.color}15`,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            color: skill.color,
+                            fontSize: 20,
+                            flexShrink: 0,
+                          }}
+                        >
+                          <i className={skill.icon} />
+                        </div>
+                        <div>
+                          <h4
+                            style={{
+                              color: "white",
+                              fontSize: 15,
+                              fontWeight: 700,
+                              margin: "0 0 4px 0",
+                            }}
+                          >
+                            {skill.name}
+                          </h4>
+                          <p
+                            style={{
+                              color: "#94a3b8",
+                              fontSize: 12,
+                              margin: 0,
+                              lineHeight: 1.4,
+                            }}
+                          >
+                            {skill.desc}
+                          </p>
+                        </div>
+                      </div>
+                    </AnimatedContent>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -1140,7 +1398,7 @@ export default function App() {
         ═══════════════════════════════════════ */}
         <section
           id="experience"
-          style={{ padding: "100px 24px", position: "relative", zIndex: 10 }}
+          style={{ padding: "50px 24px", position: "relative", zIndex: 10 }}
         >
           <div style={{ maxWidth: 800, margin: "0 auto" }}>
             <AnimatedContent style={{ textAlign: "center", marginBottom: 64 }}>
@@ -1179,115 +1437,129 @@ export default function App() {
               />
             </AnimatedContent>
 
-            <div style={{ position: "relative", paddingLeft: 32 }}>
-              {/* Timeline line */}
-              <div
-                style={{
-                  position: "absolute",
-                  left: 8,
-                  top: 0,
-                  bottom: 0,
-                  width: 1,
-                  background:
-                    "linear-gradient(to bottom, transparent, #6366f1, #22d3ee, transparent)",
-                  boxShadow: "0 0 10px rgba(99,102,241,0.4)",
-                }}
-              />
+            <div
+              className="custom-scroll"
+              style={{
+                marginTop: 60,
+                maxHeight: 560 /* Tinggi maksimal, pas untuk menampilkan ~3 kartu */,
+                overflowY:
+                  "auto" /* Memunculkan scroll ke bawah jika item lebih dari 3 */,
+                overflowX: "hidden",
+                paddingRight: 16 /* Memberi jarak agar kartu tidak menabrak scrollbar */,
+                paddingTop: 10,
+                paddingBottom: 10,
+              }}
+            >
+              <div style={{ position: "relative", paddingLeft: 32 }}>
+                {/* Timeline line */}
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 8,
+                    top: 0,
+                    bottom: 0,
+                    width: 1,
+                    background:
+                      "linear-gradient(to bottom, transparent, #6366f1, #22d3ee, transparent)",
+                    boxShadow: "0 0 10px rgba(99,102,241,0.4)",
+                  }}
+                />
 
-              {TIMELINE.map((item, i) => (
-                <AnimatedContent
-                  key={i}
-                  delay={i * 0.15}
-                  direction="horizontal"
-                  distance={40}
-                >
-                  <div style={{ position: "relative", marginBottom: 40 }}>
-                    {/* Dot */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: -28,
-                        top: 24,
-                        width: 14,
-                        height: 14,
-                        borderRadius: "50%",
-                        background: "#020510",
-                        border: `2px solid ${item.color}`,
-                        boxShadow: `0 0 16px ${item.color}80`,
-                        transition: "transform 0.3s",
-                      }}
-                    />
-                    <TiltedCard rotateAmplitude={4} scaleOnHover={1.02}>
+                {TIMELINE.map((item, i) => (
+                  <AnimatedContent
+                    key={i}
+                    delay={i * 0.15}
+                    direction="horizontal"
+                    distance={40}
+                  >
+                    <div style={{ position: "relative", marginBottom: 40 }}>
+                      {/* Dot */}
                       <div
                         style={{
-                          background: "rgba(8,14,35,0.85)",
-                          backdropFilter: "blur(20px)",
-                          border: `1px solid ${item.color}20`,
-                          borderLeft: `3px solid ${item.color}`,
-                          borderRadius: 16,
-                          padding: "20px 24px",
+                          position: "absolute",
+                          left: -28,
+                          top: 24,
+                          width: 14,
+                          height: 14,
+                          borderRadius: "50%",
+                          background: "#020510",
+                          border: `2px solid ${item.color}`,
+                          boxShadow: `0 0 16px ${item.color}80`,
+                          transition: "transform 0.3s",
                         }}
-                      >
+                      />
+                      <TiltedCard rotateAmplitude={4} scaleOnHover={1.02}>
                         <div
                           style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "flex-start",
-                            marginBottom: 8,
+                            background: "rgba(8,14,35,0.85)",
+                            backdropFilter: "blur(20px)",
+                            border: `1px solid ${item.color}20`,
+                            borderLeft: `3px solid ${item.color}`,
+                            borderRadius: 16,
+                            padding: "20px 24px",
                           }}
                         >
-                          <h3
+                          <div
                             style={{
-                              fontWeight: 800,
-                              color: "white",
-                              fontSize: 17,
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "flex-start",
+                              marginBottom: 8,
+                            }}
+                          >
+                            <h3
+                              style={{
+                                fontWeight: 800,
+                                color: "white",
+                                fontSize: 17,
+                                margin: 0,
+                              }}
+                            >
+                              {item.title}
+                            </h3>
+                            <span
+                              style={{
+                                fontSize: 11,
+                                fontFamily: "monospace",
+                                color: item.color,
+                                background: `${item.color}15`,
+                                padding: "2px 10px",
+                                borderRadius: 999,
+                                border: `1px solid ${item.color}30`,
+                                whiteSpace: "nowrap",
+                                marginLeft: 8,
+                              }}
+                            >
+                              {item.period}
+                            </span>
+                          </div>
+                          <p
+                            style={{
+                              color: item.color,
+                              fontSize: 12,
+                              fontWeight: 600,
+                              marginBottom: 8,
+                              margin: "0 0 8px",
+                            }}
+                          >
+                            {item.company}
+                          </p>
+                          <p
+                            style={{
+                              color: "#64748b",
+                              fontSize: 13,
+                              lineHeight: 1.7,
                               margin: 0,
                             }}
                           >
-                            {item.title}
-                          </h3>
-                          <span
-                            style={{
-                              fontSize: 11,
-                              fontFamily: "monospace",
-                              color: item.color,
-                              background: `${item.color}15`,
-                              padding: "2px 10px",
-                              borderRadius: 999,
-                              border: `1px solid ${item.color}30`,
-                              whiteSpace: "nowrap",
-                              marginLeft: 8,
-                            }}
-                          >
-                            {item.period}
-                          </span>
+                            {item.desc}
+                          </p>
                         </div>
-                        <p
-                          style={{
-                            color: item.color,
-                            fontSize: 12,
-                            fontWeight: 600,
-                            marginBottom: 8,
-                            margin: "0 0 8px",
-                          }}
-                        >
-                          {item.company}
-                        </p>
-                        <p
-                          style={{
-                            color: "#64748b",
-                            fontSize: 13,
-                            lineHeight: 1.7,
-                            margin: 0,
-                          }}
-                        >
-                          {item.desc}
-                        </p>
-                      </div>
-                    </TiltedCard>
-                  </div>
-                </AnimatedContent>
-              ))}
+                      </TiltedCard>
+                    </div>
+                  </AnimatedContent>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -1337,105 +1609,128 @@ export default function App() {
             </AnimatedContent>
 
             <div
+              ref={scrollRef} // <--- Pasang Ref di sini
+              className="custom-scroll"
+              onMouseDown={handleMouseDown} // <--- Event klik ditekan
+              onMouseLeave={handleMouseLeave} // <--- Event kursor keluar area
+              onMouseUp={handleMouseUp} // <--- Event klik dilepas
+              onMouseMove={handleMouseMove} // <--- Event kursor digeser
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3,1fr)",
+                display: "flex",
                 gap: 24,
+                overflowX: "auto",
+                overflowY: "hidden",
+                padding: "20px 10px 40px",
+                scrollBehavior: "auto", // Ubah ke 'auto' agar tarikan terasa instan/real-time
+                scrollSnapType: "none", // Matikan sementara snap agar tarikan tidak kaku
+                cursor: "grab", // Kursor jadi bentuk tangan mengajak narik
+                userSelect: "none", // Agar teks tidak ikut terblok saat ditarik
+                WebkitOverflowScrolling: "touch",
               }}
             >
               {PROJECTS.map((p, i) => (
-                <AnimatedContent key={i} delay={i * 0.12} threshold={0.1}>
-                  <TiltedCard
-                    rotateAmplitude={10}
-                    scaleOnHover={1.04}
-                    showGlare
-                  >
-                    <div
-                      style={{
-                        background: "rgba(8,14,35,0.9)",
-                        backdropFilter: "blur(20px)",
-                        border: "1px solid rgba(99,102,241,0.1)",
-                        borderRadius: 20,
-                        overflow: "hidden",
-                        cursor: "pointer",
-                      }}
+                <div
+                  key={i}
+                  style={{ flex: "0 0 340px", scrollSnapAlign: "start" }}
+                >
+                  <AnimatedContent delay={i * 0.12} threshold={0.1}>
+                    <TiltedCard
+                      rotateAmplitude={10}
+                      scaleOnHover={1.04}
+                      showGlare
                     >
-                      {/* Top accent */}
                       <div
                         style={{
-                          height: 2,
-                          background: `linear-gradient(90deg, ${p.accent}, transparent)`,
-                        }}
-                      />
-                      {/* Header */}
-                      <div
-                        style={{
-                          padding: "28px 24px 20px",
-                          background: p.grad,
+                          background: "rgba(8,14,35,0.9)",
+                          backdropFilter: "blur(20px)",
+                          border: "1px solid rgba(99,102,241,0.1)",
+                          borderRadius: 20,
+                          overflow: "hidden",
+                          cursor: "pointer",
+                          height: "100%" /* Pastikan tinggi kartu seragam */,
                         }}
                       >
-                        <div style={{ fontSize: 36, marginBottom: 8 }}>
-                          {p.icon}
-                        </div>
-                        <span
-                          style={{
-                            fontSize: 10,
-                            fontFamily: "monospace",
-                            color: p.accent,
-                            fontWeight: 700,
-                            letterSpacing: "0.1em",
-                          }}
-                        >
-                          {p.cat}
-                        </span>
-                      </div>
-                      {/* Body */}
-                      <div style={{ padding: "20px 24px 24px" }}>
-                        <h3
-                          style={{
-                            fontWeight: 800,
-                            color: "white",
-                            fontSize: 15,
-                            marginBottom: 10,
-                          }}
-                        >
-                          {p.title}
-                        </h3>
-                        <p
-                          style={{
-                            color: "#475569",
-                            fontSize: 12,
-                            lineHeight: 1.7,
-                            marginBottom: 16,
-                            minHeight: 56,
-                          }}
-                        >
-                          {p.desc}
-                        </p>
+                        {/* Top accent */}
                         <div
-                          style={{ display: "flex", flexWrap: "wrap", gap: 6 }}
+                          style={{
+                            height: 2,
+                            background: `linear-gradient(90deg, ${p.accent}, transparent)`,
+                          }}
+                        />
+                        {/* Header */}
+                        <div
+                          style={{
+                            padding: "28px 24px 20px",
+                            background: p.grad,
+                          }}
                         >
-                          {p.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              style={{
-                                padding: "3px 10px",
-                                borderRadius: 6,
-                                fontSize: 10,
-                                fontFamily: "monospace",
-                                background: `${p.accent}15`,
-                                color: p.accent,
-                                border: `1px solid ${p.accent}30`,
-                              }}
-                            >
-                              {tag}
-                            </span>
-                          ))}
+                          <div style={{ fontSize: 36, marginBottom: 8 }}>
+                            {p.icon}
+                          </div>
+                          <span
+                            style={{
+                              fontSize: 10,
+                              fontFamily: "monospace",
+                              color: p.accent,
+                              fontWeight: 700,
+                              letterSpacing: "0.1em",
+                            }}
+                          >
+                            {p.cat}
+                          </span>
+                        </div>
+                        {/* Body */}
+                        <div style={{ padding: "20px 24px 24px" }}>
+                          <h3
+                            style={{
+                              fontWeight: 800,
+                              color: "white",
+                              fontSize: 15,
+                              marginBottom: 10,
+                            }}
+                          >
+                            {p.title}
+                          </h3>
+                          <p
+                            style={{
+                              color: "#475569",
+                              fontSize: 12,
+                              lineHeight: 1.7,
+                              marginBottom: 16,
+                              minHeight: 56,
+                            }}
+                          >
+                            {p.desc}
+                          </p>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexWrap: "wrap",
+                              gap: 6,
+                            }}
+                          >
+                            {p.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                style={{
+                                  padding: "3px 10px",
+                                  borderRadius: 6,
+                                  fontSize: 10,
+                                  fontFamily: "monospace",
+                                  background: `${p.accent}15`,
+                                  color: p.accent,
+                                  border: `1px solid ${p.accent}30`,
+                                }}
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </TiltedCard>
-                </AnimatedContent>
+                    </TiltedCard>
+                  </AnimatedContent>
+                </div>
               ))}
             </div>
           </div>
@@ -1754,6 +2049,14 @@ export default function App() {
           background-clip: text;
           -webkit-text-fill-color: transparent;
           animation: shineText 8s linear infinite;
+        }
+          /* ── Invisible Scroll untuk Timeline ── */
+        .custom-scroll {
+          -ms-overflow-style: none;  /* Sembunyikan di Internet Explorer / Edge */
+          scrollbar-width: none;  /* Sembunyikan di Firefox */
+        }
+        .custom-scroll::-webkit-scrollbar {
+          display: none; /* Sembunyikan di Chrome, Safari, dan Opera */
         }
         @keyframes shineText { to { background-position: 300% center; } }
         .section-title-text {
