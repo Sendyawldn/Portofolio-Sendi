@@ -1,0 +1,64 @@
+/* src/components/ReactBits/StarBorder.css */
+.star-border-wrapper {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  padding: 1px;
+  border-radius: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.star-border-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--angle, 0deg),
+    transparent 0%,
+    var(--border-color) 20%,
+    transparent 40%
+  );
+  animation: star-spin var(--anim-speed) linear infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes star-spin {
+  to {
+    --angle: 360deg;
+  }
+}
+
+.star-border-inner {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 11px;
+  background: rgba(8, 14, 35, 0.9);
+  color: white;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  transition: background 0.3s;
+}
+
+.star-border-wrapper:hover .star-border-inner {
+  background: rgba(99, 102, 241, 0.15);
+}

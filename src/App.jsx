@@ -1,566 +1,716 @@
-import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "@studio-freight/lenis";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+
+// ── ReactBits Components ──
+import Aurora from "./components/ReactBits/Aurora";
+import SplashCursor from "./components/ReactBits/SplashCursor";
+import SplitText from "./components/ReactBits/SplitText";
+import BlurText from "./components/ReactBits/BlurText";
+import ShinyText from "./components/ReactBits/ShinyText";
+import CountUp from "./components/ReactBits/CountUp";
+import AnimatedContent from "./components/ReactBits/AnimatedContent";
+import Magnet from "./components/ReactBits/Magnet";
+import TiltedCard from "./components/ReactBits/TiltedCard";
+import StarBorder from "./components/ReactBits/StarBorder";
+import CircularText from "./components/ReactBits/CircularText";
 import Lanyard from "./components/ReactBits/Lanyard";
-import DecryptedText from "./components/ReactBits/DecryptedText";
 
-gsap.registerPlugin(ScrollTrigger);
+// ── Data ──
+const NAV_LINKS = [
+  { id: "hero", label: "Home" },
+  { id: "about", label: "Tentang" },
+  { id: "skills", label: "Skill" },
+  { id: "experience", label: "Pengalaman" },
+  { id: "projects", label: "Proyek" },
+  { id: "contact", label: "Kontak" },
+];
 
-function App() {
-  // --- REFS BARU ---
-  const canvasRef = useRef(null);
-  const idCardWrapperRef = useRef(null);
-  const idCardContainerRef = useRef(null);
-  const cursorDotRef = useRef(null);
-  const cursorOutlineRef = useRef(null);
+const SKILLS = [
+  { name: "React.js", icon: "fab fa-react", color: "#61DAFB", bg: "#0d1b2a" },
+  { name: "Laravel", icon: "fab fa-laravel", color: "#FF2D20", bg: "#1a0a09" },
+  {
+    name: "Tailwind",
+    icon: "fab fa-css3-alt",
+    color: "#06B6D4",
+    bg: "#061a1e",
+  },
+  { name: "Python", icon: "fab fa-python", color: "#F7D94C", bg: "#1a1600" },
+  { name: "ML / AI", icon: "fas fa-brain", color: "#A78BFA", bg: "#130d1f" },
+  { name: "Docker", icon: "fab fa-docker", color: "#2496ED", bg: "#051523" },
+  {
+    name: "Git/GitHub",
+    icon: "fab fa-github",
+    color: "#ffffff",
+    bg: "#101010",
+  },
+  {
+    name: "Database",
+    icon: "fas fa-database",
+    color: "#10B981",
+    bg: "#071510",
+  },
+];
 
-  // State untuk interaksi web
-  const [isLoading, setIsLoading] = useState(true);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [typingText, setTypingText] = useState("");
+const PROJECTS = [
+  {
+    title: "Decentralized Digital Credential",
+    cat: "Web3 & Blockchain",
+    desc: "Platform identitas digital desentralisasi menggunakan Soulbound Tokens (SBTs) di jaringan Polygon. Smart contract untuk sertifikasi tamper-proof.",
+    tags: ["Polygon", "Web3", "Solidity"],
+    icon: "⛓️",
+    accent: "#6366f1",
+    grad: "linear-gradient(135deg, #1a1340 0%, #0d0825 100%)",
+  },
+  {
+    title: "Proposal Inovasi GEMASTIK",
+    cat: "GEMASTIK 2025",
+    desc: "Proyek kolaborasi tim kampus UBSI untuk kompetisi GEMASTIK 2025, menggabungkan solusi perangkat lunak dengan kebutuhan industri.",
+    tags: ["Teamwork", "Software Dev", "Innovation"],
+    icon: "🏆",
+    accent: "#22d3ee",
+    grad: "linear-gradient(135deg, #051820 0%, #020c10 100%)",
+  },
+  {
+    title: "XAUUSD AI Trading Bot",
+    cat: "AI & Finance",
+    desc: "Riset dan pengembangan bot trading otomatis menggunakan Machine Learning untuk memprediksi pergerakan pasar emas (XAUUSD).",
+    tags: ["Python", "ML", "Finance"],
+    icon: "📈",
+    accent: "#10b981",
+    grad: "linear-gradient(135deg, #051510 0%, #020a08 100%)",
+  },
+];
 
-  // Kata-kata untuk efek ngetik
-  const words = ["Web Developer", "AI Engineer", "Forex Trader"];
+const TIMELINE = [
+  {
+    title: "Internship",
+    company: "PT Teng Fei Energy Technology",
+    period: "Baru-baru ini",
+    desc: "Membantu pengelolaan operasional dan mempelajari sistem teknologi perusahaan energi. Berkontribusi dalam pembuatan dokumentasi sejarah perusahaan.",
+    color: "#6366f1",
+  },
+  {
+    title: "GEMASTIK 2025",
+    company: "Kolaborasi Tim Kampus UBSI",
+    period: "2025",
+    desc: "Menyiapkan proposal inovasi proyek untuk kompetisi GEMASTIK 2025, menggabungkan solusi perangkat lunak dengan kebutuhan industri terkini.",
+    color: "#22d3ee",
+  },
+  {
+    title: "Anggota LPM Desa",
+    company: "Desa Tlajung Udik",
+    period: "2024 – Sekarang",
+    desc: "Berkontribusi aktif dalam merencanakan program desa dan menyusun draf proposal kegiatan untuk mendukung pemberdayaan warga lokal.",
+    color: "#10b981",
+  },
+];
 
+const MARQUEE_ITEMS = [
+  "React.js",
+  "Tailwind CSS",
+  "Laravel",
+  "Python",
+  "Machine Learning",
+  "Docker",
+  "Git/GitHub",
+  "Data Mining",
+  "Forex Trading",
+  "AI Engineering",
+  "Web3",
+  "Next.js",
+];
+
+export default function App() {
+  const [loading, setLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [typing, setTyping] = useState("");
+  const [activeSection, setActiveSection] = useState("hero");
+
+  // ── Loading ──
   useEffect(() => {
-    // --- L1. LENIS SMOOTH SCROLL ---
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Easing mulus
-      smoothWheel: true,
-    });
-    const raf = (time) => {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
+    const t = setTimeout(() => setLoading(false), 2400);
+    return () => clearTimeout(t);
+  }, []);
+
+  // ── Typing effect ──
+  useEffect(() => {
+    const words = ["Web Developer", "AI Engineer", "Forex Trader"];
+    let wi = 0,
+      ci = 0,
+      del = false;
+    let timer;
+    const tick = () => {
+      const w = words[wi];
+      setTyping(del ? w.slice(0, ci - 1) : w.slice(0, ci + 1));
+      del ? ci-- : ci++;
+      let speed = del ? 50 : 120;
+      if (!del && ci === w.length) {
+        speed = 2200;
+        del = true;
+      } else if (del && ci === 0) {
+        del = false;
+        wi = (wi + 1) % words.length;
+        speed = 400;
+      }
+      timer = setTimeout(tick, speed);
     };
-    requestAnimationFrame(raf);
-
-    // --- L2. CUSTOM CURSOR ---
-    const handleMouseMove = (e) => {
-      const posX = e.clientX;
-      const posY = e.clientY;
-
-      // 1. Tetap update titik kursor lama abang
-      if (cursorDotRef.current) {
-        cursorDotRef.current.style.left = `${posX}px`;
-        cursorDotRef.current.style.top = `${posY}px`;
-      }
-
-      // 2. Tetap update lingkaran kursor lama abang
-      if (cursorOutlineRef.current) {
-        cursorOutlineRef.current.animate(
-          { left: `${posX}px`, top: `${posY}px` },
-          { duration: 500, fill: "forwards" },
-        );
-      }
-
-      // 3. Tambahkan ini untuk efek Spotlight Background
-      document.documentElement.style.setProperty("--mouse-x", `${posX}px`);
-      document.documentElement.style.setProperty("--mouse-y", `${posY}px`);
-    };
-
-    // Logic reveal saat scroll
-    const reveal = () => {
-      const reveals = document.querySelectorAll(".reveal");
-      reveals.forEach((r) => {
-        const windowHeight = window.innerHeight;
-        const elementTop = r.getBoundingClientRect().top;
-        if (elementTop < windowHeight - 100) {
-          r.classList.add("active");
-        }
-      });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("scroll", reveal);
-
-    // Jalankan reveal sekali saat pertama load biar konten atas langsung muncul
-    reveal();
-
-    // 1. Loading Screen
-    const timer = setTimeout(() => setIsLoading(false), 2000);
-
-    // 2. CANVAS PARTICLES (Titik Cahaya Nyambung di Hero)
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-    let particles = [];
-    let animId;
-
-    if (canvas && ctx) {
-      const resize = () => {
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-      };
-      resize();
-      window.addEventListener("resize", resize);
-
-      const count = window.innerWidth < 768 ? 25 : 50;
-      for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          r: Math.random() * 2 + 0.5,
-          color: ["rgba(0,212,255,", "rgba(139,92,246,", "rgba(99,102,241,"][
-            Math.floor(Math.random() * 3)
-          ],
-        });
-      }
-
-      const draw = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach((p, i) => {
-          p.x += p.vx;
-          p.y += p.vy;
-          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = p.color + "0.6)";
-          ctx.fill();
-
-          if (window.innerWidth >= 768) {
-            for (let j = i + 1; j < particles.length; j++) {
-              const dx = p.x - particles[j].x,
-                dy = p.y - particles[j].y;
-              const dist = Math.sqrt(dx * dx + dy * dy);
-              if (dist < 110) {
-                ctx.beginPath();
-                ctx.moveTo(p.x, p.y);
-                ctx.lineTo(particles[j].x, particles[j].y);
-                ctx.strokeStyle = p.color + 0.12 * (1 - dist / 110) + ")";
-                ctx.lineWidth = 0.5;
-                ctx.stroke();
-              }
-            }
-          }
-        });
-        animId = requestAnimationFrame(draw);
-      };
-      draw();
-    }
-
-    // 3. FISIKA ID CARD (SPRING DRAG & FLIP)
-    const wrapper = idCardWrapperRef.current;
-    const container = idCardContainerRef.current;
-    let isFlipped = false;
-    let isDragging = false;
-    let dragStartX = 0,
-      dragStartY = 0;
-    let currentX = 0,
-      currentY = 0,
-      offsetX = 0,
-      offsetY = 0;
-    let velocityX = 0,
-      velocityY = 0,
-      rotationAngle = 0,
-      angularVelocity = 0;
-    let physicsId;
-
-    if (wrapper && container) {
-      const handleStart = (e) => {
-        isDragging = true;
-        const pos = e.touches
-          ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
-          : { x: e.clientX, y: e.clientY };
-        dragStartX = pos.x - offsetX;
-        dragStartY = pos.y - offsetY;
-        wrapper.style.cursor = "grabbing";
-        if (e.cancelable) e.preventDefault();
-      };
-
-      const handleMove = (e) => {
-        if (!isDragging) return;
-        const pos = e.touches
-          ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
-          : { x: e.clientX, y: e.clientY };
-        const deltaX = pos.x - dragStartX;
-        const deltaY = pos.y - dragStartY;
-        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-        if (distance > 100) {
-          const angle = Math.atan2(deltaY, deltaX);
-          offsetX = Math.cos(angle) * 100;
-          offsetY = Math.max(0, Math.sin(angle) * 100);
-        } else {
-          offsetX = deltaX;
-          offsetY = Math.max(0, deltaY);
-        }
-        currentX = offsetX;
-        currentY = offsetY;
-        rotationAngle = offsetX * 0.2;
-      };
-
-      const handleEnd = () => {
-        if (!isDragging) return;
-        const moveDist = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
-        if (moveDist < 5) {
-          isFlipped = !isFlipped;
-          container.style.transform = isFlipped
-            ? "rotateY(180deg)"
-            : "rotateY(0deg)";
-        }
-        isDragging = false;
-        wrapper.style.cursor = "grab";
-      };
-
-      wrapper.addEventListener("mousedown", handleStart);
-      document.addEventListener("mousemove", handleMove);
-      document.addEventListener("mouseup", handleEnd);
-      wrapper.addEventListener("touchstart", handleStart, { passive: false });
-      document.addEventListener("touchmove", handleMove, { passive: false });
-      document.addEventListener("touchend", handleEnd);
-
-      const animatePhysics = () => {
-        if (!isDragging) {
-          velocityX += -currentX * 0.1;
-          velocityY += -currentY * 0.1;
-          velocityX *= 0.88;
-          velocityY *= 0.88;
-          currentX += velocityX;
-          currentY += velocityY;
-          angularVelocity += -rotationAngle * 0.05;
-          angularVelocity *= 0.9;
-          rotationAngle += angularVelocity;
-          offsetX = currentX;
-          offsetY = currentY;
-          if (Math.abs(velocityX) < 0.01 && Math.abs(velocityY) < 0.01) {
-            velocityX = 0;
-            velocityY = 0;
-          }
-        }
-        if (wrapper) {
-          wrapper.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotationAngle}deg)`;
-        }
-        physicsId = requestAnimationFrame(animatePhysics);
-      };
-      animatePhysics();
-    }
-
-    // 4. Logic Scroll Progress Bar (Pake GSAP)
-    gsap.to("#progress-bar", {
-      width: "100%",
-      ease: "none",
-      scrollTrigger: {
-        trigger: document.documentElement,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.1,
-      },
-    });
-
-    // Animasi Cahaya Timeline
-    gsap.to("#timeline-glow", {
-      height: "100%",
-      ease: "none",
-      scrollTrigger: {
-        trigger: "#timeline-container",
-        start: "top 50%", // Mulai pas timeline nyampe tengah layar
-        end: "bottom 80%", // Berhenti pas bawah timeline lewat
-        scrub: 0.5, // Bikin animasinya ngikutin kecepatan scroll (nyala/mati)
-      },
-    });
-
-    // 5. GSAP Animasi Muncul Perlahan
-    const sections = gsap.utils.toArray("section");
-    sections.forEach((section) => {
-      gsap.fromTo(
-        section,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
-        },
-      );
-    });
-
-    // 6. Logic Efek Ngetik (Typing Effect)
-    let wordIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let typingTimer;
-
-    const type = () => {
-      const currentWord = words[wordIndex];
-      if (isDeleting) {
-        setTypingText(currentWord.substring(0, charIndex - 1));
-        charIndex--;
-      } else {
-        setTypingText(currentWord.substring(0, charIndex + 1));
-        charIndex++;
-      }
-      let typeSpeed = isDeleting ? 50 : 150;
-      if (!isDeleting && charIndex === currentWord.length) {
-        typeSpeed = 2000;
-        isDeleting = true;
-      } else if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        wordIndex = (wordIndex + 1) % words.length;
-        typeSpeed = 500;
-      }
-      typingTimer = setTimeout(type, typeSpeed);
-    };
-    const startTyping = setTimeout(type, 2100);
-
+    const start = setTimeout(tick, 2500);
     return () => {
+      clearTimeout(start);
       clearTimeout(timer);
-      clearTimeout(startTyping);
-      clearTimeout(typingTimer);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("scroll", reveal);
-      lenis.destroy();
-      if (animId) cancelAnimationFrame(animId);
-      if (physicsId) cancelAnimationFrame(physicsId);
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
+  // ── Scroll spy ──
+  useEffect(() => {
+    const onScroll = () => {
+      const sections = NAV_LINKS.map((l) =>
+        document.getElementById(l.id),
+      ).filter(Boolean);
+      for (let i = sections.length - 1; i >= 0; i--) {
+        if (sections[i].getBoundingClientRect().top <= 100) {
+          setActiveSection(sections[i].id);
+          break;
+        }
+      }
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // ── Smooth scroll ──
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setMenuOpen(false);
+  };
+
   return (
-    <div className="min-h-screen text-slate-100 font-body relative overflow-hidden">
-      {/* CUSTOM CURSOR */}
-      <div
-        ref={cursorDotRef}
-        className="hidden md:block fixed w-2 h-2 bg-cyan-400 rounded-full pointer-events-none z-[99999] transform -translate-x-1/2 -translate-y-1/2 shadow-[0_0_10px_rgba(0,212,255,0.8)]"
-      ></div>
-      <div
-        ref={cursorOutlineRef}
-        className="hidden md:block fixed w-8 h-8 border border-cyan-400/50 rounded-full pointer-events-none z-[99999] transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-300 ease-out"
-      ></div>
-      {/* --- BACKGROUND KOSMETIK --- */}
-      <div className="noise-overlay"></div>
-      <div className="bg-grid"></div>
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="bg-orb bg-orb-1"></div>
-        <div className="bg-orb bg-orb-2"></div>
-      </div>
+    <div
+      style={{
+        backgroundColor: "#020510",
+        minHeight: "100vh",
+        color: "#e2e8f0",
+        fontFamily: "'Syne','Inter',sans-serif",
+        overflowX: "hidden",
+      }}
+    >
+      {/* ── SplashCursor (ReactBits) ── */}
+      <SplashCursor color="99, 102, 241" />
 
-      {/* 1. LOADING SCREEN (PRELOADER SVG BARU) */}
+      {/* ── Loading Screen ── */}
+      <AnimatePresence>
+        {loading && (
+          <motion.div
+            key="loader"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.97 }}
+            transition={{ duration: 0.6 }}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 9999,
+              background: "#020510",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 20,
+            }}
+          >
+            <svg style={{ width: 96, height: 96 }} viewBox="0 0 96 96">
+              <circle
+                cx="48"
+                cy="48"
+                r="42"
+                fill="none"
+                stroke="rgba(99,102,241,0.1)"
+                strokeWidth="2"
+              />
+              <motion.circle
+                cx="48"
+                cy="48"
+                r="42"
+                fill="none"
+                stroke="url(#lg)"
+                strokeWidth="2"
+                strokeDasharray="264"
+                strokeLinecap="round"
+                animate={{ strokeDashoffset: [264, 0, 264] }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+              <defs>
+                <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#6366f1" />
+                  <stop offset="100%" stopColor="#22d3ee" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <ShinyText
+              text="MEMUAT PORTOFOLIO..."
+              speed={2}
+              style={{
+                fontSize: 11,
+                letterSpacing: "0.2em",
+                fontFamily: "monospace",
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Progress Bar ── */}
       <div
-        className={`fixed inset-0 z-[9999] bg-[#060b18] flex flex-col items-center justify-center transition-all duration-700 ease-in-out ${isLoading ? "opacity-100 visible" : "opacity-0 invisible -translate-y-full"}`}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 2,
+          zIndex: 100,
+        }}
       >
-        <div className="relative w-[140px] h-[140px] flex items-center justify-center mb-6">
-          <svg
-            className="absolute inset-0 w-full h-full -rotate-90 animate-[spin_3s_linear_infinite]"
-            viewBox="0 0 140 140"
-          >
-            <circle
-              cx="70"
-              cy="70"
-              r="58"
-              className="stroke-slate-800 opacity-50"
-              strokeWidth="4"
-              fill="none"
-            />
-            <circle
-              cx="70"
-              cy="70"
-              r="58"
-              className="stroke-indigo-500"
-              strokeWidth="4"
-              fill="none"
-              strokeDasharray="364.42"
-              strokeDashoffset={isLoading ? "100" : "0"}
-              strokeLinecap="round"
-              style={{ transition: "stroke-dashoffset 2s ease-in-out" }}
-            />
-          </svg>
-          <span className="text-2xl font-bold tracking-widest text-white drop-shadow-[0_0_15px_rgba(99,102,241,0.8)]">
-            Zen
-          </span>
-        </div>
-        <div className="font-mono text-indigo-400 text-sm animate-pulse">
-          // initializing_portfolio...
-        </div>
+        <motion.div
+          style={{
+            height: "100%",
+            background: "linear-gradient(90deg,#6366f1,#22d3ee,#f472b6)",
+            transformOrigin: "left",
+          }}
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+        />
       </div>
 
-      {/* 2. SCROLL PROGRESS BAR */}
-      <div
-        id="progress-bar"
-        className="fixed top-0 left-0 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 z-[100] w-0"
-      ></div>
-
-      {/* HEADER / NAVBAR */}
-      <header className="fixed top-3 left-0 right-0 w-full z-50 flex justify-center px-4">
-        <nav className="glass-panel w-full max-w-5xl rounded-full px-6 py-3 flex justify-between items-center">
-          <a
-            href="#hero"
-            className="text-2xl font-bold tracking-tighter text-indigo-400 drop-shadow-md"
-          >
-            Zen.
-          </a>
-
-          <ul className="hidden md:flex items-center space-x-8 text-sm font-medium">
-            <li>
-              <a href="#about" className="nav-link">
-                Tentang
-              </a>
-            </li>
-            <li>
-              <a href="#internship" className="nav-link">
-                Magang
-              </a>
-            </li>
-            <li>
-              <a href="#skills" className="nav-link">
-                Skill
-              </a>
-            </li>
-            <li>
-              <a href="#experience" className="nav-link">
-                Pengalaman
-              </a>
-            </li>
-            <li>
-              <a href="#projects" className="nav-link">
-                Proyek
-              </a>
-            </li>
-          </ul>
-        </nav>
-        {/* Mobile Menu Dropdown */}
-        <div
-          className={`md:hidden absolute top-[70px] w-[90%] glass-panel rounded-2xl transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? "max-h-64 border border-slate-700" : "max-h-0 border-none"}`}
+      {/* ═══════════ NAVBAR ═══════════ */}
+      <header
+        style={{
+          position: "fixed",
+          top: 16,
+          left: 0,
+          right: 0,
+          zIndex: 50,
+          display: "flex",
+          justifyContent: "center",
+          padding: "0 16px",
+        }}
+      >
+        <motion.nav
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: loading ? 2.5 : 0.3, duration: 0.6 }}
+          style={{
+            width: "100%",
+            maxWidth: 900,
+            background: "rgba(2,5,16,0.85)",
+            backdropFilter: "blur(24px)",
+            border: "1px solid rgba(99,102,241,0.15)",
+            borderRadius: 20,
+            padding: "12px 28px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
+          }}
         >
-          <ul className="flex flex-col px-4 py-4 space-y-4 text-sm font-medium text-slate-300 text-center">
-            <li>
-              <a href="#about" onClick={() => setIsMobileMenuOpen(false)}>
-                Tentang
-              </a>
-            </li>
-            <li>
-              <a href="#internship" onClick={() => setIsMobileMenuOpen(false)}>
-                Magang
-              </a>
-            </li>
-            <li>
-              <a href="#skills" onClick={() => setIsMobileMenuOpen(false)}>
-                Skill
-              </a>
-            </li>
-            <li>
-              <a href="#experience" onClick={() => setIsMobileMenuOpen(false)}>
-                Pengalaman
-              </a>
-            </li>
-            <li>
-              <a href="#projects" onClick={() => setIsMobileMenuOpen(false)}>
-                Proyek
-              </a>
-            </li>
+          {/* Logo */}
+          <button
+            onClick={() => scrollTo("hero")}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: 22,
+              fontWeight: 900,
+              letterSpacing: -1,
+            }}
+          >
+            <span
+              style={{
+                background: "linear-gradient(135deg,#818cf8,#22d3ee)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              ZEN
+            </span>
+            <span style={{ color: "#f472b6" }}>.</span>
+          </button>
+
+          {/* Links */}
+          <ul
+            style={{
+              display: "flex",
+              gap: 28,
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+            }}
+            className="hidden-mobile"
+          >
+            {NAV_LINKS.map((l) => (
+              <li key={l.id}>
+                <button
+                  onClick={() => scrollTo(l.id)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: 13,
+                    fontWeight: 500,
+                    letterSpacing: "0.04em",
+                    color: activeSection === l.id ? "#818cf8" : "#64748b",
+                    transition: "color 0.3s",
+                    position: "relative",
+                    padding: "4px 0",
+                  }}
+                >
+                  {l.label}
+                  {activeSection === l.id && (
+                    <motion.div
+                      layoutId="nav-indicator"
+                      style={{
+                        position: "absolute",
+                        bottom: -4,
+                        left: 0,
+                        right: 0,
+                        height: 1,
+                        background: "linear-gradient(90deg,#6366f1,#22d3ee)",
+                        boxShadow: "0 0 8px #6366f1",
+                      }}
+                    />
+                  )}
+                </button>
+              </li>
+            ))}
           </ul>
-        </div>
+
+          {/* Hamburger */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              display: "none",
+              background: "none",
+              border: "none",
+              color: "#64748b",
+              cursor: "pointer",
+              fontSize: 18,
+            }}
+            className="show-mobile"
+          >
+            <i className={menuOpen ? "fas fa-times" : "fas fa-bars"} />
+          </button>
+        </motion.nav>
+
+        {/* Mobile menu */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              style={{
+                position: "absolute",
+                top: 70,
+                width: "90%",
+                maxWidth: 400,
+                background: "rgba(2,5,16,0.95)",
+                backdropFilter: "blur(20px)",
+                border: "1px solid rgba(99,102,241,0.2)",
+                borderRadius: 16,
+                overflow: "hidden",
+              }}
+            >
+              {NAV_LINKS.map((l, i) => (
+                <motion.button
+                  key={l.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  onClick={() => scrollTo(l.id)}
+                  style={{
+                    width: "100%",
+                    background: "none",
+                    border: "none",
+                    padding: "14px 24px",
+                    color: "#94a3b8",
+                    textAlign: "left",
+                    cursor: "pointer",
+                    fontSize: 14,
+                    borderBottom: "1px solid rgba(99,102,241,0.05)",
+                  }}
+                >
+                  {l.label}
+                </motion.button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
-      {/* MAIN CONTENT */}
-      <main className="relative z-10">
-        {/* HERO SECTION DENGAN CANVAS */}
+      <main>
+        {/* ═══════════════════════════════════════
+            HERO — Aurora + SplitText + Lanyard
+        ═══════════════════════════════════════ */}
         <section
           id="hero"
-          className="min-h-[100vh] flex items-center justify-center px-4 relative z-10 pt-10"
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            alignItems: "center",
+            position: "relative",
+            overflow: "visible",
+            padding: "80px 24px 0",
+          }}
         >
-          {/* Canvas Particles tetap sama */}
-          <canvas
-            ref={canvasRef}
-            className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-60"
-          ></canvas>
+          {/* Aurora Background (ReactBits) */}
+          <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+            <Aurora
+              colorStops={["#1a0a40", "#6366f1", "#0a2040"]}
+              amplitude={0.8}
+              speed={0.4}
+              blend={0.4}
+            />
+          </div>
 
-          {/* ✅ Grid container: kiri konten, kanan lanyard — overflow visible agar kartu bebas */}
+          {/* Grid overlay */}
           <div
-            className="container max-w-7xl mx-auto grid md:grid-cols-2 gap-0 items-center relative z-10"
-            style={{ overflow: "visible" }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 1,
+              pointerEvents: "none",
+              backgroundImage:
+                "linear-gradient(rgba(99,102,241,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,0.04) 1px,transparent 1px)",
+              backgroundSize: "60px 60px",
+            }}
+          />
+
+          <div
+            style={{
+              maxWidth: 1280,
+              width: "100%",
+              margin: "0 auto",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 0,
+              alignItems: "center",
+              position: "relative",
+              zIndex: 10,
+              overflow: "visible",
+            }}
           >
-            {/* ======== KOLOM KIRI ======== */}
-            <div className="space-y-6 py-12">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-sm">
-                <span className="w-2 h-2 rounded-full bg-[#10db77] shadow-[0_0_10px_#10db77] animate-pulse"></span>
-                // available_for_internship
-              </div>
-
-              {/* Nama — animasi huruf per huruf */}
-              <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight text-gradient-hero">
-                Sendi <br />
-                Awaludin
-              </h1>
-
-              {/* Typing text */}
-              <div className="text-xl font-mono text-gray-400 flex items-center h-8">
-                <span className="text-indigo-500 mr-2">&lt;</span>
-                <span className="text-white">{typingText}</span>
-                <span className="w-0.5 h-6 bg-indigo-500 ml-1 animate-pulse"></span>
-                <span className="text-indigo-500 ml-2">/&gt;</span>
-              </div>
-
-              <p className="text-lg text-gray-400 max-w-xl leading-relaxed">
-                Mahasiswa Teknik Informatika asal Gunung Putri yang antusias
-                dengan Web Development, AI Engineering, dan eksplorasi pasar
-                finansial.
-              </p>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-wrap gap-4 pt-2">
-                <a
-                  href="#projects"
-                  className="btn bg-indigo-600 hover:bg-indigo-700 text-white border-none rounded-xl px-8 shadow-[0_4px_15px_rgba(99,102,241,0.4)]"
+            {/* Kiri */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 24,
+                paddingBottom: 48,
+              }}
+            >
+              {/* Badge — ShinyText (ReactBits) */}
+              <AnimatedContent delay={0.1}>
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "6px 16px",
+                    borderRadius: 999,
+                    background: "rgba(99,102,241,0.08)",
+                    border: "1px solid rgba(99,102,241,0.2)",
+                    width: "fit-content",
+                  }}
                 >
-                  Lihat Proyek
-                </a>
-                <a
-                  href="#contact"
-                  className="btn btn-outline border-indigo-500 text-indigo-400 hover:bg-indigo-500 hover:text-white rounded-xl px-8"
-                >
-                  Hubungi Saya
-                </a>
+                  <span
+                    style={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: "50%",
+                      background: "#10db77",
+                      boxShadow: "0 0 10px #10db77",
+                      animation: "pulse 2s infinite",
+                      flexShrink: 0,
+                    }}
+                  />
+                  <ShinyText
+                    text="// OPEN TO INTERNSHIP"
+                    speed={4}
+                    style={{
+                      fontSize: 11,
+                      letterSpacing: "0.12em",
+                      fontFamily: "monospace",
+                    }}
+                  />
+                </div>
+              </AnimatedContent>
+
+              {/* Nama — SplitText (ReactBits) */}
+              <div>
+                <SplitText
+                  text="Sendi"
+                  className="hero-name-line"
+                  delay={60}
+                  duration={0.7}
+                  from={{ opacity: 0, y: 60, filter: "blur(8px)" }}
+                  to={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  splitBy="characters"
+                  textAlign="left"
+                />
+                <SplitText
+                  text="Awaludin"
+                  className="hero-name-line"
+                  delay={60}
+                  duration={0.7}
+                  from={{ opacity: 0, y: 60, filter: "blur(8px)" }}
+                  to={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  splitBy="characters"
+                  textAlign="left"
+                />
               </div>
 
-              {/* Mini Code Window */}
-              <div className="glass-panel rounded-lg p-4 font-mono text-sm mt-6 w-fit">
-                <div className="flex gap-2 mb-3 border-b border-slate-700/50 pb-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <span className="ml-2 text-slate-500 text-xs">
-                    portfolio.js
-                  </span>
+              {/* Typing role */}
+              <AnimatedContent delay={0.8}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    fontFamily: "monospace",
+                    fontSize: 18,
+                    height: 32,
+                  }}
+                >
+                  <span style={{ color: "#6366f1" }}>&lt;</span>
+                  <span style={{ color: "white" }}>{typing}</span>
+                  <span
+                    style={{
+                      width: 2,
+                      height: 22,
+                      background: "#6366f1",
+                      animation: "pulse 1s infinite",
+                    }}
+                  />
+                  <span style={{ color: "#6366f1" }}>/&gt;</span>
                 </div>
-                <div className="text-slate-300">
-                  <span className="text-pink-400">const</span>{" "}
-                  <span className="text-blue-400">developer</span> = {"{"}{" "}
-                  <br />
-                  &nbsp;&nbsp;name:{" "}
-                  <span className="text-green-400">"Sendi Awaludin"</span>,
-                  <br />
-                  &nbsp;&nbsp;nickname:{" "}
-                  <span className="text-green-400">"Zen"</span>,<br />
-                  &nbsp;&nbsp;focus: [
-                  <span className="text-green-400">"Web Dev"</span>,{" "}
-                  <span className="text-green-400">"AI"</span>,{" "}
-                  <span className="text-green-400">"Forex"</span>],
-                  <br />
-                  &nbsp;&nbsp;coffee:{" "}
-                  <span className="text-green-400">"☕ always"</span>
-                  <br />
-                  {"}"};
+              </AnimatedContent>
+
+              {/* Desc — BlurText (ReactBits) */}
+              <AnimatedContent delay={1.0}>
+                <BlurText
+                  text="Mahasiswa Teknik Informatika asal Gunung Putri yang antusias dengan Web Development, AI Engineering, dan eksplorasi pasar finansial."
+                  animateBy="words"
+                  direction="bottom"
+                  stepDelay={60}
+                  duration={0.5}
+                  style={{
+                    color: "#64748b",
+                    fontSize: 15,
+                    lineHeight: 1.7,
+                    maxWidth: 480,
+                  }}
+                />
+              </AnimatedContent>
+
+              {/* CTA Buttons — StarBorder + Magnet (ReactBits) */}
+              <AnimatedContent delay={1.2}>
+                <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+                  <Magnet magnetStrength={0.3}>
+                    <StarBorder
+                      as="a"
+                      href="#projects"
+                      color="#6366f1"
+                      speed="3s"
+                    >
+                      <i className="fas fa-rocket" style={{ fontSize: 12 }} />{" "}
+                      Lihat Proyek
+                    </StarBorder>
+                  </Magnet>
+                  <Magnet magnetStrength={0.3}>
+                    <StarBorder
+                      as="a"
+                      href="#contact"
+                      color="#22d3ee"
+                      speed="4s"
+                    >
+                      <i
+                        className="fas fa-paper-plane"
+                        style={{ fontSize: 12 }}
+                      />{" "}
+                      Hubungi Saya
+                    </StarBorder>
+                  </Magnet>
                 </div>
-              </div>
+              </AnimatedContent>
+
+              {/* Code snippet */}
+              <AnimatedContent delay={1.4}>
+                <div
+                  style={{
+                    background: "rgba(8,14,35,0.8)",
+                    backdropFilter: "blur(20px)",
+                    border: "1px solid rgba(99,102,241,0.15)",
+                    borderRadius: 12,
+                    padding: "16px 20px",
+                    fontFamily: "monospace",
+                    fontSize: 12,
+                    width: "fit-content",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 6,
+                      marginBottom: 12,
+                      paddingBottom: 8,
+                      borderBottom: "1px solid rgba(99,102,241,0.1)",
+                    }}
+                  >
+                    {["#ef4444", "#eab308", "#22c55e"].map((c, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          width: 10,
+                          height: 10,
+                          borderRadius: "50%",
+                          background: c,
+                        }}
+                      />
+                    ))}
+                    <span
+                      style={{ color: "#334155", marginLeft: 8, fontSize: 10 }}
+                    >
+                      portfolio.js
+                    </span>
+                  </div>
+                  <div style={{ color: "#94a3b8", lineHeight: 1.8 }}>
+                    <span style={{ color: "#f472b6" }}>const</span>{" "}
+                    <span style={{ color: "#22d3ee" }}>dev</span> = {"{"}
+                    <br />
+                    &nbsp;&nbsp;name:{" "}
+                    <span style={{ color: "#a3e635" }}>"Sendi Awaludin"</span>,
+                    <br />
+                    &nbsp;&nbsp;alias:{" "}
+                    <span style={{ color: "#a3e635" }}>"Zen"</span>,<br />
+                    &nbsp;&nbsp;stack: [
+                    <span style={{ color: "#a3e635" }}>"React"</span>,{" "}
+                    <span style={{ color: "#a3e635" }}>"AI"</span>,{" "}
+                    <span style={{ color: "#a3e635" }}>"Forex"</span>]<br />
+                    {"}"};
+                  </div>
+                </div>
+              </AnimatedContent>
             </div>
 
-            {/* ======== KOLOM KANAN: LANYARD ======== */}
+            {/* Kanan — Lanyard ── */}
             <div
-              className="hidden md:block"
               style={{
-                height: "700px",
+                height: 700,
                 position: "relative",
-                overflow: "visible" /* ← INI KUNCINYA */,
+                overflow: "visible",
                 zIndex: 50,
               }}
             >
@@ -569,588 +719,1063 @@ function App() {
           </div>
         </section>
 
-        {/* =========================================================
-            SEMUA SECTION ABANG DI BAWAH INI SAMA PERSIS 100%
-            (Stats, Marquee, About, Internship, Skills, Exp, Projects, Contact)
-            ========================================================= */}
-
-        {/* STATS SECTION */}
-        <section id="stats" className="py-16 relative z-10">
-          <div className="container max-w-5xl mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="glass-panel p-6 rounded-2xl text-center hover:border-indigo-500/50 transition">
-                <div className="text-4xl md:text-5xl font-bold text-indigo-400 mb-2">
-                  5+
-                </div>
-                <p className="font-bold text-white">Total Proyek</p>
-                <p className="text-sm text-slate-400">Web, AI & Trading Bot</p>
-              </div>
-              <div className="glass-panel p-6 rounded-2xl text-center hover:border-cyan-500/50 transition">
-                <div className="text-4xl md:text-5xl font-bold text-cyan-400 mb-2">
-                  3+
-                </div>
-                <p className="font-bold text-white">Sertifikat & Lomba</p>
-                <p className="text-sm text-slate-400">GEMASTIK & IT Bootcamp</p>
-              </div>
-              <div className="glass-panel p-6 rounded-2xl text-center hover:border-teal-500/50 transition">
-                <div className="text-4xl md:text-5xl font-bold text-teal-400 mb-2">
-                  100%
-                </div>
-                <p className="font-bold text-white">Semangat Ngulik</p>
-                <p className="text-sm text-slate-400">
-                  Dari Code hingga Market XAUUSD
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* TECH MARQUEE (Teks Berjalan) */}
-        {/* TECH MARQUEE (Teks Berjalan) */}
-        <div className="w-full overflow-hidden bg-indigo-600/10 border-y border-indigo-500/20 py-3 relative z-10 backdrop-blur-sm">
-          {/* Ganti class di bawah ini jadi animate-marquee-nonstop */}
-          <div className="flex whitespace-nowrap animate-marquee-nonstop">
-            {[...Array(2)].map((_, i) => (
-              <div key={i} className="flex items-center">
-                {[
-                  "React.js",
-                  "Tailwind CSS",
-                  "Laravel",
-                  "Python",
-                  "Machine Learning",
-                  "Docker",
-                  "Git/GitHub",
-                  "Data Mining",
-                  "Forex Trading",
-                ].map((tech, index) => (
-                  <React.Fragment key={index}>
-                    <span className="text-indigo-300 font-mono font-semibold text-lg mx-6">
-                      {tech}
-                    </span>
-                    <span className="text-slate-600">/</span>
-                  </React.Fragment>
-                ))}
-              </div>
+        {/* ═══════════════════════════════════════
+            STATS — CountUp (ReactBits)
+        ═══════════════════════════════════════ */}
+        <section
+          id="stats"
+          style={{ padding: "60px 24px", position: "relative", zIndex: 10 }}
+        >
+          <div
+            style={{
+              maxWidth: 900,
+              margin: "0 auto",
+              display: "grid",
+              gridTemplateColumns: "repeat(3,1fr)",
+              gap: 24,
+            }}
+          >
+            {[
+              {
+                num: 5,
+                suffix: "+",
+                label: "Total Proyek",
+                sub: "Web, AI & Trading Bot",
+                color: "#818cf8",
+              },
+              {
+                num: 3,
+                suffix: "+",
+                label: "Sertifikat & Lomba",
+                sub: "GEMASTIK & IT Bootcamp",
+                color: "#22d3ee",
+              },
+              {
+                num: 100,
+                suffix: "%",
+                label: "Semangat Ngulik",
+                sub: "Dari Code hingga XAUUSD",
+                color: "#10b981",
+              },
+            ].map((s, i) => (
+              <AnimatedContent key={i} delay={i * 0.1} threshold={0.2}>
+                <TiltedCard rotateAmplitude={8} scaleOnHover={1.03}>
+                  <div
+                    style={{
+                      background: "rgba(8,14,35,0.85)",
+                      backdropFilter: "blur(20px)",
+                      border: "1px solid rgba(99,102,241,0.1)",
+                      borderRadius: 20,
+                      padding: "32px 24px",
+                      textAlign: "center",
+                      borderTop: `2px solid ${s.color}`,
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: 52,
+                        fontWeight: 900,
+                        color: s.color,
+                        textShadow: `0 0 30px ${s.color}80`,
+                        lineHeight: 1,
+                      }}
+                    >
+                      <CountUp to={s.num} duration={2.5} />
+                      {s.suffix}
+                    </div>
+                    <p
+                      style={{
+                        fontWeight: 700,
+                        color: "white",
+                        fontSize: 13,
+                        marginTop: 8,
+                      }}
+                    >
+                      {s.label}
+                    </p>
+                    <p style={{ color: "#475569", fontSize: 11, marginTop: 4 }}>
+                      {s.sub}
+                    </p>
+                  </div>
+                </TiltedCard>
+              </AnimatedContent>
             ))}
           </div>
+        </section>
+
+        {/* ═══════════════════════════════════════
+            MARQUEE — InfiniteScroll teknik
+        ═══════════════════════════════════════ */}
+        <div
+          style={{
+            overflow: "hidden",
+            padding: "16px 0",
+            background: "rgba(99,102,241,0.05)",
+            borderTop: "1px solid rgba(99,102,241,0.1)",
+            borderBottom: "1px solid rgba(99,102,241,0.1)",
+          }}
+        >
+          <motion.div
+            style={{ display: "flex", width: "max-content" }}
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          >
+            {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center" }}>
+                <span
+                  style={{
+                    fontFamily: "monospace",
+                    fontWeight: 600,
+                    fontSize: 14,
+                    color: "#6366f1",
+                    padding: "0 28px",
+                    whiteSpace: "nowrap",
+                    transition: "color 0.3s",
+                    cursor: "default",
+                  }}
+                  onMouseEnter={(e) => (e.target.style.color = "#22d3ee")}
+                  onMouseLeave={(e) => (e.target.style.color = "#6366f1")}
+                >
+                  {item}
+                </span>
+                <span style={{ color: "#1e293b" }}>◆</span>
+              </div>
+            ))}
+          </motion.div>
         </div>
 
-        {/* ABOUT SECTION */}
-        <section id="about" className="py-20 px-4 relative z-10">
-          <div className="container max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <div className="relative group">
-              <div className="w-full h-[500px] glass-panel rounded-2xl overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10"></div>
-                <div className="w-full h-full flex items-center justify-center text-slate-500 font-mono">
-                  [ Gambar Profil Abang Nanti Di Sini ]
-                </div>
-              </div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-indigo-500/20 rounded-full blur-2xl"></div>
-            </div>
-
-            <div className="space-y-6">
-              <div className="text-indigo-400 font-mono text-sm">
-                // about_me.js
-              </div>
-              <DecryptedText
-                text="Tentang Saya"
-                className="text-4xl md:text-5xl font-bold text-white"
-              />
-              <p className="text-gray-400 leading-relaxed">
-                Saya adalah mahasiswa Teknologi Informasi yang berdomisili di
-                Gunung Putri. Saya memiliki ketertarikan yang kuat pada
-                bagaimana teknologi dan data dapat digabungkan untuk memecahkan
-                masalah kompleks dan melihat peluang baru.
-              </p>
-              <p className="text-gray-400 leading-relaxed">
-                Selain membangun aplikasi web yang fungsional, saya sangat
-                antusias mengulik dunia *Machine Learning* dan *Data Mining*
-                menggunakan berbagai *tools*. Di waktu luang, saya juga aktif
-                mempelajari pergerakan pasar finansial (seperti saham, forex,
-                dan XAUUSD) serta merawat sepeda fixie kesayangan saya. Saya
-                memiliki visi jangka panjang untuk mencapai kebebasan finansial
-                dari investasi dan membangun bisnis sendiri.
-              </p>
-              <button className="btn bg-indigo-600 hover:bg-indigo-700 text-white border-none rounded-xl px-6 mt-4">
-                Unduh CV Saya
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* INTERNSHIP OBJECTIVES SECTION */}
-        <section id="internship" className="py-20 px-4 relative z-10">
-          <div className="container max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="text-indigo-400 font-mono text-sm mb-2">
-                // internship_goals.js
-              </div>
-              <DecryptedText
-                text="Tujuan Magang & Keahlian"
-                className="text-4xl md:text-5xl font-bold text-white"
-              />
-            </div>
-            <div className="glass-panel rounded-3xl p-8 md:p-12 shadow-xl">
-              <p className="text-slate-300 text-lg leading-relaxed mb-8 text-center max-w-3xl mx-auto">
-                Sebagai mahasiswa Informatika di Universitas Bina Sarana
-                Informatika, saya aktif mencari kesempatan magang untuk
-                mengaplikasikan ilmu Web Development dan AI di lingkungan
-                industri profesional.
-              </p>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="p-6 rounded-xl bg-indigo-900/20 border border-indigo-500/30 text-center hover:bg-indigo-900/40 transition">
-                  <h3 className="text-xl font-bold text-white mb-2">
-                    Software Engineering
-                  </h3>
-                  <p className="text-sm text-slate-400">
-                    Pengembangan aplikasi modern menggunakan React.js, Tailwind
-                    CSS, dan framework backend seperti Laravel atau Node.js.
-                  </p>
-                </div>
-                <div className="p-6 rounded-xl bg-cyan-900/20 border border-cyan-500/30 text-center hover:bg-cyan-900/40 transition">
-                  <h3 className="text-xl font-bold text-white mb-2">
-                    Data & AI Engineering
-                  </h3>
-                  <p className="text-sm text-slate-400">
-                    Analisis data, implementasi model Machine Learning
-                    menggunakan Python, dan pemanfaatan Data Mining untuk solusi
-                    bisnis.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* --- EXPERIENCE SECTION (PREMIUM GLOWING TIMELINE) --- */}
-        <section id="experience" className="py-24 relative px-4 z-10">
-          <div className="container max-w-5xl mx-auto">
-            {/* Header Section */}
-            <div className="text-center mb-20 reveal">
-              <div className="text-indigo-400 font-mono text-sm mb-3 tracking-widest">
-                // experience.log
-              </div>
-              <DecryptedText
-                text="Pengalaman & Perjalanan"
-                className="text-4xl md:text-5xl font-bold text-white"
-              />
-            </div>
-
-            {/* Timeline Container Baru */}
-            <div className="timeline-container">
-              {/* Item 1: Magang PT Teng Fei */}
-              <div className="relative pl-12 md:pl-0 mb-12 flex flex-col md:flex-row md:justify-between items-center w-full reveal group">
-                <div className="timeline-dot group-hover:bg-[#6366f1] group-hover:scale-125"></div>
-
-                {/* Waktu & Posisi (Kiri di Laptop) */}
-                <div className="md:w-5/12 text-left md:text-right md:pr-10 w-full mb-4 md:mb-0">
-                  <h3 className="text-2xl font-bold text-white group-hover:text-indigo-400 transition-colors">
-                    Internship
-                  </h3>
-                  <p className="text-indigo-400 font-mono text-sm mt-1">
-                    Baru-baru ini
-                  </p>
-                </div>
-
-                {/* Deskripsi Kartu (Kanan di Laptop) */}
-                <div className="md:w-5/12 w-full pl-0 md:pl-10">
-                  <div className="timeline-card">
-                    <h4 className="text-indigo-300 font-medium mb-3">
-                      PT Teng Fei Energy Technology
-                    </h4>
-                    <p className="text-slate-300 text-sm leading-relaxed mb-4">
-                      Membantu pengelolaan operasional dan mempelajari sistem
-                      teknologi perusahaan energi. Berkontribusi dalam pembuatan
-                      dokumentasi sejarah perusahaan.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Item 2: GEMASTIK UBSI */}
-              <div className="relative pl-12 md:pl-0 mb-12 flex flex-col md:flex-row-reverse md:justify-between items-center w-full reveal group">
-                <div className="timeline-dot border-[#22d3ee] shadow-[0_0_15px_#22d3ee] group-hover:bg-[#22d3ee] group-hover:scale-125"></div>
-
-                <div className="md:w-5/12 text-left md:pl-10 w-full mb-4 md:mb-0">
-                  <h3 className="text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors">
-                    GEMASTIK 2025
-                  </h3>
-                  <p className="text-cyan-400 font-mono text-sm mt-1">2025</p>
-                </div>
-
-                <div className="md:w-5/12 w-full pr-0 md:pr-10">
-                  <div className="timeline-card border-cyan-500/20 hover:border-cyan-400">
-                    <h4 className="text-cyan-300 font-medium mb-3">
-                      Kolaborasi Tim Kampus UBSI
-                    </h4>
-                    <p className="text-slate-300 text-sm leading-relaxed mb-4">
-                      Menyiapkan proposal inovasi proyek untuk kompetisi
-                      GEMASTIK 2025. Menggabungkan solusi perangkat lunak dengan
-                      kebutuhan industri terkini.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Item 3: LPM Tlajung Udik (Tambahan) */}
-              <div className="relative pl-12 md:pl-0 flex flex-col md:flex-row md:justify-between items-center w-full reveal group">
-                <div className="timeline-dot border-[#10b981] shadow-[0_0_15px_#10b981] group-hover:bg-[#10b981] group-hover:scale-125"></div>
-
-                <div className="md:w-5/12 text-left md:text-right md:pr-10 w-full mb-4 md:mb-0">
-                  <h3 className="text-2xl font-bold text-white group-hover:text-emerald-400 transition-colors">
-                    Anggota LPM
-                  </h3>
-                  <p className="text-emerald-400 font-mono text-sm mt-1">
-                    2024 - Sekarang
-                  </p>
-                </div>
-
-                <div className="md:w-5/12 w-full pl-0 md:pl-10">
-                  <div className="timeline-card border-emerald-500/20 hover:border-emerald-400">
-                    <h4 className="text-emerald-300 font-medium mb-3">
-                      Desa Tlajung Udik
-                    </h4>
-                    <p className="text-slate-300 text-sm leading-relaxed mb-4">
-                      Berkontribusi aktif dalam merencanakan program desa dan
-                      menyusun draf proposal kegiatan untuk mendukung
-                      pemberdayaan warga lokal.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* SKILLS SECTION */}
-        <section id="skills" className="py-24 relative px-4 z-10">
-          <div className="container max-w-7xl mx-auto">
-            {/* Header Section */}
-            <div className="text-center mb-16 reveal">
-              <div className="text-cyan-400 font-mono text-sm mb-3 tracking-widest">
-                // tech_stack.exe
-              </div>
-              <DecryptedText
-                text="Technical Mastery"
-                className="text-4xl md:text-5xl font-bold text-white"
-              />
-            </div>
-
-            {/* --- KUMPULAN ICON 3D (ALA GAMBAR 1) --- */}
-            <div className="flex flex-wrap justify-center gap-6 mb-20 reveal">
-              {[
-                {
-                  name: "React.js",
-                  icon: "fab fa-react",
-                  colorClass: "orb-react",
-                },
-                {
-                  name: "Laravel",
-                  icon: "fab fa-laravel",
-                  colorClass: "orb-laravel",
-                },
-                {
-                  name: "Tailwind CSS",
-                  icon: "fab fa-css3-alt",
-                  colorClass: "orb-tailwind",
-                },
-                {
-                  name: "Python",
-                  icon: "fab fa-python",
-                  colorClass: "orb-python",
-                },
-                {
-                  name: "Machine Learning",
-                  icon: "fas fa-brain",
-                  colorClass: "orb-ml",
-                },
-                {
-                  name: "Docker",
-                  icon: "fab fa-docker",
-                  colorClass: "orb-docker",
-                },
-                {
-                  name: "Git/GitHub",
-                  icon: "fab fa-github",
-                  colorClass: "orb-git",
-                },
-                {
-                  name: "Data Mining",
-                  icon: "fas fa-database",
-                  colorClass: "orb-data",
-                },
-              ].map((skill, index) => (
+        {/* ═══════════════════════════════════════
+            ABOUT
+        ═══════════════════════════════════════ */}
+        <section
+          id="about"
+          style={{ padding: "100px 24px", position: "relative", zIndex: 10 }}
+        >
+          <div
+            style={{
+              maxWidth: 1100,
+              margin: "0 auto",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 64,
+              alignItems: "center",
+            }}
+          >
+            {/* Kiri: foto placeholder */}
+            <AnimatedContent direction="horizontal" distance={-60}>
+              <TiltedCard rotateAmplitude={6} scaleOnHover={1.02}>
                 <div
-                  key={index}
-                  className="tooltip tooltip-primary tooltip-top cursor-pointer"
-                  data-tip={skill.name}
+                  style={{
+                    background: "rgba(8,14,35,0.85)",
+                    border: "1px solid rgba(99,102,241,0.1)",
+                    borderRadius: 24,
+                    height: 460,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    position: "relative",
+                    overflow: "hidden",
+                  }}
                 >
-                  <div className={`orb-icon ${skill.colorClass} shadow-lg`}>
-                    <i className={skill.icon}></i>
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "radial-gradient(circle at 50% 30%, rgba(99,102,241,0.15), transparent 70%)",
+                    }}
+                  />
+                  <div style={{ fontSize: 72, marginBottom: 16 }}>👨‍💻</div>
+                  <p
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: 12,
+                      color: "#334155",
+                    }}
+                  >
+                    [ foto_profil.jpg ]
+                  </p>
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "linear-gradient(to top, #020510, transparent 60%)",
+                    }}
+                  />
+                  {/* Badge floating */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 24,
+                      right: 24,
+                      background: "rgba(8,14,35,0.9)",
+                      backdropFilter: "blur(12px)",
+                      border: "1px solid rgba(34,211,238,0.3)",
+                      borderRadius: 12,
+                      padding: "8px 16px",
+                      fontFamily: "monospace",
+                      fontSize: 11,
+                    }}
+                  >
+                    <span style={{ color: "#475569" }}>status: </span>
+                    <span style={{ color: "#22d3ee" }}>available ✓</span>
                   </div>
                 </div>
+              </TiltedCard>
+            </AnimatedContent>
+
+            {/* Kanan: teks */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              <AnimatedContent delay={0.1}>
+                <div>
+                  <span
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: 11,
+                      color: "#6366f1",
+                      letterSpacing: "0.15em",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      marginBottom: 8,
+                    }}
+                  >
+                    <span
+                      style={{
+                        display: "inline-block",
+                        width: 24,
+                        height: 1,
+                        background: "#6366f1",
+                      }}
+                    />{" "}
+                    ABOUT_ME.JS
+                  </span>
+                  <SplitText
+                    text="Tentang Saya"
+                    className="section-title-text"
+                    delay={40}
+                    duration={0.5}
+                    from={{ opacity: 0, y: 30 }}
+                    to={{ opacity: 1, y: 0 }}
+                    splitBy="characters"
+                    textAlign="left"
+                  />
+                </div>
+              </AnimatedContent>
+              <AnimatedContent delay={0.2}>
+                <p style={{ color: "#64748b", lineHeight: 1.8, fontSize: 14 }}>
+                  Saya adalah mahasiswa Teknologi Informasi di Gunung Putri.
+                  Ketertarikan saya pada teknologi dan data mendorong saya untuk
+                  menggabungkan keduanya dalam memecahkan masalah kompleks.
+                </p>
+                <p
+                  style={{
+                    color: "#64748b",
+                    lineHeight: 1.8,
+                    fontSize: 14,
+                    marginTop: 12,
+                  }}
+                >
+                  Selain membangun aplikasi web modern, saya antusias mengulik{" "}
+                  <span style={{ color: "#818cf8" }}>Machine Learning</span> dan{" "}
+                  <span style={{ color: "#22d3ee" }}>Data Mining</span>. Di
+                  waktu luang saya aktif mempelajari pergerakan pasar XAUUSD.
+                </p>
+              </AnimatedContent>
+              <AnimatedContent delay={0.3}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {[
+                    "React.js",
+                    "Laravel",
+                    "Python",
+                    "ML/AI",
+                    "Docker",
+                    "XAUUSD",
+                  ].map((tag) => (
+                    <span
+                      key={tag}
+                      style={{
+                        padding: "5px 12px",
+                        borderRadius: 8,
+                        fontSize: 12,
+                        fontFamily: "monospace",
+                        background: "rgba(99,102,241,0.1)",
+                        border: "1px solid rgba(99,102,241,0.2)",
+                        color: "#818cf8",
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </AnimatedContent>
+              <AnimatedContent delay={0.4}>
+                <Magnet magnetStrength={0.25}>
+                  <StarBorder as="a" href="#" color="#6366f1" speed="3s">
+                    <i className="fas fa-download" style={{ fontSize: 11 }} />{" "}
+                    Unduh CV
+                  </StarBorder>
+                </Magnet>
+              </AnimatedContent>
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════
+            SKILLS — Magnet orbs (ReactBits)
+        ═══════════════════════════════════════ */}
+        <section
+          id="skills"
+          style={{ padding: "100px 24px", position: "relative", zIndex: 10 }}
+        >
+          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+            <AnimatedContent className="text-center-block">
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: 11,
+                  color: "#6366f1",
+                  letterSpacing: "0.15em",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 8,
+                  marginBottom: 8,
+                }}
+              >
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: 24,
+                    height: 1,
+                    background: "#6366f1",
+                  }}
+                />{" "}
+                TECH_STACK.EXE
+              </span>
+              <SplitText
+                text="Technical Mastery"
+                className="section-title-text"
+                style={{ textAlign: "center" }}
+                delay={40}
+                duration={0.5}
+                from={{ opacity: 0, y: 30 }}
+                to={{ opacity: 1, y: 0 }}
+                splitBy="characters"
+                textAlign="center"
+              />
+            </AnimatedContent>
+
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                gap: 24,
+                marginTop: 48,
+                marginBottom: 48,
+              }}
+            >
+              {SKILLS.map((sk, i) => (
+                <AnimatedContent key={i} delay={i * 0.07} threshold={0.1}>
+                  <Magnet magnetStrength={0.4} padding={30}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: 10,
+                        cursor: "pointer",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 72,
+                          height: 72,
+                          borderRadius: "50%",
+                          background: sk.bg,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          border: `1px solid ${sk.color}30`,
+                          transition: "all 0.3s",
+                          boxShadow: `0 8px 24px ${sk.color}40`,
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.boxShadow = `0 12px 36px ${sk.color}70`;
+                          e.currentTarget.style.transform =
+                            "translateY(-6px) scale(1.1)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.boxShadow = `0 8px 24px ${sk.color}40`;
+                          e.currentTarget.style.transform = "";
+                        }}
+                      >
+                        <i
+                          className={sk.icon}
+                          style={{ fontSize: 28, color: sk.color }}
+                        />
+                      </div>
+                      <span
+                        style={{
+                          fontSize: 11,
+                          color: "#475569",
+                          fontFamily: "monospace",
+                        }}
+                      >
+                        {sk.name}
+                      </span>
+                    </div>
+                  </Magnet>
+                </AnimatedContent>
               ))}
             </div>
+          </div>
+        </section>
 
-            {/* Tools & Soft Skills (Bagian Bawah Tetap Sama) */}
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
-              <div className="glass-panel p-8 rounded-3xl">
-                <h4 className="text-white font-bold mb-6 flex items-center">
-                  <span className="mr-3">🛠️</span> Ecosystem & Tools
-                </h4>
-                <div className="flex flex-wrap gap-3">
-                  {[
-                    "Git/GitHub",
-                    "Docker",
-                    "XAUUSD Analysis",
-                    "Postman",
-                    "Vite",
-                  ].map((tool) => (
-                    <span
-                      key={tool}
-                      className="px-4 py-2 bg-indigo-500/5 border border-indigo-500/20 text-indigo-300 text-xs rounded-xl hover:bg-indigo-500/20 transition-colors cursor-pointer"
+        {/* ═══════════════════════════════════════
+            EXPERIENCE — AnimatedContent timeline
+        ═══════════════════════════════════════ */}
+        <section
+          id="experience"
+          style={{ padding: "100px 24px", position: "relative", zIndex: 10 }}
+        >
+          <div style={{ maxWidth: 800, margin: "0 auto" }}>
+            <AnimatedContent style={{ textAlign: "center", marginBottom: 64 }}>
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: 11,
+                  color: "#6366f1",
+                  letterSpacing: "0.15em",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 8,
+                  marginBottom: 8,
+                }}
+              >
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: 24,
+                    height: 1,
+                    background: "#6366f1",
+                  }}
+                />{" "}
+                EXPERIENCE.LOG
+              </span>
+              <SplitText
+                text="Perjalanan Karir"
+                className="section-title-text"
+                delay={40}
+                duration={0.5}
+                from={{ opacity: 0, y: 30 }}
+                to={{ opacity: 1, y: 0 }}
+                splitBy="characters"
+                textAlign="center"
+              />
+            </AnimatedContent>
+
+            <div style={{ position: "relative", paddingLeft: 32 }}>
+              {/* Timeline line */}
+              <div
+                style={{
+                  position: "absolute",
+                  left: 8,
+                  top: 0,
+                  bottom: 0,
+                  width: 1,
+                  background:
+                    "linear-gradient(to bottom, transparent, #6366f1, #22d3ee, transparent)",
+                  boxShadow: "0 0 10px rgba(99,102,241,0.4)",
+                }}
+              />
+
+              {TIMELINE.map((item, i) => (
+                <AnimatedContent
+                  key={i}
+                  delay={i * 0.15}
+                  direction="horizontal"
+                  distance={40}
+                >
+                  <div style={{ position: "relative", marginBottom: 40 }}>
+                    {/* Dot */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: -28,
+                        top: 24,
+                        width: 14,
+                        height: 14,
+                        borderRadius: "50%",
+                        background: "#020510",
+                        border: `2px solid ${item.color}`,
+                        boxShadow: `0 0 16px ${item.color}80`,
+                        transition: "transform 0.3s",
+                      }}
+                    />
+                    <TiltedCard rotateAmplitude={4} scaleOnHover={1.02}>
+                      <div
+                        style={{
+                          background: "rgba(8,14,35,0.85)",
+                          backdropFilter: "blur(20px)",
+                          border: `1px solid ${item.color}20`,
+                          borderLeft: `3px solid ${item.color}`,
+                          borderRadius: 16,
+                          padding: "20px 24px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "flex-start",
+                            marginBottom: 8,
+                          }}
+                        >
+                          <h3
+                            style={{
+                              fontWeight: 800,
+                              color: "white",
+                              fontSize: 17,
+                              margin: 0,
+                            }}
+                          >
+                            {item.title}
+                          </h3>
+                          <span
+                            style={{
+                              fontSize: 11,
+                              fontFamily: "monospace",
+                              color: item.color,
+                              background: `${item.color}15`,
+                              padding: "2px 10px",
+                              borderRadius: 999,
+                              border: `1px solid ${item.color}30`,
+                              whiteSpace: "nowrap",
+                              marginLeft: 8,
+                            }}
+                          >
+                            {item.period}
+                          </span>
+                        </div>
+                        <p
+                          style={{
+                            color: item.color,
+                            fontSize: 12,
+                            fontWeight: 600,
+                            marginBottom: 8,
+                            margin: "0 0 8px",
+                          }}
+                        >
+                          {item.company}
+                        </p>
+                        <p
+                          style={{
+                            color: "#64748b",
+                            fontSize: 13,
+                            lineHeight: 1.7,
+                            margin: 0,
+                          }}
+                        >
+                          {item.desc}
+                        </p>
+                      </div>
+                    </TiltedCard>
+                  </div>
+                </AnimatedContent>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════
+            PROJECTS — TiltedCard (ReactBits)
+        ═══════════════════════════════════════ */}
+        <section
+          id="projects"
+          style={{ padding: "100px 24px", position: "relative", zIndex: 10 }}
+        >
+          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+            <AnimatedContent style={{ textAlign: "center", marginBottom: 64 }}>
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: 11,
+                  color: "#6366f1",
+                  letterSpacing: "0.15em",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 8,
+                  marginBottom: 8,
+                }}
+              >
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: 24,
+                    height: 1,
+                    background: "#6366f1",
+                  }}
+                />{" "}
+                PROJECTS.CONFIG.JS
+              </span>
+              <SplitText
+                text="Proyek & Eksperimen"
+                className="section-title-text"
+                delay={40}
+                duration={0.5}
+                from={{ opacity: 0, y: 30 }}
+                to={{ opacity: 1, y: 0 }}
+                splitBy="characters"
+                textAlign="center"
+              />
+            </AnimatedContent>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3,1fr)",
+                gap: 24,
+              }}
+            >
+              {PROJECTS.map((p, i) => (
+                <AnimatedContent key={i} delay={i * 0.12} threshold={0.1}>
+                  <TiltedCard
+                    rotateAmplitude={10}
+                    scaleOnHover={1.04}
+                    showGlare
+                  >
+                    <div
+                      style={{
+                        background: "rgba(8,14,35,0.9)",
+                        backdropFilter: "blur(20px)",
+                        border: "1px solid rgba(99,102,241,0.1)",
+                        borderRadius: 20,
+                        overflow: "hidden",
+                        cursor: "pointer",
+                      }}
                     >
-                      {tool}
-                    </span>
-                  ))}
+                      {/* Top accent */}
+                      <div
+                        style={{
+                          height: 2,
+                          background: `linear-gradient(90deg, ${p.accent}, transparent)`,
+                        }}
+                      />
+                      {/* Header */}
+                      <div
+                        style={{
+                          padding: "28px 24px 20px",
+                          background: p.grad,
+                        }}
+                      >
+                        <div style={{ fontSize: 36, marginBottom: 8 }}>
+                          {p.icon}
+                        </div>
+                        <span
+                          style={{
+                            fontSize: 10,
+                            fontFamily: "monospace",
+                            color: p.accent,
+                            fontWeight: 700,
+                            letterSpacing: "0.1em",
+                          }}
+                        >
+                          {p.cat}
+                        </span>
+                      </div>
+                      {/* Body */}
+                      <div style={{ padding: "20px 24px 24px" }}>
+                        <h3
+                          style={{
+                            fontWeight: 800,
+                            color: "white",
+                            fontSize: 15,
+                            marginBottom: 10,
+                          }}
+                        >
+                          {p.title}
+                        </h3>
+                        <p
+                          style={{
+                            color: "#475569",
+                            fontSize: 12,
+                            lineHeight: 1.7,
+                            marginBottom: 16,
+                            minHeight: 56,
+                          }}
+                        >
+                          {p.desc}
+                        </p>
+                        <div
+                          style={{ display: "flex", flexWrap: "wrap", gap: 6 }}
+                        >
+                          {p.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              style={{
+                                padding: "3px 10px",
+                                borderRadius: 6,
+                                fontSize: 10,
+                                fontFamily: "monospace",
+                                background: `${p.accent}15`,
+                                color: p.accent,
+                                border: `1px solid ${p.accent}30`,
+                              }}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </TiltedCard>
+                </AnimatedContent>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════
+            CONTACT
+        ═══════════════════════════════════════ */}
+        <section
+          id="contact"
+          style={{ padding: "100px 24px", position: "relative", zIndex: 10 }}
+        >
+          <div
+            style={{
+              maxWidth: 1100,
+              margin: "0 auto",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 64,
+            }}
+          >
+            {/* Kiri */}
+            <AnimatedContent direction="horizontal" distance={-60}>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: 20 }}
+              >
+                <div>
+                  <span
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: 11,
+                      color: "#6366f1",
+                      letterSpacing: "0.15em",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      marginBottom: 8,
+                    }}
+                  >
+                    <span
+                      style={{
+                        display: "inline-block",
+                        width: 24,
+                        height: 1,
+                        background: "#6366f1",
+                      }}
+                    />{" "}
+                    CONTACT.FORM.JS
+                  </span>
+                  <SplitText
+                    text="Mari Terhubung"
+                    className="section-title-text"
+                    delay={40}
+                    duration={0.5}
+                    from={{ opacity: 0, y: 30 }}
+                    to={{ opacity: 1, y: 0 }}
+                    splitBy="characters"
+                    textAlign="left"
+                  />
+                </div>
+                <p style={{ color: "#64748b", fontSize: 14, lineHeight: 1.8 }}>
+                  Punya pertanyaan, tawaran proyek, atau sekadar ingin diskusi
+                  soal Web Dev dan market XAUUSD? Jangan ragu untuk menghubungi!
+                </p>
+                {[
+                  {
+                    icon: "✉️",
+                    text: "sendiawaludin@gmail.com",
+                    href: "mailto:sendiawaludin@gmail.com",
+                  },
+                  {
+                    icon: "💻",
+                    text: "github.com/Sendyawldn",
+                    href: "https://github.com/Sendyawldn",
+                  },
+                  { icon: "📍", text: "Gunung Putri, Jawa Barat" },
+                ].map((c, i) =>
+                  c.href ? (
+                    <a
+                      key={i}
+                      href={c.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
+                        color: "#64748b",
+                        textDecoration: "none",
+                        fontSize: 13,
+                        transition: "all 0.3s",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = "#818cf8")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "#64748b")
+                      }
+                    >
+                      {c.icon} {c.text}
+                    </a>
+                  ) : (
+                    <div
+                      key={i}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
+                        color: "#64748b",
+                        fontSize: 13,
+                      }}
+                    >
+                      {c.icon} {c.text}
+                    </div>
+                  ),
+                )}
+
+                {/* CircularText */}
+                <div style={{ marginTop: 16 }}>
+                  <CircularText
+                    text="LET'S WORK TOGETHER • GET IN TOUCH • "
+                    spinDuration={18}
+                    radius={55}
+                    fontSize={10}
+                    className="circular-text-contact"
+                  />
                 </div>
               </div>
+            </AnimatedContent>
 
-              <div className="glass-panel p-8 rounded-3xl">
-                <h4 className="text-white font-bold mb-6 flex items-center">
-                  <span className="mr-3">🧠</span> Core Strengths
-                </h4>
-                <div className="grid grid-cols-2 gap-4">
+            {/* Kanan: form */}
+            <AnimatedContent direction="horizontal" distance={60} delay={0.1}>
+              <TiltedCard rotateAmplitude={3} showGlare>
+                <form
+                  action="https://api.web3forms.com/submit"
+                  method="POST"
+                  style={{
+                    background: "rgba(8,14,35,0.9)",
+                    backdropFilter: "blur(20px)",
+                    border: "1px solid rgba(99,102,241,0.15)",
+                    borderRadius: 20,
+                    padding: "36px 32px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 16,
+                  }}
+                >
+                  <input
+                    type="hidden"
+                    name="access_key"
+                    value="YOUR_ACCESS_KEY"
+                  />
                   {[
-                    "Problem Solving",
-                    "Fast Learner",
-                    "Analytical",
-                    "Teamwork",
-                  ].map((soft) => (
-                    <div
-                      key={soft}
-                      className="text-slate-400 text-sm flex items-center"
-                    >
-                      <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full mr-2"></span>
-                      {soft}
+                    {
+                      label: "Nama Lengkap",
+                      name: "name",
+                      type: "text",
+                      placeholder: "Masukkan nama lengkap...",
+                    },
+                    {
+                      label: "Alamat Email",
+                      name: "email",
+                      type: "email",
+                      placeholder: "Masukkan email...",
+                    },
+                  ].map((f) => (
+                    <div key={f.name}>
+                      <label
+                        style={{
+                          display: "block",
+                          fontSize: 11,
+                          fontFamily: "monospace",
+                          color: "#6366f1",
+                          marginBottom: 8,
+                        }}
+                      >
+                        {f.label}
+                      </label>
+                      <input
+                        type={f.type}
+                        name={f.name}
+                        required
+                        placeholder={f.placeholder}
+                        style={{
+                          width: "100%",
+                          padding: "11px 14px",
+                          background: "rgba(2,5,16,0.8)",
+                          border: "1px solid rgba(99,102,241,0.15)",
+                          borderRadius: 10,
+                          color: "white",
+                          fontSize: 13,
+                          outline: "none",
+                          transition: "border-color 0.3s, box-shadow 0.3s",
+                          boxSizing: "border-box",
+                        }}
+                        onFocus={(e) => {
+                          e.target.style.borderColor = "#6366f1";
+                          e.target.style.boxShadow =
+                            "0 0 0 3px rgba(99,102,241,0.15)";
+                        }}
+                        onBlur={(e) => {
+                          e.target.style.borderColor = "rgba(99,102,241,0.15)";
+                          e.target.style.boxShadow = "none";
+                        }}
+                      />
                     </div>
                   ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* PROJECTS SECTION */}
-        <section id="projects" className="py-20 px-4 relative z-10">
-          <div className="container max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <div className="text-pink-400 font-mono text-sm mb-2">
-                // projects.config.js
-              </div>
-              <DecryptedText
-                text="Proyek & Eksperimen"
-                className="text-4xl md:text-5xl font-bold text-white"
-              />
-              <p className="text-slate-400 max-w-2xl mx-auto">
-                Koleksi proyek eksperimen dan kompetisi yang mencerminkan
-                semangat saya dalam ngulik teknologi baru, dari Web3 hingga
-                Machine Learning.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="group glass-panel rounded-2xl hover:border-indigo-500/50 overflow-hidden transition-all hover:-translate-y-2">
-                <div className="h-48 bg-gradient-to-br from-indigo-900 to-slate-800 flex items-center justify-center border-b border-slate-700/50 relative overflow-hidden">
-                  <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white to-transparent"></div>
-                  <span className="text-indigo-300 font-mono font-bold text-xl z-10">
-                    Web3 & Blockchain
-                  </span>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2">
-                    Decentralized Digital Credential
-                  </h3>
-                  <p className="text-sm text-slate-400 mb-4 h-20">
-                    Platform identitas digital desentralisasi menggunakan
-                    Soulbound Tokens (SBTs) di jaringan Polygon. Eksperimen
-                    *smart contract* untuk sertifikasi *tamper-proof*.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    <span className="px-2 py-1 bg-indigo-500/10 text-indigo-400 text-xs rounded">
-                      Polygon
-                    </span>
-                    <span className="px-2 py-1 bg-indigo-500/10 text-indigo-400 text-xs rounded">
-                      Web3
-                    </span>
+                  <div>
+                    <label
+                      style={{
+                        display: "block",
+                        fontSize: 11,
+                        fontFamily: "monospace",
+                        color: "#6366f1",
+                        marginBottom: 8,
+                      }}
+                    >
+                      Pesan Anda
+                    </label>
+                    <textarea
+                      name="message"
+                      rows={4}
+                      required
+                      placeholder="Halo Zen, saya ingin..."
+                      style={{
+                        width: "100%",
+                        padding: "11px 14px",
+                        background: "rgba(2,5,16,0.8)",
+                        border: "1px solid rgba(99,102,241,0.15)",
+                        borderRadius: 10,
+                        color: "white",
+                        fontSize: 13,
+                        outline: "none",
+                        resize: "vertical",
+                        transition: "border-color 0.3s, box-shadow 0.3s",
+                        boxSizing: "border-box",
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = "#6366f1";
+                        e.target.style.boxShadow =
+                          "0 0 0 3px rgba(99,102,241,0.15)";
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = "rgba(99,102,241,0.15)";
+                        e.target.style.boxShadow = "none";
+                      }}
+                    />
                   </div>
-                </div>
-              </div>
-
-              <div className="group glass-panel rounded-2xl hover:border-cyan-500/50 overflow-hidden transition-all hover:-translate-y-2">
-                <div className="h-48 bg-gradient-to-br from-cyan-900 to-slate-800 flex items-center justify-center border-b border-slate-700/50 relative overflow-hidden">
-                  <span className="text-cyan-300 font-mono font-bold text-xl z-10">
-                    GEMASTIK 2025
-                  </span>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2">
-                    Proposal Inovasi GEMASTIK
-                  </h3>
-                  <p className="text-sm text-slate-400 mb-4 h-20">
-                    Proyek kolaborasi tim kampus UBSI untuk kompetisi GEMASTIK
-                    2025. Menggabungkan solusi perangkat lunak dengan kebutuhan
-                    industri terkini.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    <span className="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded">
-                      Teamwork
-                    </span>
-                    <span className="px-2 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded">
-                      Software Dev
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="group glass-panel rounded-2xl hover:border-teal-500/50 overflow-hidden transition-all hover:-translate-y-2">
-                <div className="h-48 bg-gradient-to-br from-teal-900 to-slate-800 flex items-center justify-center border-b border-slate-700/50 relative overflow-hidden">
-                  <span className="text-teal-300 font-mono font-bold text-xl z-10">
-                    AI & Finance
-                  </span>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2">
-                    XAUUSD AI Trading Bot
-                  </h3>
-                  <p className="text-sm text-slate-400 mb-4 h-20">
-                    Riset dan pengembangan bot *trading* otomatis menggunakan
-                    analisis *Machine Learning* untuk memprediksi pergerakan
-                    pasar emas (XAUUSD).
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    <span className="px-2 py-1 bg-teal-500/10 text-teal-400 text-xs rounded">
-                      Python
-                    </span>
-                    <span className="px-2 py-1 bg-teal-500/10 text-teal-400 text-xs rounded">
-                      Data Mining
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CONTACT SECTION */}
-        <section id="contact" className="py-20 px-4 relative z-10">
-          <div className="container max-w-7xl mx-auto grid md:grid-cols-2 gap-12">
-            <div className="space-y-8">
-              <div>
-                <div className="text-indigo-400 font-mono text-sm mb-2">
-                  // contact.form.js
-                </div>
-                <DecryptedText
-                  text="Hubungi Saya"
-                  className="text-4xl md:text-5xl font-bold text-white"
-                />
-                <p className="text-slate-400 leading-relaxed">
-                  Punya pertanyaan, tawaran proyek, atau sekadar ingin diskusi
-                  soal Web Dev dan pergerakan market XAUUSD? Jangan ragu untuk
-                  menghubungi saya melalui formulir atau detail kontak di bawah
-                  ini.
-                </p>
-              </div>
-              <ul className="space-y-4 text-slate-300">
-                <li>
-                  <a
-                    href="mailto:email-abang@gmail.com"
-                    className="flex items-center gap-3 hover:text-indigo-400 transition"
-                  >
-                    ✉️ email-abang@gmail.com
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/Sendyawldn/Sendyawaldn"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-3 hover:text-indigo-400 transition"
-                  >
-                    💻 github.com/Sendyawldn
-                  </a>
-                </li>
-                <li>
-                  <div className="flex items-center gap-3">
-                    📍 Gunung Putri, Jawa Barat, Indonesia
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <form
-              className="glass-panel rounded-2xl p-8 space-y-6"
-              action="https://api.web3forms.com/submit"
-              method="POST"
-            >
-              <input
-                type="hidden"
-                name="access_key"
-                value="YOUR_ACCESS_KEY_HERE"
-              />
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  Nama Lengkap
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  className="w-full px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-600 text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  Alamat Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  className="w-full px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-600 text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  Pesan Anda
-                </label>
-                <textarea
-                  name="message"
-                  rows="4"
-                  required
-                  className="w-full px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-600 text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-none"
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition shadow-[0_4px_15px_rgba(99,102,241,0.4)]"
-              >
-                Kirim Pesan
-              </button>
-            </form>
+                  <Magnet magnetStrength={0.2}>
+                    <StarBorder
+                      as="button"
+                      type="submit"
+                      color="#6366f1"
+                      speed="3s"
+                      style={{ width: "100%" }}
+                    >
+                      <i
+                        className="fas fa-paper-plane"
+                        style={{ fontSize: 11 }}
+                      />{" "}
+                      Kirim Pesan
+                    </StarBorder>
+                  </Magnet>
+                </form>
+              </TiltedCard>
+            </AnimatedContent>
           </div>
         </section>
       </main>
 
-      {/* FOOTER */}
-      <footer className="border-t border-slate-800/50 bg-[#060b18]/80 backdrop-blur py-8 text-center relative z-10">
-        <p className="text-slate-500 font-mono text-sm">
-          &copy; 2026 Sendi Awaludin (Zen). Dibuat menggunakan React, Vite &
-          Tailwind CSS.
+      {/* ── FOOTER ── */}
+      <footer
+        style={{
+          borderTop: "1px solid rgba(99,102,241,0.1)",
+          background: "rgba(2,5,16,0.9)",
+          padding: "32px 24px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          gap: 12,
+          position: "relative",
+          zIndex: 10,
+        }}
+      >
+        <ShinyText
+          text="ZEN."
+          speed={4}
+          style={{ fontSize: 24, fontWeight: 900, letterSpacing: 1 }}
+        />
+        <p
+          style={{
+            fontFamily: "monospace",
+            fontSize: 11,
+            color: "#1e293b",
+            margin: 0,
+          }}
+        >
+          © 2026 <span style={{ color: "#6366f1" }}>Sendi Awaludin</span> —
+          Built with React + ReactBits
         </p>
       </footer>
+
+      {/* ── Inline global CSS ── */}
+      <style>{`
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        .hero-name-line {
+          font-size: clamp(48px, 8vw, 88px);
+          font-weight: 900;
+          line-height: 1;
+          letter-spacing: -2px;
+          background: linear-gradient(135deg, #ffffff 0%, #818cf8 40%, #22d3ee 80%, #ffffff 100%);
+          background-size: 300% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: shineText 8s linear infinite;
+        }
+        @keyframes shineText { to { background-position: 300% center; } }
+        .section-title-text {
+          font-size: clamp(28px, 4vw, 52px);
+          font-weight: 800;
+          line-height: 1.1;
+          background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.7) 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        .circular-text-contact { color: #475569; }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+        @media (max-width: 768px) {
+          .hidden-mobile { display: none !important; }
+          .show-mobile { display: flex !important; }
+          section > div { grid-template-columns: 1fr !important; }
+        }
+        @media (min-width: 769px) {
+          .show-mobile { display: none !important; }
+        }
+      `}</style>
     </div>
   );
 }
-
-export default App;
