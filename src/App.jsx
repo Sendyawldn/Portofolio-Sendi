@@ -467,24 +467,32 @@ function App() {
           id="hero"
           className="min-h-[100vh] flex items-center justify-center px-4 relative z-10 pt-10"
         >
-          {/* Canvas untuk Particles */}
+          {/* Canvas Particles tetap sama */}
           <canvas
             ref={canvasRef}
             className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-60"
           ></canvas>
 
-          <div className="container max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center relative z-10">
-            <div className="space-y-6">
+          {/* ✅ Grid container: kiri konten, kanan lanyard — overflow visible agar kartu bebas */}
+          <div
+            className="container max-w-7xl mx-auto grid md:grid-cols-2 gap-0 items-center relative z-10"
+            style={{ overflow: "visible" }}
+          >
+            {/* ======== KOLOM KIRI ======== */}
+            <div className="space-y-6 py-12">
+              {/* Badge */}
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-sm">
                 <span className="w-2 h-2 rounded-full bg-[#10db77] shadow-[0_0_10px_#10db77] animate-pulse"></span>
                 // available_for_internship
               </div>
 
+              {/* Nama — animasi huruf per huruf */}
               <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight text-gradient-hero">
                 Sendi <br />
                 Awaludin
               </h1>
 
+              {/* Typing text */}
               <div className="text-xl font-mono text-gray-400 flex items-center h-8">
                 <span className="text-indigo-500 mr-2">&lt;</span>
                 <span className="text-white">{typingText}</span>
@@ -498,6 +506,7 @@ function App() {
                 finansial.
               </p>
 
+              {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4 pt-2">
                 <a
                   href="#projects"
@@ -523,7 +532,7 @@ function App() {
                     portfolio.js
                   </span>
                 </div>
-                {/* <div className="text-slate-300">
+                <div className="text-slate-300">
                   <span className="text-pink-400">const</span>{" "}
                   <span className="text-blue-400">developer</span> = {"{"}{" "}
                   <br />
@@ -541,21 +550,21 @@ function App() {
                   <span className="text-green-400">"☕ always"</span>
                   <br />
                   {"}"};
-                </div> */}
+                </div>
               </div>
             </div>
 
-            {/* Area Kanan: Premium Lanyard ReactBits */}
+            {/* ======== KOLOM KANAN: LANYARD ======== */}
             <div
               className="hidden md:block"
               style={{
-                width: "500px",
-                height: "600px",
+                height: "700px",
                 position: "relative",
-                flexShrink: 0,
+                overflow: "visible" /* ← INI KUNCINYA */,
+                zIndex: 50,
               }}
             >
-              <Lanyard position={[0, 0, 13]} gravity={[0, -20, 0]} />
+              <Lanyard gravity={[0, -20, 0]} />
             </div>
           </div>
         </section>

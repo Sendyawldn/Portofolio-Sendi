@@ -530,3 +530,81 @@ body {
   transform: translateY(-5px);
   box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
 }
+
+/* =====================================================
+   TAMBAHKAN CSS INI KE BAGIAN BAWAH src/index.css
+   ===================================================== */
+
+/* ✅ FIX UTAMA: Pastikan canvas Three.js tidak clip kartu saat digeser */
+canvas {
+  overflow: visible !important;
+}
+
+/* ✅ Biar section hero tidak memotong kartu yang digeser keluar */
+#hero {
+  overflow: visible !important;
+}
+
+/* ✅ Container grid hero juga overflow visible */
+#hero .container {
+  overflow: visible !important;
+}
+
+/* =====================================================
+   PREMIUM HERO ANIMATIONS
+   ===================================================== */
+
+/* Glow pulse pada nama */
+@keyframes nameGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 40px rgba(99, 102, 241, 0.8));
+  }
+}
+
+.text-gradient-hero {
+  animation:
+    shineText 6s linear infinite,
+    nameGlow 4s ease-in-out infinite;
+}
+
+/* Animasi masuk untuk badge */
+@keyframes slideInFade {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Shimmer border pada code window */
+@keyframes borderShimmer {
+  0% {
+    border-color: rgba(99, 102, 241, 0.1);
+  }
+  50% {
+    border-color: rgba(99, 102, 241, 0.5);
+  }
+  100% {
+    border-color: rgba(99, 102, 241, 0.1);
+  }
+}
+
+.glass-panel {
+  animation: borderShimmer 4s ease-in-out infinite;
+}
+
+/* Tombol CTA: efek glow ripple saat hover */
+.btn:hover {
+  box-shadow:
+    0 0 30px rgba(99, 102, 241, 0.6),
+    0 0 60px rgba(99, 102, 241, 0.2) !important;
+  transform: translateY(-2px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

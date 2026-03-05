@@ -1,4 +1,8 @@
-// src/components/ReactBits/Lanyard.jsx
+// =====================================================
+// FILE 1: src/components/ReactBits/Lanyard.jsx
+// Ganti seluruh isi file dengan kode ini
+// =====================================================
+
 import { useEffect, useRef, useState } from "react";
 import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
 import {
@@ -120,26 +124,22 @@ function Band({ maxSpeed = 50, minSpeed = 10 }) {
 
   return (
     <>
-      {/* ✅ Fixed = titik gantung tali, taruh di atas (y=4) */}
+      {/* Titik gantung tali — tepat di atas tengah */}
       <RigidBody
         ref={fixed}
         {...segmentProps}
         type="fixed"
         position={[0, 4, 0]}
       />
-
-      {/* ✅ j1, j2, j3 = ruas tali, turun dari titik fixed */}
       <RigidBody position={[0.5, 3.5, 0]} ref={j1} {...segmentProps}>
         <BallCollider args={[0.1]} />
       </RigidBody>
-      <RigidBody position={[0.5, 3, 0]} ref={j2} {...segmentProps}>
+      <RigidBody position={[0.5, 3.0, 0]} ref={j2} {...segmentProps}>
         <BallCollider args={[0.1]} />
       </RigidBody>
       <RigidBody position={[0.5, 2.5, 0]} ref={j3} {...segmentProps}>
         <BallCollider args={[0.1]} />
       </RigidBody>
-
-      {/* ✅ Card = kartu ID, posisi awal di tengah-bawah canvas */}
       <RigidBody
         position={[0, 1.5, 0]}
         ref={card}
@@ -183,7 +183,6 @@ function Band({ maxSpeed = 50, minSpeed = 10 }) {
           <mesh geometry={nodes.clamp.geometry} material={materials.metal} />
         </group>
       </RigidBody>
-
       <mesh ref={band}>
         <meshLineGeometry />
         <meshLineMaterial
@@ -200,52 +199,58 @@ function Band({ maxSpeed = 50, minSpeed = 10 }) {
   );
 }
 
-export default function Lanyard({
-  position = [0, 0, 13],
-  gravity = [0, -20, 0],
-}) {
+export default function Lanyard({ gravity = [0, -20, 0] }) {
   return (
-    <Canvas
-      // ✅ Kamera menghadap tengah, z=13 agar kartu terlihat pas
-      camera={{ position: [0, 0, 13], fov: 25 }}
-      style={{ width: "100%", height: "100%" }}
-      gl={{ alpha: true, antialias: true }}
+    // ✅ overflow visible agar kartu tidak terpotong saat digeser
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        overflow: "visible",
+        position: "relative",
+      }}
     >
-      <ambientLight intensity={Math.PI} />
-      {/* ✅ Gravitasi dikurangi dari -40 ke -20 biar kartu tidak jatuh terlalu cepat */}
-      <Physics interpolate gravity={gravity} timeStep={1 / 60}>
-        <Band />
-      </Physics>
-      <Environment blur={0.75}>
-        <Lightformer
-          intensity={2}
-          color="white"
-          position={[0, -1, 5]}
-          rotation={[0, 0, Math.PI / 3]}
-          scale={[100, 0.1, 1]}
-        />
-        <Lightformer
-          intensity={3}
-          color="white"
-          position={[-1, -1, 1]}
-          rotation={[0, 0, Math.PI / 3]}
-          scale={[100, 0.1, 1]}
-        />
-        <Lightformer
-          intensity={10}
-          color="white"
-          position={[10, 2, 0]}
-          rotation={[0, Math.PI / 2, Math.PI / 3]}
-          scale={[100, 10, 1]}
-        />
-        <Lightformer
-          intensity={5}
-          color="white"
-          position={[-10, 2, 0]}
-          rotation={[0, -Math.PI / 2, Math.PI / 3]}
-          scale={[100, 10, 1]}
-        />
-      </Environment>
-    </Canvas>
+      <Canvas
+        camera={{ position: [0, 0, 13], fov: 25 }}
+        // ✅ overflow visible di canvas juga
+        style={{ width: "100%", height: "100%", overflow: "visible" }}
+        gl={{ alpha: true, antialias: true }}
+      >
+        <ambientLight intensity={Math.PI} />
+        <Physics interpolate gravity={gravity} timeStep={1 / 60}>
+          <Band />
+        </Physics>
+        <Environment blur={0.75}>
+          <Lightformer
+            intensity={2}
+            color="white"
+            position={[0, -1, 5]}
+            rotation={[0, 0, Math.PI / 3]}
+            scale={[100, 0.1, 1]}
+          />
+          <Lightformer
+            intensity={3}
+            color="white"
+            position={[-1, -1, 1]}
+            rotation={[0, 0, Math.PI / 3]}
+            scale={[100, 0.1, 1]}
+          />
+          <Lightformer
+            intensity={10}
+            color="white"
+            position={[10, 2, 0]}
+            rotation={[0, Math.PI / 2, Math.PI / 3]}
+            scale={[100, 10, 1]}
+          />
+          <Lightformer
+            intensity={5}
+            color="white"
+            position={[-10, 2, 0]}
+            rotation={[0, -Math.PI / 2, Math.PI / 3]}
+            scale={[100, 10, 1]}
+          />
+        </Environment>
+      </Canvas>
+    </div>
   );
 }
