@@ -2637,40 +2637,24 @@ export default function App() {
             <AnimatedContent direction="horizontal" distance={60} delay={0.1}>
               <TiltedCard rotateAmplitude={3} showGlare>
                 <form
-                  onSubmit={async (e) => {
+                  onSubmit={(e) => {
                     e.preventDefault();
                     const formData = new FormData(e.target);
+                    const name = formData.get("name");
+                    const email = formData.get("email");
+                    const message = formData.get("message");
 
-                    // Efek visual pada tombol saat mengirim
-                    const btn = e.target.querySelector("button");
-                    const originalContent = btn.innerHTML;
-                    btn.innerHTML =
-                      '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
-                    btn.disabled = true;
+                    // Format pesan untuk WhatsApp
+                    const whatsappText = `Halo Zen, saya *${name}* (${email}).%0A%0A${message}`;
 
-                    try {
-                      const response = await fetch(
-                        "https://api.web3forms.com/submit",
-                        {
-                          method: "POST",
-                          body: formData,
-                        },
-                      );
-                      const result = await response.json();
-                      if (result.success) {
-                        alert(
-                          "Pesan berhasil terkirim langsung ke email saya!",
-                        );
-                        e.target.reset(); // Mengosongkan form kembali
-                      } else {
-                        alert("Terjadi kesalahan, silakan coba lagi.");
-                      }
-                    } catch (error) {
-                      alert("Gagal terhubung ke server.");
-                    } finally {
-                      btn.innerHTML = originalContent;
-                      btn.disabled = false;
-                    }
+                    // Ganti nomor ini dengan nomor WhatsApp Anda (Gunakan kode negara, misal 62)
+                    const phoneNumber = "6285717078003";
+
+                    // Buka link WhatsApp
+                    window.open(
+                      `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${whatsappText}`,
+                      "_blank",
+                    );
                   }}
                   style={{
                     background: "rgba(8,14,35,0.9)",
@@ -2683,22 +2667,6 @@ export default function App() {
                     gap: 16,
                   }}
                 >
-                  {/* PENTING: Ganti "YOUR_ACCESS_KEY" dengan key yang Anda dapatkan 
-          dari web3forms.com agar pesan masuk ke email Anda.
-      */}
-                  <input
-                    type="hidden"
-                    name="access_key"
-                    value={import.meta.env.VITE_WEB3FORMS_KEY}
-                  />
-
-                  {/* Fitur Anti-Spam (Honeypot) */}
-                  <input
-                    type="checkbox"
-                    name="botcheck"
-                    style={{ display: "none" }}
-                  />
-
                   {[
                     {
                       label: "Nama Lengkap",
@@ -2801,7 +2769,7 @@ export default function App() {
                     <StarBorder
                       as="button"
                       type="submit"
-                      color="#6366f1"
+                      color="#25D366" // Warna hijau WhatsApp
                       speed="3s"
                       style={{ width: "100%" }}
                     >
@@ -2814,10 +2782,10 @@ export default function App() {
                         }}
                       >
                         <i
-                          className="fas fa-paper-plane"
-                          style={{ fontSize: 11 }}
+                          className="fab fa-whatsapp"
+                          style={{ fontSize: 16 }}
                         />
-                        <span>Kirim Pesan</span>
+                        <span>Kirim ke WhatsApp</span>
                       </div>
                     </StarBorder>
                   </Magnet>
