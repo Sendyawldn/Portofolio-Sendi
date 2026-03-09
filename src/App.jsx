@@ -461,6 +461,7 @@ function ExpandableDesc({ desc, accent }) {
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+  const [phase, setPhase] = useState("spinning");
   const [menuOpen, setMenuOpen] = useState(false);
   const [typing, setTyping] = useState("");
   const [activeSection, setActiveSection] = useState("hero");
@@ -471,11 +472,24 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
-  // ── Loading ──
+  // ── Loading Progress Logic ──
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 2400);
-    return () => clearTimeout(t);
-  }, []);
+    // 1. Fase Spinner (Muter) - Cukup 1.5 detik
+    if (phase === "spinning") {
+      const timer = setTimeout(() => {
+        setPhase("welcome");
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+
+    // 2. Fase Welcome - Tampilkan teks lalu MATIKAN loading
+    if (phase === "welcome") {
+      const timer = setTimeout(() => {
+        setLoading(false); // INI YANG MENGHENTIKAN LOADING
+      }, 2500); // Sesuaikan durasi teks welcome di sini
+      return () => clearTimeout(timer);
+    }
+  }, [phase]);
 
   // ── Typing effect ──
   useEffect(() => {
@@ -584,66 +598,80 @@ export default function App() {
       <SplashCursor color="99, 102, 241" />
 
       {/* ── Loading Screen ── */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {loading && (
           <motion.div
-            key="loader"
+            key="global-loader" // Key unik wajib ada
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 0.97 }}
-            transition={{ duration: 0.6 }}
+            exit={{ opacity: 0, transition: { duration: 0.8 } }} // Efek menghilang halus
             style={{
               position: "fixed",
               inset: 0,
               zIndex: 9999,
               background: "#020510",
               display: "flex",
-              flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              gap: 20,
             }}
           >
-            <svg style={{ width: 96, height: 96 }} viewBox="0 0 96 96">
-              <circle
-                cx="48"
-                cy="48"
-                r="42"
-                fill="none"
-                stroke="rgba(99,102,241,0.1)"
-                strokeWidth="2"
-              />
-              <motion.circle
-                cx="48"
-                cy="48"
-                r="42"
-                fill="none"
-                stroke="url(#lg)"
-                strokeWidth="2"
-                strokeDasharray="264"
-                strokeLinecap="round"
-                animate={{ strokeDashoffset: [264, 0, 264] }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-              <defs>
-                <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#6366f1" />
-                  <stop offset="100%" stopColor="#22d3ee" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <ShinyText
-              text="MEMUAT PORTOFOLIO..."
-              speed={2}
-              style={{
-                fontSize: 11,
-                letterSpacing: "0.2em",
-                fontFamily: "monospace",
-              }}
-            />
+            <AnimatePresence mode="wait">
+              {phase === "spinning" ? (
+                <motion.div
+                  key="spinner-fase"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  {/* Spinner SVG */}
+                  <svg
+                    width="50"
+                    height="50"
+                    viewBox="0 0 50 50"
+                    style={{ animation: "spin 1s linear infinite" }}
+                  >
+                    <circle
+                      cx="25"
+                      cy="25"
+                      r="20"
+                      fill="none"
+                      stroke="rgba(99, 102, 241, 0.2)"
+                      strokeWidth="4"
+                    />
+                    <circle
+                      cx="25"
+                      cy="25"
+                      r="20"
+                      fill="none"
+                      stroke="#6366f1"
+                      strokeWidth="4"
+                      strokeDasharray="31.4 31.4"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="welcome-fase"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 1.05 }}
+                >
+                  <BlurText
+                    text="WELCOME TO MY JOURNEY"
+                    animateBy="characters"
+                    direction="top"
+                    stepDelay={50}
+                    style={{
+                      fontSize: "clamp(20px, 5vw, 40px)",
+                      fontWeight: 800,
+                      color: "white",
+                      letterSpacing: "0.2em",
+                      textAlign: "center",
+                    }}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
@@ -3223,6 +3251,10 @@ export default function App() {
           background-clip: text;
           -webkit-text-fill-color: transparent;
           animation: shineText 8s linear infinite;
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
           /* ── Invisible Scroll untuk Timeline ── */
         .custom-scroll {
