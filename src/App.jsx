@@ -345,30 +345,21 @@ const TIMELINE = [
 ];
 
 const MARQUEE_ITEMS = [
-  "TypeScript",
   "JavaScript",
-  "Go",
   "PHP",
   "SQL",
-  "NestJS",
   "Laravel",
   "Node.js",
-  "Express",
   "Next.js",
   "React",
-  "Vue.js",
   "TailwindCSS",
-  "Shadcn/ui",
   "PostgreSQL",
   "MySQL",
-  "Redis",
   "Prisma",
-  "MongoDB",
   "Docker",
   "Git",
   "Postman",
   "Vercel",
-  "Nginx",
   "Web3",
 ];
 
