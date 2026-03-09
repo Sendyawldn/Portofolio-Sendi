@@ -249,6 +249,7 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [typing, setTyping] = useState("");
   const [activeSection, setActiveSection] = useState("hero");
+  const [activeDot, setActiveDot] = useState(0);
 
   // ── Loading ──
   useEffect(() => {
@@ -1742,30 +1743,34 @@ export default function App() {
             </AnimatedContent>
 
             <div
-              ref={scrollRef} // <--- Pasang Ref di sini
+              ref={scrollRef}
               className="custom-scroll"
-              onMouseDown={handleMouseDown} // <--- Event klik ditekan
-              onMouseLeave={handleMouseLeave} // <--- Event kursor keluar area
-              onMouseUp={handleMouseUp} // <--- Event klik dilepas
-              onMouseMove={handleMouseMove} // <--- Event kursor digeser
+              onMouseDown={handleMouseDown}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
+              onScroll={(e) => {
+                const el = e.currentTarget;
+                const dotIndex = Math.round(el.scrollLeft / 364);
+                setActiveDot(Math.min(dotIndex, PROJECTS.length - 1));
+              }}
               style={{
-                display: "flex",
+                display: "grid",
+                gridTemplateRows: "1fr 1fr",
+                gridAutoFlow: "column",
+                gridAutoColumns: "340px",
                 gap: 24,
                 overflowX: "auto",
                 overflowY: "hidden",
                 padding: "20px 10px 40px",
-                scrollBehavior: "auto", // Ubah ke 'auto' agar tarikan terasa instan/real-time
-                scrollSnapType: "none", // Matikan sementara snap agar tarikan tidak kaku
-                cursor: "grab", // Kursor jadi bentuk tangan mengajak narik
-                userSelect: "none", // Agar teks tidak ikut terblok saat ditarik
+                scrollBehavior: "auto",
+                cursor: "grab",
+                userSelect: "none",
                 WebkitOverflowScrolling: "touch",
               }}
             >
               {PROJECTS.map((p, i) => (
-                <div
-                  key={i}
-                  style={{ flex: "0 0 340px", scrollSnapAlign: "start" }}
-                >
+                <div key={i} style={{ width: 340 }}>
                   <AnimatedContent delay={i * 0.12} threshold={0.1}>
                     <TiltedCard
                       rotateAmplitude={10}
@@ -1780,17 +1785,15 @@ export default function App() {
                           borderRadius: 20,
                           overflow: "hidden",
                           cursor: "pointer",
-                          height: "100%" /* Pastikan tinggi kartu seragam */,
+                          height: "100%",
                         }}
                       >
-                        {/* Top accent */}
                         <div
                           style={{
                             height: 2,
                             background: `linear-gradient(90deg, ${p.accent}, transparent)`,
                           }}
                         />
-                        {/* Header */}
                         <div
                           style={{
                             padding: "28px 24px 20px",
@@ -1812,7 +1815,6 @@ export default function App() {
                             {p.cat}
                           </span>
                         </div>
-                        {/* Body */}
                         <div style={{ padding: "20px 24px 24px" }}>
                           <h3
                             style={{
@@ -1864,6 +1866,36 @@ export default function App() {
                     </TiltedCard>
                   </AnimatedContent>
                 </div>
+              ))}
+            </div>
+
+            {/* Dot indicator dinamis */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: 8,
+                marginTop: 16,
+              }}
+            >
+              {PROJECTS.map((_, i) => (
+                <motion.div
+                  key={i}
+                  animate={{
+                    width: activeDot === i ? 24 : 8,
+                    background:
+                      activeDot === i ? "#6366f1" : "rgba(99,102,241,0.3)",
+                  }}
+                  transition={{ duration: 0.3 }}
+                  style={{ height: 8, borderRadius: 999, cursor: "pointer" }}
+                  onClick={() => {
+                    scrollRef.current.scrollTo({
+                      left: i * 364,
+                      behavior: "smooth",
+                    });
+                    setActiveDot(i);
+                  }}
+                />
               ))}
             </div>
           </div>
