@@ -22,6 +22,7 @@ const NAV_LINKS = [
   { id: "skills", label: "Skill" },
   { id: "experience", label: "Pengalaman" },
   { id: "projects", label: "Proyek" },
+  { id: "certificates", label: "Sertifikat" },
   { id: "contact", label: "Kontak" },
 ];
 
@@ -91,23 +92,23 @@ const SVG_ICONS = {
 
 const SKILLS = [
   // Languages
-  { name: "TypeScript", svgKey: "typescript", color: "#007ACC", bg: "#05101a" },
+  // { name: "TypeScript", svgKey: "typescript", color: "#007ACC", bg: "#05101a" },
   { name: "JavaScript", icon: "fab fa-js", color: "#F7DF1E", bg: "#1a1800" },
-  { name: "Go", svgKey: "go", color: "#00ADD8", bg: "#001a1f" },
+  // { name: "Go", svgKey: "go", color: "#00ADD8", bg: "#001a1f" },
   { name: "PHP", icon: "fab fa-php", color: "#777BB4", bg: "#0f0e1a" },
   { name: "Python", icon: "fab fa-python", color: "#F7D94C", bg: "#1a1600" },
   { name: "HTML", icon: "fab fa-html5", color: "#E34F26", bg: "#1a0800" },
 
   // Backend
-  { name: "NestJS", svgKey: "nestjs", color: "#E0234E", bg: "#1a0009" },
+  // { name: "NestJS", svgKey: "nestjs", color: "#E0234E", bg: "#1a0009" },
   { name: "Laravel", icon: "fab fa-laravel", color: "#FF2D20", bg: "#1a0a09" },
   { name: "Node.js", icon: "fab fa-node-js", color: "#339933", bg: "#071a07" },
-  { name: "Express", icon: "fab fa-node-js", color: "#ffffff", bg: "#101010" },
+  // { name: "Express", icon: "fab fa-node-js", color: "#ffffff", bg: "#101010" },
 
   // Frontend
   { name: "Next.js", svgKey: "nextjs", color: "#ffffff", bg: "#101010" },
   { name: "React.js", icon: "fab fa-react", color: "#61DAFB", bg: "#0d1b2a" },
-  { name: "Vue.js", icon: "fab fa-vuejs", color: "#4FC08D", bg: "#071a10" },
+  // { name: "Vue.js", icon: "fab fa-vuejs", color: "#4FC08D", bg: "#071a10" },
   {
     name: "Tailwind",
     icon: "fab fa-css3-alt",
@@ -116,10 +117,10 @@ const SKILLS = [
   },
 
   // Database
-  { name: "PostgreSQL", svgKey: "postgresql", color: "#4169E1", bg: "#05081a" },
+  // { name: "PostgreSQL", svgKey: "postgresql", color: "#4169E1", bg: "#05081a" },
   { name: "MySQL", icon: "fas fa-database", color: "#4479A1", bg: "#05101a" },
-  { name: "Prisma", svgKey: "prisma", color: "#a0aec0", bg: "#0a0c10" },
-  { name: "MongoDB", icon: "fas fa-leaf", color: "#47A248", bg: "#071a08" },
+  // { name: "Prisma", svgKey: "prisma", color: "#a0aec0", bg: "#0a0c10" },
+  // { name: "MongoDB", icon: "fas fa-leaf", color: "#47A248", bg: "#071a08" },
 
   // DevOps & Tools
   { name: "Docker", icon: "fab fa-docker", color: "#2496ED", bg: "#051523" },
@@ -127,54 +128,171 @@ const SKILLS = [
 
   // Cloud
   { name: "Vercel", svgKey: "vercel", color: "#ffffff", bg: "#101010" },
-  { name: "Nginx", svgKey: "nginx", color: "#009639", bg: "#001a0a" },
+  // { name: "Nginx", svgKey: "nginx", color: "#009639", bg: "#001a0a" },
 ];
 
 const PROJECTS = [
   {
-    title: "Decentralized Digital Credential",
-    cat: "Web3 & Blockchain",
-    desc: "Platform identitas digital desentralisasi menggunakan Soulbound Tokens (SBTs) di jaringan Polygon. Smart contract untuk sertifikasi tamper-proof.",
-    tags: ["Polygon", "Web3", "Solidity"],
+    title: "JastipKu — Platform Jasa Titip",
+    cat: "WEB DEVELOPMENT",
+    desc: "Platform peer-to-peer jasa titip yang menghubungkan penitip dan traveler. Fitur autentikasi, manajemen pesanan, sistem pencarian, dan dashboard untuk traveler & customer. Juara 3 IT Bootcamp + HKI.",
+    tags: ["Laravel", "Tailwind CSS", "MySQL"],
+    icon: "🛍️",
+    accent: "#6366f1",
+    grad: "linear-gradient(135deg, #1a1340 0%, #0d0825 100%)",
+    image: "/jastipku.png",
+  },
+  {
+    title: "Money Tracking App",
+    cat: "MOBILE DEVELOPMENT",
+    desc: "Aplikasi Flutter cross-platform untuk mencatat keuangan pribadi. Dilengkapi kalender interaktif, laporan grafik mingguan/bulanan per kategori, autentikasi Firebase dengan Google Sign-In, dan penyimpanan lokal SQLite + Cloud Firestore.",
+    tags: ["Flutter", "Firebase", "Dart", "SQLite"],
+    icon: "💰",
+    accent: "#10b981",
+    grad: "linear-gradient(135deg, #051510 0%, #020a08 100%)",
+    image: "/money-tracking.png",
+  },
+  {
+    title: "Jakarta Scooter Shop — E-Commerce",
+    cat: "FULL STACK DEVELOPMENT",
+    desc: "Platform e-commerce sparepart Vespa production-ready yang sudah live. Backend NestJS dengan payment gateway Midtrans & Xendit, manajemen pengiriman, integrasi akuntansi Accurate, cloud storage Cloudinary, dan Redis queue. Frontend Next.js dengan admin panel terpisah.",
+    tags: ["NestJS", "Next.js", "PostgreSQL", "Prisma", "Redis", "Docker"],
+    icon: "🛵",
+    accent: "#f59e0b",
+    grad: "linear-gradient(135deg, #1a1200 0%, #0a0800 100%)",
+    image: "/vespa.png",
+  },
+  {
+    title: "Combro Fishing — Landing Page",
+    cat: "WEB DEVELOPMENT",
+    desc: "Website profil tempat pemancingan ikan mas Combro Fishing. Menampilkan informasi lokasi, daftar harga kolam, event & kompetisi memancing, serta halaman kontak dengan integrasi WhatsApp langsung. Responsive dan deploy di Vercel.",
+    tags: ["HTML", "CSS", "JavaScript"],
+    icon: "🎣",
+    accent: "#22d3ee",
+    grad: "linear-gradient(135deg, #051820 0%, #020c10 100%)",
+    image: "/combrofishing.png",
+  },
+  {
+    title: "VeritasID — Digital Credential Platform",
+    cat: "WEB3 & BLOCKCHAIN",
+    desc: "Platform kredensial digital terdesentralisasi berbasis blockchain untuk GEMASTIK 2025. Institusi dapat menerbitkan sertifikat sebagai Soulbound NFT (ERC721) di Polygon. Fitur: Web3Auth login, IPFS metadata storage via Pinata, generate sertifikat otomatis, sistem billing kredit Xendit, 3 role (Holder/Issuer/Admin), dan public verification tanpa login.",
+    tags: [
+      "Solidity",
+      "Polygon",
+      "NestJS",
+      "Next.js",
+      "IPFS",
+      "Web3Auth",
+      "Docker",
+    ],
     icon: "⛓️",
     accent: "#6366f1",
     grad: "linear-gradient(135deg, #1a1340 0%, #0d0825 100%)",
+    image: "/veritasid.png",
   },
   {
-    title: "Proposal Inovasi GEMASTIK",
-    cat: "GEMASTIK 2025",
-    desc: "Proyek kolaborasi tim kampus UBSI untuk kompetisi GEMASTIK 2025, menggabungkan solusi perangkat lunak dengan kebutuhan industri.",
-    tags: ["Teamwork", "Software Dev", "Innovation"],
-    icon: "🏆",
-    accent: "#22d3ee",
-    grad: "linear-gradient(135deg, #051820 0%, #020c10 100%)",
-  },
-  {
-    title: "XAUUSD AI Trading Bot",
-    cat: "AI & Finance",
-    desc: "Riset dan pengembangan bot trading otomatis menggunakan Machine Learning untuk memprediksi pergerakan pasar emas (XAUUSD).",
-    tags: ["Python", "ML", "Finance"],
-    icon: "📈",
-    accent: "#10b981",
-    grad: "linear-gradient(135deg, #051510 0%, #020a08 100%)",
-  },
-  {
-    title: "Sistem Informasi Desa Tlajung Udik",
+    title: "System Admin Billiard",
     cat: "WEB DEVELOPMENT",
-    desc: "Platform digital terintegrasi untuk mendigitalkan administrasi desa, transparansi program kerja LPM, dan portal informasi warga.",
-    icon: "🏘️",
-    accent: "#10b981" /* Emerald Green */,
-    grad: "linear-gradient(180deg, rgba(16,185,129,0.1), transparent)",
-    tags: ["Laravel", "Tailwind CSS", "MySQL"],
+    desc: "Sistem manajemen kasir berbasis web untuk bisnis billiard. Fitur tracking status meja real-time, pencatatan transaksi per sesi, order makanan & minuman, manajemen produk & stok, analytics dashboard dengan grafik penjualan harian/mingguan/bulanan, serta cetak laporan transaksi.",
+    tags: ["Laravel", "MySQL", "Tailwind CSS", "Alpine.js"],
+    icon: "🎱",
+    accent: "#8b5cf6",
+    grad: "linear-gradient(135deg, #110a2a 0%, #080514 100%)",
+    image: "/billiard.png",
   },
   {
-    title: "XAUUSD & Crypto Tracker Dashboard",
-    cat: "DATA VISUALIZATION",
-    desc: "Aplikasi web responsif untuk memantau pergerakan harga emas (XAUUSD) dan aset kripto secara real-time menggunakan integrasi Public API.",
-    icon: "📈",
-    accent: "#f59e0b" /* Amber Gold */,
-    grad: "linear-gradient(180deg, rgba(245,158,11,0.1), transparent)",
-    tags: ["React.js", "REST API", "Chart.js"],
+    title: "Kasir D'Krispy — Sistem POS Restoran",
+    cat: "WEB DEVELOPMENT",
+    desc: "Aplikasi Point of Sale (POS) berbasis web native PHP untuk restoran D'Krispy. Fitur manajemen menu & kategori dengan upload foto, sistem order & item pesanan, proses pembayaran dengan QRIS, laporan keuangan, manajemen user/pelayan, serta dashboard dengan grafik penjualan per menu menggunakan chart interaktif.",
+    tags: ["PHP", "MySQL", "Bootstrap", "JavaScript"],
+    icon: "🍗",
+    accent: "#f97316",
+    grad: "linear-gradient(135deg, #1a0a00 0%, #0d0500 100%)",
+    image: "/dkrispy.png",
+  },
+];
+
+const CERTIFICATES = [
+  {
+    title: "HKI — Aplikasi Jastip Berbasis Web",
+    issuer: "Kementerian Hukum RI",
+    year: "2025",
+    image: "/sertifikat/1.png",
+    accent: "#f59e0b",
+    icon: "⚖️",
+  },
+  {
+    title: "Introduction to Cybersecurity",
+    issuer: "Cisco Networking Academy",
+    year: "2025",
+    image: "/sertifikat/2.png",
+    accent: "#22d3ee",
+    icon: "🔐",
+  },
+  {
+    title: "PCAP: Programming Essentials in Python",
+    issuer: "OpenEDG Python Institute",
+    year: "2024",
+    image: "/sertifikat/3.png",
+    accent: "#3b82f6",
+    icon: "🐍",
+  },
+  {
+    title: "IT Bootcamp — Software Development for Industry",
+    issuer:
+      "Universitas Bina Sarana Informatika (Fakultas Teknik & Informatika)",
+    year: "2025",
+    image: "/sertifikat/10.png",
+    accent: "#2563eb",
+    icon: "💻",
+  },
+  {
+    title: "Mahir Membuat Website dengan Laravel 9",
+    issuer: "Coding Studio",
+    year: "2025",
+    image: "/sertifikat/4.png",
+    accent: "#f472b6",
+    icon: "🎓",
+  },
+  {
+    title: "Fundamental Front-End Web Development I",
+    issuer: "Coding Studio",
+    year: "2023",
+    image: "/sertifikat/5.png",
+    accent: "#06b6d4",
+    icon: "💻",
+  },
+  {
+    title: "Belajar Dasar Pemrograman Web",
+    issuer: "Dicoding Indonesia",
+    year: "2025",
+    image: "/sertifikat/6.png",
+    accent: "#6366f1",
+    icon: "🌐",
+  },
+  {
+    title: "Belajar Dasar Pemrograman JavaScript",
+    issuer: "Dicoding Indonesia",
+    year: "2025",
+    image: "/sertifikat/7.png",
+    accent: "#6366f1",
+    icon: "⚡",
+  },
+  {
+    title: "Belajar Dasar AI",
+    issuer: "Dicoding Indonesia",
+    year: "2026",
+    image: "/sertifikat/8.png",
+    accent: "#10b981",
+    icon: "🤖",
+  },
+  {
+    title: "Financial Literacy 101",
+    issuer: "Dicoding Indonesia",
+    year: "2025",
+    image: "/sertifikat/9.png",
+    accent: "#8b5cf6",
+    icon: "💰",
   },
 ];
 
@@ -244,12 +362,101 @@ const MARQUEE_ITEMS = [
   "Web3",
 ];
 
+function ExpandableDesc({ desc, accent }) {
+  const [expanded, setExpanded] = useState(false);
+  const [clamped, setClamped] = useState(false);
+  const textRef = useRef(null);
+
+  useEffect(() => {
+    if (textRef.current) {
+      setClamped(
+        textRef.current.scrollHeight > textRef.current.clientHeight + 2,
+      );
+    }
+  }, [desc]);
+
+  return (
+    <div style={{ position: "relative", marginBottom: 8, flex: 1 }}>
+      <div
+        ref={textRef}
+        style={{
+          color: "#475569",
+          fontSize: 12,
+          lineHeight: 1.7,
+          maxHeight: expanded ? 200 : 62,
+          overflowY: expanded ? "auto" : "hidden",
+          transition: "max-height 0.3s ease",
+          cursor: expanded ? "auto" : "pointer",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          paddingRight: expanded ? 4 : 0,
+        }}
+        onClick={() => !expanded && setExpanded(true)}
+      >
+        {desc}
+      </div>
+
+      {/* Blur fade effect bawah kalau belum expand */}
+      {!expanded && clamped && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 32,
+            background:
+              "linear-gradient(to top, rgba(8,14,35,0.95) 0%, transparent 100%)",
+            pointerEvents: "none",
+          }}
+        />
+      )}
+
+      {/* Hint klik */}
+      {!expanded && clamped && (
+        <div
+          style={{
+            fontSize: 10,
+            color: accent,
+            fontFamily: "monospace",
+            marginTop: 4,
+            cursor: "pointer",
+            opacity: 0.7,
+          }}
+          onClick={() => setExpanded(true)}
+        >
+          selengkapnya ▾
+        </div>
+      )}
+
+      {/* Collapse button */}
+      {expanded && (
+        <div
+          style={{
+            fontSize: 10,
+            color: accent,
+            fontFamily: "monospace",
+            marginTop: 4,
+            cursor: "pointer",
+            opacity: 0.7,
+          }}
+          onClick={() => setExpanded(false)}
+        >
+          tutup ▴
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [typing, setTyping] = useState("");
   const [activeSection, setActiveSection] = useState("hero");
   const [activeDot, setActiveDot] = useState(0);
+  const [activeCertDot, setActiveCertDot] = useState(0);
+  const certScrollRef = useRef(null);
 
   // ── Loading ──
   useEffect(() => {
@@ -892,24 +1099,24 @@ export default function App() {
                 >
                   {[
                     {
-                      num: 5,
+                      num: 7,
                       suffix: "+",
                       label: "Total Proyek",
-                      sub: "Web, AI & Trading Bot",
+                      sub: "Website & Aplikasi Mobile",
                       color: "#818cf8",
                     },
                     {
-                      num: 3,
+                      num: 10,
                       suffix: "+",
-                      label: "Sertifikat & Lomba",
-                      sub: "GEMASTIK & IT Bootcamp",
+                      label: "Sertifikat",
+                      sub: "HKI & Pelatihan Online",
                       color: "#22d3ee",
                     },
                     {
                       num: 100,
                       suffix: "%",
                       label: "Semangat Ngulik",
-                      sub: "Dari Code hingga XAUUSD",
+                      sub: "Semua teknologi baru",
                       color: "#10b981",
                     },
                   ].map((s, i) => (
@@ -1142,22 +1349,23 @@ export default function App() {
               </AnimatedContent>
               <AnimatedContent delay={0.2}>
                 <p style={{ color: "#64748b", lineHeight: 1.8, fontSize: 14 }}>
-                  Saya adalah mahasiswa Teknologi Informasi semester 5 di
+                  Saya adalah mahasiswa Teknologi Informasi semester 6 di
                   Universitas Bina Sarana Informatika dengan minat yang kuat
                   dalam pengembangan web. Memiliki kemampuan dalam membangun
                   aplikasi web menggunakan HTML, CSS, JavaScript, PHP, dan
-                  framework Laravel. Ketertarikan saya terhadap matematika dan
-                  perhitungan logis membantu dalam menulis kode yang efisien,
-                  mengoptimalkan algoritma, dan memecahkan masalah teknis dengan
-                  pendekatan yang terstruktur. Saya percaya bahwa kombinasi
-                  antara kemampuan teknis programming dan analytical thinking
-                  yang kuat akan menjadi aset berharga dalam dunia pengembangan
-                  web. Sebagai seseorang yang selalu haus akan pengetahuan baru,
-                  saya berkomitmen untuk terus belajar teknologi terbaru dan
-                  best practices dalam industri. Saya mencari kesempatan magang
-                  untuk mengaplikasikan ilmu yang telah dipelajari, mendapatkan
-                  pengalaman praktis di dunia profesional, serta berkontribusi
-                  dalam tim pengembangan yang dinamis.
+                  framework Modern Lainnya. Ketertarikan saya terhadap
+                  matematika dan perhitungan logis membantu dalam menulis kode
+                  yang efisien, mengoptimalkan algoritma, dan memecahkan masalah
+                  teknis dengan pendekatan yang terstruktur. Saya percaya bahwa
+                  kombinasi antara kemampuan teknis programming dan analytical
+                  thinking yang kuat akan menjadi aset berharga dalam dunia
+                  pengembangan web. Sebagai seseorang yang selalu haus akan
+                  pengetahuan baru, saya berkomitmen untuk terus belajar
+                  teknologi terbaru dan best practices dalam industri. Saya
+                  mencari kesempatan magang untuk mengaplikasikan ilmu yang
+                  telah dipelajari, mendapatkan pengalaman praktis di dunia
+                  profesional, serta berkontribusi dalam tim pengembangan yang
+                  dinamis.
                 </p>
               </AnimatedContent>
               {/* Quick Facts / Latar Belakang */}
@@ -1770,7 +1978,7 @@ export default function App() {
               }}
             >
               {PROJECTS.map((p, i) => (
-                <div key={i} style={{ width: 340 }}>
+                <div key={i} style={{ width: 340, height: "100%" }}>
                   <AnimatedContent delay={i * 0.12} threshold={0.1}>
                     <TiltedCard
                       rotateAmplitude={10}
@@ -1786,6 +1994,9 @@ export default function App() {
                           overflow: "hidden",
                           cursor: "pointer",
                           height: "100%",
+                          minHeight: 420, // ← tambah ini
+                          display: "flex", // ← tambah ini
+                          flexDirection: "column",
                         }}
                       >
                         <div
@@ -1794,54 +2005,130 @@ export default function App() {
                             background: `linear-gradient(90deg, ${p.accent}, transparent)`,
                           }}
                         />
-                        <div
-                          style={{
-                            padding: "28px 24px 20px",
-                            background: p.grad,
-                          }}
-                        >
-                          <div style={{ fontSize: 36, marginBottom: 8 }}>
-                            {p.icon}
-                          </div>
-                          <span
+                        {p.image ? (
+                          <div
                             style={{
-                              fontSize: 10,
-                              fontFamily: "monospace",
-                              color: p.accent,
-                              fontWeight: 700,
-                              letterSpacing: "0.1em",
+                              position: "relative",
+                              height: 160,
+                              overflow: "hidden",
                             }}
                           >
-                            {p.cat}
-                          </span>
-                        </div>
-                        <div style={{ padding: "20px 24px 24px" }}>
+                            <img
+                              src={p.image}
+                              alt={p.title}
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                                display: "block",
+                                transition: "transform 0.4s ease",
+                              }}
+                              onMouseEnter={(e) =>
+                                (e.currentTarget.style.transform =
+                                  "scale(1.05)")
+                              }
+                              onMouseLeave={(e) =>
+                                (e.currentTarget.style.transform = "scale(1)")
+                              }
+                            />
+                            {/* Overlay gelap bawah */}
+                            <div
+                              style={{
+                                position: "absolute",
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                height: 60,
+                                background:
+                                  "linear-gradient(to top, rgba(8,14,35,0.95), transparent)",
+                              }}
+                            />
+                            {/* Badge kategori */}
+                            <div
+                              style={{
+                                position: "absolute",
+                                top: 12,
+                                left: 12,
+                                background: "rgba(8,14,35,0.85)",
+                                backdropFilter: "blur(8px)",
+                                border: `1px solid ${p.accent}50`,
+                                borderRadius: 6,
+                                padding: "3px 10px",
+                                fontSize: 10,
+                                fontFamily: "monospace",
+                                color: p.accent,
+                                fontWeight: 700,
+                                letterSpacing: "0.1em",
+                              }}
+                            >
+                              {p.cat}
+                            </div>
+                            {/* Icon di pojok kanan */}
+                            <div
+                              style={{
+                                position: "absolute",
+                                top: 10,
+                                right: 12,
+                                fontSize: 22,
+                              }}
+                            >
+                              {p.icon}
+                            </div>
+                          </div>
+                        ) : (
+                          <div
+                            style={{
+                              padding: "28px 24px 20px",
+                              background: p.grad,
+                            }}
+                          >
+                            <div style={{ fontSize: 36, marginBottom: 8 }}>
+                              {p.icon}
+                            </div>
+                            <span
+                              style={{
+                                fontSize: 10,
+                                fontFamily: "monospace",
+                                color: p.accent,
+                                fontWeight: 700,
+                                letterSpacing: "0.1em",
+                              }}
+                            >
+                              {p.cat}
+                            </span>
+                          </div>
+                        )}
+                        <div
+                          style={{
+                            padding: "20px 24px 24px",
+                            display: "flex",
+                            flexDirection: "column",
+                            flex: 1,
+                          }}
+                        >
                           <h3
                             style={{
                               fontWeight: 800,
                               color: "white",
                               fontSize: 15,
                               marginBottom: 10,
+                              flexShrink: 0,
                             }}
                           >
                             {p.title}
                           </h3>
-                          <p
-                            style={{
-                              color: "#475569",
-                              fontSize: 12,
-                              lineHeight: 1.7,
-                              marginBottom: 16,
-                              minHeight: 56,
-                            }}
-                          >
-                            {p.desc}
-                          </p>
+
+                          {/* Desc dengan expand on click + blur effect */}
+                          <ExpandableDesc desc={p.desc} accent={p.accent} />
+
                           <div
                             style={{
                               display: "flex",
                               flexWrap: "wrap",
                               gap: 6,
+                              flexShrink: 0,
+                              marginTop: "auto",
+                              paddingTop: 12,
                             }}
                           >
                             {p.tags.map((tag) => (
@@ -1894,6 +2181,288 @@ export default function App() {
                       behavior: "smooth",
                     });
                     setActiveDot(i);
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════
+    CERTIFICATES
+═══════════════════════════════════════ */}
+        <section
+          id="certificates"
+          style={{ padding: "100px 24px", position: "relative", zIndex: 10 }}
+        >
+          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+            <AnimatedContent style={{ textAlign: "center", marginBottom: 64 }}>
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: 11,
+                  color: "#6366f1",
+                  letterSpacing: "0.15em",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 8,
+                  marginBottom: 8,
+                }}
+              >
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: 24,
+                    height: 1,
+                    background: "#6366f1",
+                  }}
+                />
+                CERTIFICATES.JSON
+              </span>
+              <SplitText
+                text="Sertifikat & Pencapaian"
+                className="section-title-text"
+                delay={40}
+                duration={0.5}
+                from={{ opacity: 0, y: 30 }}
+                to={{ opacity: 1, y: 0 }}
+                splitBy="characters"
+                textAlign="center"
+              />
+            </AnimatedContent>
+
+            {/* Scroll Container */}
+            <div
+              ref={certScrollRef}
+              className="custom-scroll"
+              onMouseDown={(e) => {
+                const el = certScrollRef.current;
+                el.isDown = true;
+                el.startX = e.pageX - el.offsetLeft;
+                el.scrollLeftStart = el.scrollLeft;
+                el.style.cursor = "grabbing";
+              }}
+              onMouseLeave={() => {
+                certScrollRef.current.isDown = false;
+                certScrollRef.current.style.cursor = "grab";
+              }}
+              onMouseUp={() => {
+                certScrollRef.current.isDown = false;
+                certScrollRef.current.style.cursor = "grab";
+              }}
+              onMouseMove={(e) => {
+                const el = certScrollRef.current;
+                if (!el.isDown) return;
+                e.preventDefault();
+                const x = e.pageX - el.offsetLeft;
+                const walk = (x - el.startX) * 2;
+                el.scrollLeft = el.scrollLeftStart - walk;
+              }}
+              onScroll={(e) => {
+                const el = e.currentTarget;
+                const dotIndex = Math.round(el.scrollLeft / 320);
+                setActiveCertDot(Math.min(dotIndex, CERTIFICATES.length - 1));
+              }}
+              style={{
+                display: "flex",
+                gap: 24,
+                overflowX: "auto",
+                overflowY: "hidden",
+                padding: "20px 10px 40px",
+                scrollBehavior: "auto",
+                cursor: "grab",
+                userSelect: "none",
+                WebkitOverflowScrolling: "touch",
+              }}
+            >
+              {CERTIFICATES.map((cert, i) => (
+                <div key={i} style={{ flexShrink: 0, width: 300 }}>
+                  <AnimatedContent delay={i * 0.08} threshold={0.1}>
+                    <TiltedCard
+                      rotateAmplitude={8}
+                      scaleOnHover={1.04}
+                      showGlare
+                    >
+                      <div
+                        style={{
+                          background: "rgba(8,14,35,0.9)",
+                          backdropFilter: "blur(20px)",
+                          border: `1px solid ${cert.accent}20`,
+                          borderRadius: 20,
+                          overflow: "hidden",
+                          borderTop: `2px solid ${cert.accent}`,
+                        }}
+                      >
+                        {/* Preview Sertifikat */}
+                        <div
+                          style={{
+                            position: "relative",
+                            height: 180,
+                            overflow: "hidden",
+                            background: "#f8fafc",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => window.open(cert.image, "_blank")}
+                        >
+                          <img
+                            src={cert.image}
+                            alt={cert.title}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                              objectPosition: "top",
+                              transition: "transform 0.4s ease",
+                            }}
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.transform = "scale(1.05)")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.transform = "scale(1)")
+                            }
+                          />
+                          {/* Overlay hover hint */}
+                          <div
+                            style={{
+                              position: "absolute",
+                              inset: 0,
+                              background: "rgba(0,0,0,0)",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              transition: "background 0.3s",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background =
+                                "rgba(0,0,0,0.4)";
+                              e.currentTarget.querySelector(
+                                "span",
+                              ).style.opacity = "1";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background =
+                                "rgba(0,0,0,0)";
+                              e.currentTarget.querySelector(
+                                "span",
+                              ).style.opacity = "0";
+                            }}
+                          >
+                            <span
+                              style={{
+                                opacity: 0,
+                                transition: "opacity 0.3s",
+                                color: "white",
+                                fontSize: 12,
+                                fontFamily: "monospace",
+                                background: "rgba(0,0,0,0.6)",
+                                padding: "6px 14px",
+                                borderRadius: 999,
+                                border: "1px solid rgba(255,255,255,0.2)",
+                              }}
+                            >
+                              🔍 Lihat Penuh
+                            </span>
+                          </div>
+                          {/* Gradient bawah */}
+                          <div
+                            style={{
+                              position: "absolute",
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              height: 50,
+                              background:
+                                "linear-gradient(to top, rgba(8,14,35,0.9), transparent)",
+                              pointerEvents: "none",
+                            }}
+                          />
+                        </div>
+
+                        {/* Info */}
+                        <div style={{ padding: "16px 20px 20px" }}>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 8,
+                              marginBottom: 8,
+                            }}
+                          >
+                            <span style={{ fontSize: 18 }}>{cert.icon}</span>
+                            <span
+                              style={{
+                                fontSize: 10,
+                                fontFamily: "monospace",
+                                color: cert.accent,
+                                fontWeight: 700,
+                                letterSpacing: "0.08em",
+                                background: `${cert.accent}15`,
+                                padding: "2px 8px",
+                                borderRadius: 4,
+                                border: `1px solid ${cert.accent}30`,
+                              }}
+                            >
+                              {cert.year}
+                            </span>
+                          </div>
+                          <h3
+                            style={{
+                              fontWeight: 800,
+                              color: "white",
+                              fontSize: 13,
+                              lineHeight: 1.4,
+                              marginBottom: 6,
+                            }}
+                          >
+                            {cert.title}
+                          </h3>
+                          <p
+                            style={{
+                              color: "#475569",
+                              fontSize: 11,
+                              fontFamily: "monospace",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 4,
+                            }}
+                          >
+                            <span style={{ color: cert.accent }}>◆</span>
+                            {cert.issuer}
+                          </p>
+                        </div>
+                      </div>
+                    </TiltedCard>
+                  </AnimatedContent>
+                </div>
+              ))}
+            </div>
+
+            {/* Dot indicator */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: 8,
+                marginTop: 16,
+              }}
+            >
+              {CERTIFICATES.map((_, i) => (
+                <motion.div
+                  key={i}
+                  animate={{
+                    width: activeCertDot === i ? 24 : 8,
+                    background:
+                      activeCertDot === i ? "#6366f1" : "rgba(99,102,241,0.3)",
+                  }}
+                  transition={{ duration: 0.3 }}
+                  style={{ height: 8, borderRadius: 999, cursor: "pointer" }}
+                  onClick={() => {
+                    certScrollRef.current.scrollTo({
+                      left: i * 324,
+                      behavior: "smooth",
+                    });
+                    setActiveCertDot(i);
                   }}
                 />
               ))}
