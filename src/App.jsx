@@ -167,7 +167,14 @@ export default function App() {
 
   // ── Typing effect ──
   useEffect(() => {
-    const words = ["Web Developer", "AI Engineer", "Forex Trader"];
+    const words = [
+      "Fullstack Developer",
+      "Backend & Frontend Specialist",
+      "IT Enthusiast",
+      "AI Engineer",
+      "Building Scalable web Apps",
+      "Always Learning New Tech",
+    ];
     let wi = 0,
       ci = 0,
       del = false;
@@ -678,23 +685,31 @@ export default function App() {
               {/* Desc — BlurText (ReactBits) */}
               <AnimatedContent delay={1.0}>
                 <BlurText
-                  text="Mahasiswa Teknik Informatika asal Gunung Putri yang antusias dengan Web Development, AI Engineering, dan eksplorasi pasar finansial."
+                  text="Mahasiswa Teknik Informatika Semester 6 yang berfokus pada pengembangan web dan teknologi modern. Berpengalaman membangun berbagai aplikasi seperti E-commerce dan platform jasa menggunakan Laravel, JavaScript, dan framework modern lainnya. Terbiasa bekerja dalam tim serta memiliki ketertarikan tinggi untuk terus belajar dan mengembangkan solusi digital yang efisien dan scalable."
                   animateBy="words"
                   direction="bottom"
-                  stepDelay={60}
-                  duration={0.5}
+                  stepDelay={50}
+                  duration={0.4}
                   style={{
                     color: "#64748b",
                     fontSize: 15,
-                    lineHeight: 1.7,
-                    maxWidth: 480,
+                    lineHeight: 1.8,
+                    maxWidth: 580, // Sedikit diperlebar agar teks panjang tidak terlalu menumpuk ke bawah
+                    textAlign: "justify",
                   }}
                 />
               </AnimatedContent>
 
               {/* CTA Buttons — StarBorder + Magnet (ReactBits) */}
               <AnimatedContent delay={1.2}>
-                <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 12,
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                  }}
+                >
                   <Magnet magnetStrength={0.3}>
                     <StarBorder
                       as="a"
@@ -703,7 +718,7 @@ export default function App() {
                       speed="3s"
                     >
                       <i className="fas fa-rocket" style={{ fontSize: 12 }} />{" "}
-                      Lihat Proyek
+                      Lihat Karya
                     </StarBorder>
                   </Magnet>
                   <Magnet magnetStrength={0.3}>
@@ -720,98 +735,142 @@ export default function App() {
                       Hubungi Saya
                     </StarBorder>
                   </Magnet>
+
+                  {/* GitHub — Glass + Glow */}
+                  <Magnet magnetStrength={0.3}>
+                    <a
+                      href="https://github.com/Sendyawldn"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 8,
+                        padding: "8px 18px",
+                        borderRadius: 999,
+                        background: "rgba(255,255,255,0.05)",
+                        backdropFilter: "blur(12px)",
+                        border: "1px solid rgba(255,255,255,0.12)",
+                        color: "white",
+                        fontSize: 13,
+                        fontWeight: 600,
+                        textDecoration: "none",
+                        boxShadow:
+                          "0 0 16px rgba(99,102,241,0.25), inset 0 1px 0 rgba(255,255,255,0.08)",
+                        transition: "all 0.3s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background =
+                          "rgba(99,102,241,0.15)";
+                        e.currentTarget.style.borderColor =
+                          "rgba(99,102,241,0.5)";
+                        e.currentTarget.style.boxShadow =
+                          "0 0 28px rgba(99,102,241,0.5), inset 0 1px 0 rgba(255,255,255,0.1)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background =
+                          "rgba(255,255,255,0.05)";
+                        e.currentTarget.style.borderColor =
+                          "rgba(255,255,255,0.12)";
+                        e.currentTarget.style.boxShadow =
+                          "0 0 16px rgba(99,102,241,0.25), inset 0 1px 0 rgba(255,255,255,0.08)";
+                      }}
+                    >
+                      {/* GitHub SVG */}
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="white"
+                        style={{ width: 16, height: 16, flexShrink: 0 }}
+                      >
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z" />
+                      </svg>
+                      GitHub
+                    </a>
+                  </Magnet>
                 </div>
               </AnimatedContent>
-
-              {/* Holographic Status Badge */}
+              {/* STATS — CountUp */}
               <AnimatedContent delay={1.4}>
                 <div
                   style={{
-                    background: "rgba(8,14,35,0.6)",
-                    backdropFilter: "blur(24px)",
-                    border: "1px solid rgba(99,102,241,0.2)",
-                    borderRadius: 16,
-                    padding: "20px",
-                    width: "fit-content",
-                    position: "relative",
-                    overflow: "hidden",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 16,
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3,1fr)",
+                    gap: 12,
                   }}
                 >
-                  {/* Efek Cahaya Latar */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: -20,
-                      left: -20,
-                      width: 80,
-                      height: 80,
-                      background: "rgba(34,211,238,0.2)",
-                      filter: "blur(30px)",
-                      borderRadius: "50%",
-                    }}
-                  />
-
-                  {/* Avatar / Ikon Identitas */}
-                  <div
-                    style={{
-                      width: 50,
-                      height: 50,
-                      borderRadius: "12px",
-                      background: "linear-gradient(135deg, #6366f1, #22d3ee)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: 24,
-                      color: "white",
-                      boxShadow: "0 8px 16px rgba(99,102,241,0.3)",
-                      position: "relative",
-                      zIndex: 2,
-                    }}
-                  >
-                    <i className="fas fa-user-astronaut"></i>
-                  </div>
-
-                  {/* Teks Status */}
-                  <div style={{ position: "relative", zIndex: 2 }}>
-                    <h4
-                      style={{
-                        color: "white",
-                        fontSize: 14,
-                        fontWeight: 700,
-                        margin: "0 0 4px 0",
-                      }}
-                    >
-                      Sendi Awaludin
-                    </h4>
-                    <p
-                      style={{
-                        color: "#94a3b8",
-                        fontSize: 12,
-                        margin: 0,
-                        fontFamily: "monospace",
-                      }}
-                    >
-                      <span style={{ color: "#22d3ee" }}>Exploring:</span> Web3
-                      & AI
-                    </p>
-                    <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-                      <span
-                        style={{
-                          fontSize: 10,
-                          padding: "2px 8px",
-                          borderRadius: 12,
-                          background: "rgba(16,185,129,0.1)",
-                          color: "#10b981",
-                          border: "1px solid rgba(16,185,129,0.2)",
-                        }}
-                      >
-                        Available for work
-                      </span>
-                    </div>
-                  </div>
+                  {[
+                    {
+                      num: 5,
+                      suffix: "+",
+                      label: "Total Proyek",
+                      sub: "Web, AI & Trading Bot",
+                      color: "#818cf8",
+                    },
+                    {
+                      num: 3,
+                      suffix: "+",
+                      label: "Sertifikat & Lomba",
+                      sub: "GEMASTIK & IT Bootcamp",
+                      color: "#22d3ee",
+                    },
+                    {
+                      num: 100,
+                      suffix: "%",
+                      label: "Semangat Ngulik",
+                      sub: "Dari Code hingga XAUUSD",
+                      color: "#10b981",
+                    },
+                  ].map((s, i) => (
+                    <AnimatedContent key={i} delay={i * 0.1} threshold={0.2}>
+                      <TiltedCard rotateAmplitude={8} scaleOnHover={1.03}>
+                        <div
+                          style={{
+                            background: "rgba(8,14,35,0.85)",
+                            backdropFilter: "blur(20px)",
+                            border: "1px solid rgba(99,102,241,0.1)",
+                            borderRadius: 16,
+                            padding: "16px 12px",
+                            textAlign: "center",
+                            borderTop: `2px solid ${s.color}`,
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: 28,
+                              fontWeight: 900,
+                              color: s.color,
+                              textShadow: `0 0 20px ${s.color}80`,
+                              lineHeight: 1,
+                            }}
+                          >
+                            <CountUp to={s.num} duration={2.5} delay={3} />
+                            {s.suffix}
+                          </div>
+                          <p
+                            style={{
+                              fontWeight: 700,
+                              color: "white",
+                              fontSize: 11,
+                              marginTop: 6,
+                              marginBottom: 0,
+                            }}
+                          >
+                            {s.label}
+                          </p>
+                          <p
+                            style={{
+                              color: "#475569",
+                              fontSize: 10,
+                              marginTop: 3,
+                              marginBottom: 0,
+                            }}
+                          >
+                            {s.sub}
+                          </p>
+                        </div>
+                      </TiltedCard>
+                    </AnimatedContent>
+                  ))}
                 </div>
               </AnimatedContent>
             </div>
@@ -827,90 +886,6 @@ export default function App() {
             >
               <Lanyard gravity={[0, -20, 0]} />
             </div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════
-            STATS — CountUp (ReactBits)
-        ═══════════════════════════════════════ */}
-        <section
-          id="stats"
-          style={{ padding: "60px 24px", position: "relative", zIndex: 10 }}
-        >
-          <div
-            style={{
-              maxWidth: 900,
-              margin: "0 auto",
-              display: "grid",
-              gridTemplateColumns: "repeat(3,1fr)",
-              gap: 24,
-            }}
-          >
-            {[
-              {
-                num: 5,
-                suffix: "+",
-                label: "Total Proyek",
-                sub: "Web, AI & Trading Bot",
-                color: "#818cf8",
-              },
-              {
-                num: 3,
-                suffix: "+",
-                label: "Sertifikat & Lomba",
-                sub: "GEMASTIK & IT Bootcamp",
-                color: "#22d3ee",
-              },
-              {
-                num: 100,
-                suffix: "%",
-                label: "Semangat Ngulik",
-                sub: "Dari Code hingga XAUUSD",
-                color: "#10b981",
-              },
-            ].map((s, i) => (
-              <AnimatedContent key={i} delay={i * 0.1} threshold={0.2}>
-                <TiltedCard rotateAmplitude={8} scaleOnHover={1.03}>
-                  <div
-                    style={{
-                      background: "rgba(8,14,35,0.85)",
-                      backdropFilter: "blur(20px)",
-                      border: "1px solid rgba(99,102,241,0.1)",
-                      borderRadius: 20,
-                      padding: "32px 24px",
-                      textAlign: "center",
-                      borderTop: `2px solid ${s.color}`,
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: 52,
-                        fontWeight: 900,
-                        color: s.color,
-                        textShadow: `0 0 30px ${s.color}80`,
-                        lineHeight: 1,
-                      }}
-                    >
-                      <CountUp to={s.num} duration={2.5} />
-                      {s.suffix}
-                    </div>
-                    <p
-                      style={{
-                        fontWeight: 700,
-                        color: "white",
-                        fontSize: 13,
-                        marginTop: 8,
-                      }}
-                    >
-                      {s.label}
-                    </p>
-                    <p style={{ color: "#475569", fontSize: 11, marginTop: 4 }}>
-                      {s.sub}
-                    </p>
-                  </div>
-                </TiltedCard>
-              </AnimatedContent>
-            ))}
           </div>
         </section>
 

@@ -1,6 +1,5 @@
 // src/components/ReactBits/BlurText.jsx
-// Sumber: reactbits.dev/text-animations/blur-text
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import { motion, useAnimation, useInView } from "motion/react";
 
 function buildVariants(direction, delay, stepDelay, duration) {
@@ -33,7 +32,8 @@ export default function BlurText({
   stepDelay = 80,
   duration = 0.5,
   onAnimationComplete,
-  ...props
+  style = {}, // ← destructure style agar tidak masuk ke ...rest
+  ...rest // ← sisa props (TIDAK termasuk style)
 }) {
   const controls = useAnimation();
   const ref = useRef(null);
@@ -49,8 +49,17 @@ export default function BlurText({
     <p
       ref={ref}
       className={className}
-      style={{ display: "flex", flexWrap: "wrap", gap: "0.25em" }}
-      {...props}
+      style={{
+        // ── base layout — HARUS di sini agar tidak bisa tertimpa ──
+        display: "flex",
+        flexWrap: "wrap",
+        // gap antar kata: gabungkan rowGap dan columnGap
+        rowGap: "0.1em",
+        columnGap: "0.35em",
+        // ── style dari props di-merge setelahnya ──
+        ...style,
+      }}
+      {...rest}
     >
       {items.map((item, i) => (
         <motion.span
