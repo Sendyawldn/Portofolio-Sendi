@@ -140,7 +140,8 @@ const PROJECTS = [
     icon: "🛍️",
     accent: "#6366f1",
     grad: "linear-gradient(135deg, #1a1340 0%, #0d0825 100%)",
-    image: "/jastipku.png",
+    image: ["/jastipku.png"],
+    github: "https://github.com/Sendyawldn/jastipku.git",
   },
   {
     title: "Money Tracking App",
@@ -150,7 +151,8 @@ const PROJECTS = [
     icon: "💰",
     accent: "#10b981",
     grad: "linear-gradient(135deg, #051510 0%, #020a08 100%)",
-    image: "/money-tracking.png",
+    image: ["/money-tracking.png"],
+    github: "https://github.com/Sendyawldn/money-tracking.git",
   },
   {
     title: "Jakarta Scooter Shop — E-Commerce",
@@ -160,7 +162,9 @@ const PROJECTS = [
     icon: "🛵",
     accent: "#f59e0b",
     grad: "linear-gradient(135deg, #1a1200 0%, #0a0800 100%)",
-    image: "/vespa.png",
+    image: ["/vespa.png"],
+    github: "https://github.com/Sendyawldn/EcomerceVespa.git",
+    demo: "https://jakartascootershop.com/",
   },
   {
     title: "Combro Fishing — Landing Page",
@@ -170,7 +174,9 @@ const PROJECTS = [
     icon: "🎣",
     accent: "#22d3ee",
     grad: "linear-gradient(135deg, #051820 0%, #020c10 100%)",
-    image: "/combrofishing.png",
+    image: ["/combrofishing.png"],
+    github: "https://github.com/Sendyawldn/Combro-Fishing.git",
+    demo: "https://combrofishing.vercel.app/",
   },
   {
     title: "VeritasID — Digital Credential Platform",
@@ -188,7 +194,9 @@ const PROJECTS = [
     icon: "⛓️",
     accent: "#6366f1",
     grad: "linear-gradient(135deg, #1a1340 0%, #0d0825 100%)",
-    image: "/veritasid.png",
+    image: ["/veritasid.png"],
+    github: "https://github.com/Sendyawldn/digital-credential-platform.git",
+    demo: "https://digital-credential-platform.vercel.app/",
   },
   {
     title: "System Admin Billiard",
@@ -198,7 +206,8 @@ const PROJECTS = [
     icon: "🎱",
     accent: "#8b5cf6",
     grad: "linear-gradient(135deg, #110a2a 0%, #080514 100%)",
-    image: "/billiard.png",
+    image: ["/billiard.png"],
+    github: "https://github.com/Sendyawldn/billiard.git",
   },
   {
     title: "Kasir D'Krispy — Sistem POS Restoran",
@@ -208,7 +217,8 @@ const PROJECTS = [
     icon: "🍗",
     accent: "#f97316",
     grad: "linear-gradient(135deg, #1a0a00 0%, #0d0500 100%)",
-    image: "/dkrispy.png",
+    image: ["/dkrispy.png"],
+    github: "https://github.com/Sendyawldn/Kasir-dkrispy.git",
   },
 ];
 
@@ -456,7 +466,10 @@ export default function App() {
   const [activeSection, setActiveSection] = useState("hero");
   const [activeDot, setActiveDot] = useState(0);
   const [activeCertDot, setActiveCertDot] = useState(0);
+  const [selectedCert, setSelectedCert] = useState(null);
   const certScrollRef = useRef(null);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
   // ── Loading ──
   useEffect(() => {
@@ -1986,6 +1999,10 @@ export default function App() {
                       showGlare
                     >
                       <div
+                        onClick={() => {
+                          setSelectedProject(p);
+                          setCurrentImgIndex(0);
+                        }}
                         style={{
                           background: "rgba(8,14,35,0.9)",
                           backdropFilter: "blur(20px)",
@@ -2014,7 +2031,11 @@ export default function App() {
                             }}
                           >
                             <img
-                              src={p.image}
+                              src={
+                                p.image && p.image.length > 0
+                                  ? p.image[0]
+                                  : p.image
+                              }
                               alt={p.title}
                               style={{
                                 width: "100%",
@@ -2303,7 +2324,7 @@ export default function App() {
                             background: "#f8fafc",
                             cursor: "pointer",
                           }}
-                          onClick={() => window.open(cert.image, "_blank")}
+                          onClick={() => setSelectedCert(cert)}
                         >
                           <img
                             src={cert.image}
@@ -2526,19 +2547,36 @@ export default function App() {
                   />
                 </div>
                 <p style={{ color: "#64748b", fontSize: 14, lineHeight: 1.8 }}>
-                  Punya pertanyaan, tawaran proyek, atau sekadar ingin diskusi
-                  soal Web Dev dan market XAUUSD? Jangan ragu untuk menghubungi!
+                  Punya ide proyek yang menarik, tawaran kolaborasi, atau
+                  sekadar ingin berdiskusi seputar dunia pengembangan web? Saya
+                  selalu terbuka untuk obrolan baru. Mari bangun sesuatu yang
+                  luar biasa bersama!
                 </p>
                 {[
                   {
                     icon: "✉️",
-                    text: "sendiawaludin@gmail.com",
-                    href: "mailto:sendiawaludin@gmail.com",
+                    text: "sendyawaludin4568@gmail.com",
+                    href: "mailto:sendyawaludin4568@gmail.com",
                   },
                   {
                     icon: "💻",
                     text: "github.com/Sendyawldn",
                     href: "https://github.com/Sendyawldn",
+                  },
+                  {
+                    icon: "🔗",
+                    text: "LinkedIn",
+                    href: "https://www.linkedin.com/in/sendi-awaludin-79b373255?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+                  },
+                  {
+                    icon: "📸",
+                    text: "Instagram",
+                    href: "https://instagram.com/sendyawldn",
+                  },
+                  {
+                    icon: "🎵",
+                    text: "TikTok",
+                    href: "https://www.tiktok.com/@sendyawldn_?_r=1&_t=ZS-94XmdnbMCEz",
                   },
                   { icon: "📍", text: "Gunung Putri, Jawa Barat" },
                 ].map((c, i) =>
@@ -2599,8 +2637,41 @@ export default function App() {
             <AnimatedContent direction="horizontal" distance={60} delay={0.1}>
               <TiltedCard rotateAmplitude={3} showGlare>
                 <form
-                  action="https://api.web3forms.com/submit"
-                  method="POST"
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+
+                    // Efek visual pada tombol saat mengirim
+                    const btn = e.target.querySelector("button");
+                    const originalContent = btn.innerHTML;
+                    btn.innerHTML =
+                      '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+                    btn.disabled = true;
+
+                    try {
+                      const response = await fetch(
+                        "https://api.web3forms.com/submit",
+                        {
+                          method: "POST",
+                          body: formData,
+                        },
+                      );
+                      const result = await response.json();
+                      if (result.success) {
+                        alert(
+                          "Pesan berhasil terkirim langsung ke email saya!",
+                        );
+                        e.target.reset(); // Mengosongkan form kembali
+                      } else {
+                        alert("Terjadi kesalahan, silakan coba lagi.");
+                      }
+                    } catch (error) {
+                      alert("Gagal terhubung ke server.");
+                    } finally {
+                      btn.innerHTML = originalContent;
+                      btn.disabled = false;
+                    }
+                  }}
                   style={{
                     background: "rgba(8,14,35,0.9)",
                     backdropFilter: "blur(20px)",
@@ -2612,23 +2683,34 @@ export default function App() {
                     gap: 16,
                   }}
                 >
+                  {/* PENTING: Ganti "YOUR_ACCESS_KEY" dengan key yang Anda dapatkan 
+          dari web3forms.com agar pesan masuk ke email Anda.
+      */}
                   <input
                     type="hidden"
                     name="access_key"
-                    value="YOUR_ACCESS_KEY"
+                    value={import.meta.env.VITE_WEB3FORMS_KEY}
                   />
+
+                  {/* Fitur Anti-Spam (Honeypot) */}
+                  <input
+                    type="checkbox"
+                    name="botcheck"
+                    style={{ display: "none" }}
+                  />
+
                   {[
                     {
                       label: "Nama Lengkap",
                       name: "name",
                       type: "text",
-                      placeholder: "Masukkan nama lengkap...",
+                      placeholder: "Siapa nama Anda?",
                     },
                     {
                       label: "Alamat Email",
                       name: "email",
                       type: "email",
-                      placeholder: "Masukkan email...",
+                      placeholder: "nama@email.com",
                     },
                   ].map((f) => (
                     <div key={f.name}>
@@ -2672,6 +2754,7 @@ export default function App() {
                       />
                     </div>
                   ))}
+
                   <div>
                     <label
                       style={{
@@ -2688,7 +2771,7 @@ export default function App() {
                       name="message"
                       rows={4}
                       required
-                      placeholder="Halo Zen, saya ingin..."
+                      placeholder="Halo Zen, saya tertarik untuk bekerja sama mengenai..."
                       style={{
                         width: "100%",
                         padding: "11px 14px",
@@ -2713,6 +2796,7 @@ export default function App() {
                       }}
                     />
                   </div>
+
                   <Magnet magnetStrength={0.2}>
                     <StarBorder
                       as="button"
@@ -2721,11 +2805,20 @@ export default function App() {
                       speed="3s"
                       style={{ width: "100%" }}
                     >
-                      <i
-                        className="fas fa-paper-plane"
-                        style={{ fontSize: 11 }}
-                      />{" "}
-                      Kirim Pesan
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "8px",
+                        }}
+                      >
+                        <i
+                          className="fas fa-paper-plane"
+                          style={{ fontSize: 11 }}
+                        />
+                        <span>Kirim Pesan</span>
+                      </div>
                     </StarBorder>
                   </Magnet>
                 </form>
@@ -2733,6 +2826,385 @@ export default function App() {
             </AnimatedContent>
           </div>
         </section>
+        {/* ── MODAL CERTIFICATE ── */}
+        <AnimatePresence>
+          {selectedCert && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedCert(null)}
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 1000,
+                background: "rgba(2, 5, 16, 0.95)",
+                backdropFilter: "blur(12px)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "40px 24px", // Memberi ruang agar tidak mentok layar
+                cursor: "zoom-out",
+              }}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  maxWidth: "90%", // Membatasi lebar agar tidak memenuhi layar
+                  maxHeight: "85vh", // Membatasi tinggi maksimal 85% dari tinggi layar
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  position: "relative",
+                  cursor: "default",
+                }}
+              >
+                {/* Tombol Close */}
+                <button
+                  onClick={() => setSelectedCert(null)}
+                  style={{
+                    position: "absolute",
+                    top: -45,
+                    right: 0,
+                    background: "rgba(255,255,255,0.1)",
+                    border: "none",
+                    color: "white",
+                    width: 35,
+                    height: 35,
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                    transition: "0.3s",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.background = "rgba(255,255,255,0.2)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.background = "rgba(255,255,255,0.1)")
+                  }
+                >
+                  <i className="fas fa-times" />
+                </button>
+
+                {/* Container Gambar dengan batasan scroll jika masih terlalu tinggi */}
+                <div
+                  style={{
+                    width: "100%",
+                    overflow: "hidden",
+                    borderRadius: 16,
+                    boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                  }}
+                >
+                  <img
+                    src={selectedCert.image}
+                    alt={selectedCert.title}
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      maxHeight: "70vh", // Gambar tidak akan lebih tinggi dari 70% layar
+                      objectFit: "contain", // Memastikan gambar tidak terpotong
+                      display: "block",
+                    }}
+                  />
+                </div>
+
+                <div
+                  style={{
+                    marginTop: 20,
+                    textAlign: "center",
+                    background: "rgba(255,255,255,0.05)",
+                    padding: "12px 24px",
+                    borderRadius: 12,
+                    border: "1px solid rgba(255,255,255,0.05)",
+                  }}
+                >
+                  <h3
+                    style={{
+                      color: "white",
+                      fontSize: 16,
+                      fontWeight: 800,
+                      margin: 0,
+                    }}
+                  >
+                    {selectedCert.title}
+                  </h3>
+                  <p
+                    style={{
+                      color: "#94a3b8",
+                      fontFamily: "monospace",
+                      fontSize: 12,
+                      marginTop: 4,
+                    }}
+                  >
+                    {selectedCert.issuer} — {selectedCert.year}
+                  </p>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {/* ── MODAL DETAIL PROJECT ── */}
+        <AnimatePresence>
+          {selectedProject && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedProject(null)}
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 1100,
+                background: "rgba(2, 5, 16, 0.95)",
+                backdropFilter: "blur(16px)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 20,
+              }}
+            >
+              <motion.div
+                initial={{ scale: 0.9, y: 20, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
+                exit={{ scale: 0.9, y: 20, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  maxWidth: 1000,
+                  width: "100%",
+                  maxHeight: "90vh",
+                  background: "#080e23",
+                  borderRadius: 24,
+                  border: "1px solid rgba(99,102,241,0.2)",
+                  overflow: "hidden",
+                  display: "grid",
+                  gridTemplateColumns: "1.2fr 1fr", // Desktop: Kiri Gambar, Kanan Info
+                  position: "relative",
+                }}
+                className="project-modal-grid"
+              >
+                {/* Tombol Close */}
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  style={{
+                    position: "absolute",
+                    top: 20,
+                    right: 20,
+                    zIndex: 10,
+                    background: "rgba(0,0,0,0.5)",
+                    border: "none",
+                    color: "white",
+                    width: 40,
+                    height: 40,
+                    borderRadius: "50%",
+                    cursor: "pointer",
+                  }}
+                >
+                  <i className="fas fa-times" />
+                </button>
+
+                {/* Bagian Kiri: Carousel Gambar */}
+                <div
+                  style={{
+                    position: "relative",
+                    background: "#000",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                  }}
+                >
+                  <img
+                    src={
+                      selectedProject.images
+                        ? selectedProject.images[currentImgIndex]
+                        : selectedProject.image
+                    }
+                    alt={selectedProject.title}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain",
+                    }}
+                  />
+
+                  {/* Navigasi Carousel (Muncul jika ada lebih dari 1 gambar) */}
+                  {selectedProject.images?.length > 1 && (
+                    <>
+                      <button
+                        onClick={() =>
+                          setCurrentImgIndex((prev) =>
+                            prev === 0
+                              ? selectedProject.images.length - 1
+                              : prev - 1,
+                          )
+                        }
+                        style={{
+                          position: "absolute",
+                          left: 10,
+                          background: "rgba(0,0,0,0.3)",
+                          color: "white",
+                          border: "none",
+                          padding: 10,
+                          borderRadius: 8,
+                          cursor: "pointer",
+                        }}
+                      >
+                        <i className="fas fa-chevron-left" />
+                      </button>
+                      <button
+                        onClick={() =>
+                          setCurrentImgIndex((prev) =>
+                            prev === selectedProject.images.length - 1
+                              ? 0
+                              : prev + 1,
+                          )
+                        }
+                        style={{
+                          position: "absolute",
+                          right: 10,
+                          background: "rgba(0,0,0,0.3)",
+                          color: "white",
+                          border: "none",
+                          padding: 10,
+                          borderRadius: 8,
+                          cursor: "pointer",
+                        }}
+                      >
+                        <i className="fas fa-chevron-right" />
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                {/* Bagian Kanan: Informasi Detail */}
+                <div
+                  style={{
+                    padding: 40,
+                    overflowY: "auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 20,
+                  }}
+                >
+                  <div>
+                    <span
+                      style={{
+                        color: selectedProject.accent,
+                        fontFamily: "monospace",
+                        fontSize: 12,
+                        fontWeight: 700,
+                      }}
+                    >
+                      {selectedProject.cat}
+                    </span>
+                    <h2
+                      style={{
+                        color: "white",
+                        fontSize: 28,
+                        fontWeight: 900,
+                        marginTop: 8,
+                      }}
+                    >
+                      {selectedProject.title}
+                    </h2>
+                  </div>
+
+                  <p
+                    style={{ color: "#94a3b8", fontSize: 15, lineHeight: 1.8 }}
+                  >
+                    {selectedProject.desc}
+                  </p>
+
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                    {selectedProject.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        style={{
+                          background: `${selectedProject.accent}15`,
+                          color: selectedProject.accent,
+                          padding: "6px 14px",
+                          borderRadius: 8,
+                          fontSize: 12,
+                          fontFamily: "monospace",
+                          border: `1px solid ${selectedProject.accent}30`,
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div
+                    style={{
+                      marginTop: "auto",
+                      paddingTop: 20,
+                      display: "flex",
+                      gap: "12px",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {/* Tombol GitHub */}
+                    {selectedProject.github && (
+                      <div
+                        onClick={() =>
+                          window.open(selectedProject.github, "_blank")
+                        }
+                        style={{ cursor: "pointer" }}
+                      >
+                        <StarBorder color="#ffffff" speed="5s">
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                              padding: "0 4px",
+                            }}
+                          >
+                            <i
+                              className="fab fa-github"
+                              style={{ fontSize: "18px" }}
+                            />
+                            <span>GitHub</span>
+                          </div>
+                        </StarBorder>
+                      </div>
+                    )}
+
+                    {/* Tombol Live Demo / Hostingan */}
+                    {selectedProject.demo && (
+                      <div
+                        onClick={() =>
+                          window.open(selectedProject.demo, "_blank")
+                        }
+                        style={{ cursor: "pointer" }}
+                      >
+                        <StarBorder color={selectedProject.accent} speed="3s">
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                              padding: "0 4px",
+                            }}
+                          >
+                            <i className="fas fa-external-link-alt" />
+                            <span>Lihat Proyek</span>
+                          </div>
+                        </StarBorder>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       {/* ── FOOTER ── */}
@@ -2820,6 +3292,15 @@ export default function App() {
         }
         @media (min-width: 769px) {
           .show-mobile { display: none !important; }
+        }
+        @media (max-width: 850px) {
+          .project-modal-grid {
+            grid-template-columns: 1fr !important;
+            overflow-y: auto !important;
+          }
+          .project-modal-grid > div:first-child {
+            height: 300px !important;
+          }
         }
       `}</style>
     </div>
