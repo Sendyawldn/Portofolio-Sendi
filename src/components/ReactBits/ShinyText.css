@@ -1,21 +1,40 @@
 /* src/components/ReactBits/ShinyText.css */
 .shiny-text {
-  color: #b5b5b5;
+  /* Warna dasar teks yang lebih cerah agar elegan */
+  color: #ffffff;
+
+  /* Gradien mewah: Putih ke Indigo ke Cyan */
   background: linear-gradient(
     120deg,
-    rgba(255, 255, 255, 0) 40%,
-    rgba(255, 255, 255, 0.8) 50%,
-    rgba(255, 255, 255, 0) 60%
+    rgba(255, 255, 255, 0) 30%,
+    #6366f1 45%,
+    #22d3ee 55%,
+    rgba(255, 255, 255, 0) 70%
   );
+
   background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  /* Animasi shine */
   animation: shine var(--speed, 5s) linear infinite;
+
+  /* Memberikan efek glow halus pada teks */
+  filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.2));
+  display: inline-block;
+  transition: all 0.4s ease;
+}
+
+/* Efek saat kursor menyentuh teks (opsional) */
+.shiny-text:hover {
+  filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.5));
+  transform: scale(1.05);
 }
 
 .shiny-text.disabled {
   animation: none;
+  -webkit-text-fill-color: #64748b; /* Warna abu-abu saat mati */
 }
 
 @keyframes shine {

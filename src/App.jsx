@@ -650,23 +650,33 @@ export default function App() {
                   </svg>
                 </motion.div>
               ) : (
+                // Di dalam AnimatePresence loading screen
                 <motion.div
                   key="welcome-fase"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 1.05 }}
+                  style={{
+                    width: "100%", // Tambahkan lebar penuh
+                    padding: "0 20px", // Beri ruang di sisi kiri-kanan agar tidak mentok layar
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
                 >
                   <BlurText
                     text="WELCOME TO MY JOURNEY"
-                    animateBy="characters"
+                    animateBy="words" // Ubah ke 'words' agar pemotongan kata lebih alami di mobile
                     direction="top"
                     stepDelay={50}
                     style={{
-                      fontSize: "clamp(20px, 5vw, 40px)",
+                      fontSize: "clamp(1.2rem, 5vw, 2.5rem)", // Gunakan unit rem agar lebih responsif
                       fontWeight: 800,
                       color: "white",
-                      letterSpacing: "0.2em",
+                      letterSpacing: "0.15em",
                       textAlign: "center",
+                      lineHeight: "1.2", // Atur jarak antar baris agar tidak tumpang tindih jika terpaksa turun
+                      width: "100%",
+                      maxWidth: "800px",
                     }}
                   />
                 </motion.div>
@@ -903,6 +913,7 @@ export default function App() {
           />
 
           <div
+            className="hero-container"
             style={{
               maxWidth: 1280,
               width: "100%",
@@ -918,6 +929,7 @@ export default function App() {
           >
             {/* Kiri */}
             <div
+              className="hero-text-content"
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -1136,6 +1148,7 @@ export default function App() {
                     display: "grid",
                     gridTemplateColumns: "repeat(3,1fr)",
                     gap: 12,
+                    alignItems: "stretch", // 1. Pastikan grid meregangkan itemnya
                   }}
                 >
                   {[
@@ -1161,8 +1174,17 @@ export default function App() {
                       color: "#10b981",
                     },
                   ].map((s, i) => (
-                    <AnimatedContent key={i} delay={i * 0.1} threshold={0.2}>
-                      <TiltedCard rotateAmplitude={8} scaleOnHover={1.03}>
+                    <AnimatedContent
+                      key={i}
+                      delay={i * 0.1}
+                      threshold={0.2}
+                      style={{ height: "100%" }} // 2. Tambahkan height 100% di sini
+                    >
+                      <TiltedCard
+                        rotateAmplitude={8}
+                        scaleOnHover={1.03}
+                        style={{ height: "100%" }} // 3. Tambahkan height 100% di sini
+                      >
                         <div
                           style={{
                             background: "rgba(8,14,35,0.85)",
@@ -1172,6 +1194,10 @@ export default function App() {
                             padding: "16px 12px",
                             textAlign: "center",
                             borderTop: `2px solid ${s.color}`,
+                            height: "100%", // 4. Pastikan div konten juga 100%
+                            display: "flex", // 5. Gunakan flex untuk mengatur posisi konten di dalam
+                            flexDirection: "column",
+                            justifyContent: "center",
                           }}
                         >
                           <div
@@ -1217,6 +1243,7 @@ export default function App() {
 
             {/* Kanan — Lanyard ── */}
             <div
+              className="hero-lanyard-content"
               style={{
                 height: 700,
                 position: "relative",
@@ -3221,7 +3248,11 @@ export default function App() {
         <ShinyText
           text="ZEN."
           speed={4}
-          style={{ fontSize: 24, fontWeight: 900, letterSpacing: 1 }}
+          style={{
+            fontSize: "32px",
+            fontWeight: 900,
+            letterSpacing: "4px", // Diperlebar agar terlihat mewah
+          }}
         />
         <p
           style={{
@@ -3300,6 +3331,45 @@ export default function App() {
           }
           .project-modal-grid > div:first-child {
             height: 300px !important;
+          }
+        }
+        @media (max-width: 768px) {
+          /* Mencegah pemotongan kata di tengah huruf */
+          .welcome-fase h1, 
+          .welcome-fase span {
+            display: inline-block;
+            white-space: normal; /* Memungkinkan teks turun ke baris baru dengan rapi */
+            word-break: keep-all;
+          }
+        }
+        /* --- TAMBAHKAN DI DALAM TAG <style> DI BAWAH FILE --- */
+
+        @media (max-width: 768px) {
+          /* Mengubah grid menjadi flex box agar urutan bisa ditukar */
+          .hero-container {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 20px !important;
+          }
+
+          /* Memaksa Lanyard naik ke atas (order -1) */
+          .hero-lanyard-content {
+            order: -1; 
+            height: 400px !important; /* Memperpendek tinggi lanyard di HP agar tidak terlalu jauh scrollnya */
+            width: 100% !important;
+          }
+
+          /* Mengatur teks agar di bawah lanyard dan rata tengah */
+          .hero-text-content {
+            order: 1;
+            align-items: center !important;
+            text-align: center !important;
+            padding-bottom: 40px !important;
+          }
+
+          /* Membuat nama dan bio juga rata tengah di mobile */
+          .hero-name-line {
+            text-align: center !important;
           }
         }
       `}</style>
