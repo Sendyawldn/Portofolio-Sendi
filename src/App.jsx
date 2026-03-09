@@ -18,38 +18,116 @@ import imgProfil from "./assets/profile-sendi.webp"; // <--- Sesuaikan nama file
 
 // ── Data ──
 const NAV_LINKS = [
-  { id: "hero", label: "Home" },
-  { id: "about", label: "Tentang" },
+  { id: "about", label: "Tentang Saya" },
   { id: "skills", label: "Skill" },
   { id: "experience", label: "Pengalaman" },
   { id: "projects", label: "Proyek" },
   { id: "contact", label: "Kontak" },
 ];
 
+const SVG_ICONS = {
+  typescript: (
+    <svg viewBox="0 0 24 24" style={{ width: 28, height: 28 }}>
+      <path
+        fill="#007ACC"
+        d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"
+      />
+    </svg>
+  ),
+  go: (
+    <svg viewBox="0 0 24 24" style={{ width: 28, height: 28 }}>
+      <path
+        fill="#00ADD8"
+        d="M1.811 10.231c-.047 0-.058-.023-.035-.059l.246-.315c.023-.035.081-.058.128-.058h4.172c.046 0 .058.035.035.07l-.199.303c-.023.036-.082.07-.117.07zM.047 11.306c-.047 0-.059-.023-.035-.058l.245-.316c.023-.035.082-.058.129-.058h5.328c.047 0 .058.035.035.07l-.093.28c-.023.047-.082.07-.117.07zm2.828 1.075c-.047 0-.059-.035-.035-.07l.163-.292c.023-.035.07-.07.117-.07h2.337c.047 0 .07.035.07.082l-.023.28c0 .047-.047.082-.082.082zm12.129-2.36c-.736.187-1.239.327-1.963.514-.176.046-.187.058-.34-.117-.174-.199-.303-.327-.548-.444-.737-.362-1.45-.257-2.115.175-.795.514-1.204 1.274-1.192 2.22.011.935.654 1.706 1.577 1.835.795.105 1.46-.175 1.987-.77.105-.129.198-.269.315-.432H10.47c-.245 0-.304-.152-.222-.35.152-.362.432-.966.596-1.274a.315.315 0 0 1 .292-.187h4.253c-.023.316-.023.631-.07.947a4.983 4.983 0 0 1-.958 2.29c-.841 1.11-1.94 1.8-3.33 1.986-1.145.152-2.209-.07-3.143-.77-.865-.655-1.356-1.52-1.484-2.595-.152-1.274.222-2.419.993-3.424.83-1.086 1.928-1.776 3.272-2.02 1.098-.2 2.15-.07 3.096.571.62.41 1.063.97 1.356 1.648.07.105.023.164-.117.2zm3.868 6.461c-1.064-.024-2.034-.328-2.852-1.029a3.665 3.665 0 0 1-1.262-2.255c-.21-1.32.152-2.489.947-3.529.853-1.122 1.881-1.706 3.272-1.95 1.192-.21 2.314-.095 3.33.595.923.63 1.496 1.484 1.648 2.605.198 1.578-.257 2.863-1.344 3.962-.771.783-1.718 1.273-2.805 1.495-.315.06-.631.07-.934.106zm2.78-4.72c-.011-.153-.011-.27-.034-.387-.21-1.157-1.274-1.81-2.384-1.554-1.087.245-1.788 1.11-1.847 2.197-.047.959.56 1.926 1.536 2.243.993.328 2.02-.104 2.466-1.075.176-.385.246-.785.262-1.424z"
+      />
+    </svg>
+  ),
+  nestjs: (
+    <svg viewBox="0 0 24 24" style={{ width: 28, height: 28 }}>
+      <path
+        fill="#E0234E"
+        d="M14.131.047c-.173 0-.334.02-.492.047v.004c.142.03.284.06.417.1 1.71.497 2.516 2.1 3.196 3.598.148.323.295.65.459.965.08.154.166.307.26.453.07.108.143.218.22.32a5.4 5.4 0 0 0 .94 1.051c.35.288.75.525 1.211.656.47.133.98.15 1.506.046a.888.888 0 0 0 .02-.003c.02-.004.04-.008.06-.01.02-.003.04-.006.06-.007.06-.004.12-.003.182.004a.627.627 0 0 1 .12.026.328.328 0 0 1 .119.066.21.21 0 0 1 .057.094.158.158 0 0 1-.014.12.27.27 0 0 1-.08.093 1.4 1.4 0 0 1-.247.14 3.04 3.04 0 0 1-.44.152 5.56 5.56 0 0 1-.62.117 7.39 7.39 0 0 1-.817.055 9.4 9.4 0 0 1-1.031-.041 11.49 11.49 0 0 1-1.258-.21 13.55 13.55 0 0 1-1.498-.493 15.63 15.63 0 0 1-1.751-.864 17.7 17.7 0 0 1-2.017-1.35 19.74 19.74 0 0 1-2.295-2.01 21.8 21.8 0 0 1-2.585-3.357C6.1 2.682 5.8 2.153 5.535 1.63c-.133-.266-.26-.534-.382-.803-.06-.135-.12-.27-.178-.407L4.93.31A10.67 10.67 0 0 0 4.6 0h9.531zm-3.39 11.87c.02 0 .04.002.057.006l.008.002.035.01.003.001a.52.52 0 0 1 .067.026.33.33 0 0 1 .052.033.16.16 0 0 1 .035.042.1.1 0 0 1 .008.052.13.13 0 0 1-.04.083.34.34 0 0 1-.096.065 1.17 1.17 0 0 1-.168.06 2.43 2.43 0 0 1-.241.046 3.6 3.6 0 0 1-.315.021 4.8 4.8 0 0 1-.399-.016 6.14 6.14 0 0 1-.487-.08 7.6 7.6 0 0 1-.578-.19 9.1 9.1 0 0 1-.676-.353 10.6 10.6 0 0 1-.782-.601 12.12 12.12 0 0 1-.893-.972 14.15 14.15 0 0 1-1.007-1.558 16.2 16.2 0 0 1-1.122-2.503C4.72 6.84 4.523 6.1 4.37 5.36c-.077-.37-.143-.742-.198-1.114a10.38 10.38 0 0 1-.095-1.1c0-.18.005-.363.015-.545.01-.17.025-.342.048-.513.01-.08.024-.16.038-.24.013-.066.027-.133.044-.198A2.26 2.26 0 0 1 4.3 1.4c.028-.073.06-.144.097-.214.031-.06.066-.12.104-.178.032-.049.066-.097.103-.143.032-.041.065-.08.1-.119.03-.034.06-.067.092-.098.027-.028.055-.054.084-.079.025-.021.05-.041.077-.06.02-.015.04-.029.062-.042.017-.01.035-.02.053-.028.014-.006.03-.012.045-.017.012-.004.025-.007.038-.009A.267.267 0 0 1 5.4.43a.2.2 0 0 1 .073.013.15.15 0 0 1 .055.038.11.11 0 0 1 .025.059.09.09 0 0 1-.01.062.15.15 0 0 1-.047.053.4.4 0 0 1-.09.044 1.1 1.1 0 0 1-.134.038 2.25 2.25 0 0 1-.183.031 3.6 3.6 0 0 1-.24.02 5.15 5.15 0 0 1-.307.005c-.112 0-.228-.007-.348-.02"
+      />
+    </svg>
+  ),
+  nextjs: (
+    <svg viewBox="0 0 24 24" style={{ width: 28, height: 28 }}>
+      <path
+        fill="#ffffff"
+        d="M11.572 0c-.176 0-.31.001-.358.007a19.76 19.76 0 0 1-.364.033C7.443.346 4.25 2.185 2.228 5.012a11.875 11.875 0 0 0-2.119 5.243c-.096.659-.108.854-.108 1.747s.012 1.089.108 1.748c.652 4.506 3.86 8.292 8.209 9.695.779.25 1.6.422 2.534.525.363.04 1.935.04 2.299 0 1.611-.178 2.977-.577 4.323-1.264.207-.106.247-.134.219-.158-.02-.013-.9-1.193-1.955-2.62l-1.919-2.592-2.404-3.558a338.739 338.739 0 0 0-2.422-3.556c-.009-.002-.018 1.579-.023 3.51-.007 3.38-.01 3.515-.052 3.595a.426.426 0 0 1-.206.214c-.075.037-.14.044-.495.044H7.81l-.108-.068a.438.438 0 0 1-.157-.171l-.05-.106.006-4.703.007-4.705.072-.092a.645.645 0 0 1 .174-.143c.096-.047.134-.051.54-.051.478 0 .558.018.682.154.035.038 1.337 1.999 2.895 4.361a10760.433 10760.433 0 0 0 4.735 7.17l1.9 2.879.096-.063a12.317 12.317 0 0 0 2.466-2.163 11.944 11.944 0 0 0 2.824-6.134c.096-.66.108-.854.108-1.748 0-.893-.012-1.088-.108-1.747-.652-4.506-3.859-8.292-8.208-9.695a12.597 12.597 0 0 0-2.499-.523A33.119 33.119 0 0 0 11.573 0zm4.069 7.217c.347 0 .408.005.486.047a.473.473 0 0 1 .237.277c.018.06.023 1.365.018 4.304l-.006 4.218-.744-1.14-.746-1.14v-3.066c0-1.982.01-3.097.023-3.15a.478.478 0 0 1 .233-.296c.096-.05.13-.054.499-.054z"
+      />
+    </svg>
+  ),
+  postgresql: (
+    <svg viewBox="0 0 24 24" style={{ width: 28, height: 28 }}>
+      <path
+        fill="#4169E1"
+        d="M17.128 0a10.134 10.134 0 0 0-2.755.403 11.34 11.34 0 0 0-.073-.056C12.946.05 11.5 0 10.163 0 7.42 0 4.432.517 2.367 1.876 1.2 2.653.496 3.699.21 4.861c-.474 1.928.244 4.763 1.992 6.602.422.44.895.793 1.413 1.055.13 1.29.652 2.054 1.847 2.614.142.065.29.124.44.179-.318.208-.63.423-.936.623-.652.42-1.25.81-1.74 1.124-.91.585-1.634 1.74-1.752 2.791-.093.828.2 1.599.832 2.17.931.836 2.397 1.068 3.655 1.068.897 0 1.72-.125 2.346-.29l.14-.038c.02.396-.006.764-.063 1.117a.297.297 0 0 0-.006.061c0 .975.224 1.733.667 2.254.437.513 1.071.78 1.837.78.866 0 1.782-.286 2.551-.67.69-.349 1.343-.816 1.885-1.27.016.01.032.021.047.029l.021.012c.584.319 1.22.481 1.784.481.67 0 1.266-.218 1.648-.699.22-.279.35-.618.42-1.002.196-.027.397-.063.6-.111 1.15-.273 2.104-.939 2.485-2.104.14-.426.17-.864.1-1.294.23-.12.444-.26.637-.422 1.12-.93 1.734-2.39 1.395-3.585-.278-1.01-.916-1.538-1.772-1.76a4.034 4.034 0 0 0-.955-.111c-.068 0-.137.004-.206.007a6.263 6.263 0 0 0-.056-.146c-.345-.83-.94-1.338-1.664-1.509a2.834 2.834 0 0 0-.644-.07c-.127 0-.25.01-.369.025l-.006-.012c-.128-.264-.267-.521-.416-.768.097-.048.19-.1.279-.158 1.09-.706 1.707-1.709 1.707-2.79 0-.53-.154-1.072-.45-1.567a3.66 3.66 0 0 0-.044-.07c.044-.077.08-.157.108-.24.162-.46.17-.955.07-1.42C19.9.44 18.67 0 17.128 0z"
+      />
+    </svg>
+  ),
+  prisma: (
+    <svg viewBox="0 0 24 24" style={{ width: 28, height: 28 }}>
+      <path
+        fill="#2D3748"
+        d="M21.807 18.285L13.553.756a1.324 1.324 0 0 0-1.129-.755 1.322 1.322 0 0 0-1.205.633L2.313 15.321a1.325 1.325 0 0 0 .027 1.442l4.684 6.938c.307.455.838.701 1.38.636l12.086-1.608a1.324 1.324 0 0 0 1.317-1.105 1.326 1.326 0 0 0 0-.339zm-1.886.996-10.952 1.457-4.249-6.295 7.742-12.992z"
+      />
+    </svg>
+  ),
+  vercel: (
+    <svg viewBox="0 0 24 24" style={{ width: 28, height: 28 }}>
+      <path fill="#ffffff" d="M24 22.525H0l12-21.05z" />
+    </svg>
+  ),
+  nginx: (
+    <svg viewBox="0 0 24 24" style={{ width: 28, height: 28 }}>
+      <path
+        fill="#009639"
+        d="M12 0L1.605 6v12L12 24l10.395-6V6zm-1.201 16.801c-2.4 0-4.201-1.2-4.201-3.601h2.4c0 .9.6 1.501 1.8 1.501 1.2 0 1.8-.6 1.8-1.801V7.2h2.4v5.7c0 2.4-1.799 3.901-4.199 3.901z"
+      />
+    </svg>
+  ),
+};
+
 const SKILLS = [
-  { name: "React.js", icon: "fab fa-react", color: "#61DAFB", bg: "#0d1b2a" },
+  // Languages
+  { name: "TypeScript", svgKey: "typescript", color: "#007ACC", bg: "#05101a" },
+  { name: "JavaScript", icon: "fab fa-js", color: "#F7DF1E", bg: "#1a1800" },
+  { name: "Go", svgKey: "go", color: "#00ADD8", bg: "#001a1f" },
+  { name: "PHP", icon: "fab fa-php", color: "#777BB4", bg: "#0f0e1a" },
+  { name: "Python", icon: "fab fa-python", color: "#F7D94C", bg: "#1a1600" },
+  { name: "HTML", icon: "fab fa-html5", color: "#E34F26", bg: "#1a0800" },
+
+  // Backend
+  { name: "NestJS", svgKey: "nestjs", color: "#E0234E", bg: "#1a0009" },
   { name: "Laravel", icon: "fab fa-laravel", color: "#FF2D20", bg: "#1a0a09" },
+  { name: "Node.js", icon: "fab fa-node-js", color: "#339933", bg: "#071a07" },
+  { name: "Express", icon: "fab fa-node-js", color: "#ffffff", bg: "#101010" },
+
+  // Frontend
+  { name: "Next.js", svgKey: "nextjs", color: "#ffffff", bg: "#101010" },
+  { name: "React.js", icon: "fab fa-react", color: "#61DAFB", bg: "#0d1b2a" },
+  { name: "Vue.js", icon: "fab fa-vuejs", color: "#4FC08D", bg: "#071a10" },
   {
     name: "Tailwind",
     icon: "fab fa-css3-alt",
     color: "#06B6D4",
     bg: "#061a1e",
   },
-  { name: "Python", icon: "fab fa-python", color: "#F7D94C", bg: "#1a1600" },
-  { name: "ML / AI", icon: "fas fa-brain", color: "#A78BFA", bg: "#130d1f" },
+
+  // Database
+  { name: "PostgreSQL", svgKey: "postgresql", color: "#4169E1", bg: "#05081a" },
+  { name: "MySQL", icon: "fas fa-database", color: "#4479A1", bg: "#05101a" },
+  { name: "Prisma", svgKey: "prisma", color: "#a0aec0", bg: "#0a0c10" },
+  { name: "MongoDB", icon: "fas fa-leaf", color: "#47A248", bg: "#071a08" },
+
+  // DevOps & Tools
   { name: "Docker", icon: "fab fa-docker", color: "#2496ED", bg: "#051523" },
-  {
-    name: "Git/GitHub",
-    icon: "fab fa-github",
-    color: "#ffffff",
-    bg: "#101010",
-  },
-  {
-    name: "Database",
-    icon: "fas fa-database",
-    color: "#10B981",
-    bg: "#071510",
-  },
+  { name: "Git", icon: "fab fa-git-alt", color: "#F05032", bg: "#1a0a07" },
+
+  // Cloud
+  { name: "Vercel", svgKey: "vercel", color: "#ffffff", bg: "#101010" },
+  { name: "Nginx", svgKey: "nginx", color: "#009639", bg: "#001a0a" },
 ];
 
 const PROJECTS = [
@@ -102,55 +180,68 @@ const PROJECTS = [
 
 const TIMELINE = [
   {
-    title: "Internship",
-    company: "PT Teng Fei Energy Technology",
-    period: "Baru-baru ini",
-    desc: "Membantu pengelolaan operasional dan mempelajari sistem teknologi perusahaan energi. Berkontribusi dalam pembuatan dokumentasi sejarah perusahaan.",
-    color: "#6366f1",
+    title: "Mahasiswa IT",
+    company: "Universitas Bina Sarana Informatika (UBSI)",
+    period: "2023 – Sekarang",
+    desc: "Berfokus pada pengembangan web dan mobile application dengan pendekatan problem solving dan clean code. Terbiasa membangun sistem CRUD, autentikasi, serta perancangan database relational menggunakan Laravel, JavaScript, dan Kotlin.",
+    color: "#818cf8",
+  },
+  {
+    title: "Software Developer — Proyek Akademik",
+    company: "Universitas Bina Sarana Informatika (UBSI)",
+    period: "2023 – Sekarang",
+    desc: "Selalu dipercaya memegang peran Software Developer dalam setiap proyek kelompok perkuliahan. Bertanggung jawab penuh dalam mentransformasikan konsep menjadi produk digital, mulai dari perancangan database, integrasi logika bisnis backend menggunakan Laravel, hingga implementasi antarmuka modern yang responsif.",
+    color: "#818cf8",
+  },
+  {
+    title: "Juara 3 – IT Bootcamp sebagai Software Developer",
+    company: "Universitas Bina Sarana Informatika (UBSI)",
+    period: "2025",
+    desc: "Mengikuti bootcamp intensif pengembangan perangkat lunak berbasis industri. Mengembangkan website Jasa Titip (Jastip) menggunakan Laravel dengan fitur autentikasi, manajemen produk, sistem pemesanan, dan pengelolaan database terstruktur. Project berhasil meraih Juara 3 dan memperoleh Hak Kekayaan Intelektual (HKI).",
+    color: "#f59e0b",
+  },
+  {
+    title: "Frontend Developer – E-Commerce Project",
+    company: "Jakarta Scooter Shop",
+    period: "2025",
+    desc: "Berkontribusi sebagai Frontend Developer dalam pengembangan website e-commerce. Bertanggung jawab pada implementasi tampilan produk, sistem pagination, integrasi API, serta optimalisasi UI agar responsif dan user-friendly. Proyek telah live dan digunakan secara aktif oleh client.",
+    color: "#22d3ee",
   },
   {
     title: "GEMASTIK 2025",
     company: "Kolaborasi Tim Kampus UBSI",
     period: "2025",
-    desc: "Menyiapkan proposal inovasi proyek untuk kompetisi GEMASTIK 2025, menggabungkan solusi perangkat lunak dengan kebutuhan industri terkini.",
+    desc: "Mengembangkan platform kredensial digital terdesentralisasi menggunakan Soulbound Tokens (SBTs) di jaringan Polygon sebagai inovasi untuk kompetisi GEMASTIK 2025. Sistem memungkinkan penerbitan sertifikat tamper-proof berbasis blockchain yang tidak dapat dipindahtangankan.",
     color: "#22d3ee",
-  },
-  {
-    title: "Anggota LPM Desa",
-    company: "Desa Tlajung Udik",
-    period: "2024 – Sekarang",
-    desc: "Berkontribusi aktif dalam merencanakan program desa dan menyusun draf proposal kegiatan untuk mendukung pemberdayaan warga lokal.",
-    color: "#10b981",
-  },
-  {
-    title: "Freelance Web Developer",
-    company: "Klien UMKM Lokal",
-    period: "2023 – 2024",
-    desc: "Membangun website company profile yang responsif dan merancang antarmuka sistem kasir sederhana untuk membantu proses digitalisasi bisnis kecil.",
-    color: "#f59e0b", // Amber / Kuning
-  },
-  {
-    title: "Peserta IT Bootcamp",
-    company: "Frontend & Web3 Development",
-    period: "2023",
-    desc: "Mengikuti pelatihan intensif pengembangan web modern menggunakan React, Tailwind CSS, serta pengenalan dasar-dasar ekosistem Web3 dan Blockchain.",
-    color: "#ec4899", // Pink
   },
 ];
 
 const MARQUEE_ITEMS = [
-  "React.js",
-  "Tailwind CSS",
+  "TypeScript",
+  "JavaScript",
+  "Go",
+  "PHP",
+  "SQL",
+  "NestJS",
   "Laravel",
-  "Python",
-  "Machine Learning",
-  "Docker",
-  "Git/GitHub",
-  "Data Mining",
-  "Forex Trading",
-  "AI Engineering",
-  "Web3",
+  "Node.js",
+  "Express",
   "Next.js",
+  "React",
+  "Vue.js",
+  "TailwindCSS",
+  "Shadcn/ui",
+  "PostgreSQL",
+  "MySQL",
+  "Redis",
+  "Prisma",
+  "MongoDB",
+  "Docker",
+  "Git",
+  "Postman",
+  "Vercel",
+  "Nginx",
+  "Web3",
 ];
 
 export default function App() {
@@ -1033,38 +1124,39 @@ export default function App() {
                         background: "#6366f1",
                       }}
                     />{" "}
-                    ABOUT_ME.JS
+                    ABOUT_ME.js
                   </span>
                   <SplitText
-                    text="Tentang Saya"
-                    className="section-title-text"
+                    text="Web Development & Software Engineering"
+                    className="about-title-text"
                     delay={40}
                     duration={0.5}
                     from={{ opacity: 0, y: 30 }}
                     to={{ opacity: 1, y: 0 }}
-                    splitBy="characters"
+                    splitBy="words"
                     textAlign="left"
+                    style={{ gap: "0.3em", rowGap: "0.1em" }}
                   />
                 </div>
               </AnimatedContent>
               <AnimatedContent delay={0.2}>
                 <p style={{ color: "#64748b", lineHeight: 1.8, fontSize: 14 }}>
-                  Saya adalah mahasiswa Teknologi Informasi di Gunung Putri.
-                  Ketertarikan saya pada teknologi dan data mendorong saya untuk
-                  menggabungkan keduanya dalam memecahkan masalah kompleks.
-                </p>
-                <p
-                  style={{
-                    color: "#64748b",
-                    lineHeight: 1.8,
-                    fontSize: 14,
-                    marginTop: 12,
-                  }}
-                >
-                  Selain membangun aplikasi web modern, saya antusias mengulik{" "}
-                  <span style={{ color: "#818cf8" }}>Machine Learning</span> dan{" "}
-                  <span style={{ color: "#22d3ee" }}>Data Mining</span>. Di
-                  waktu luang saya aktif mempelajari pergerakan pasar XAUUSD.
+                  Saya adalah mahasiswa Teknologi Informasi semester 5 di
+                  Universitas Bina Sarana Informatika dengan minat yang kuat
+                  dalam pengembangan web. Memiliki kemampuan dalam membangun
+                  aplikasi web menggunakan HTML, CSS, JavaScript, PHP, dan
+                  framework Laravel. Ketertarikan saya terhadap matematika dan
+                  perhitungan logis membantu dalam menulis kode yang efisien,
+                  mengoptimalkan algoritma, dan memecahkan masalah teknis dengan
+                  pendekatan yang terstruktur. Saya percaya bahwa kombinasi
+                  antara kemampuan teknis programming dan analytical thinking
+                  yang kuat akan menjadi aset berharga dalam dunia pengembangan
+                  web. Sebagai seseorang yang selalu haus akan pengetahuan baru,
+                  saya berkomitmen untuk terus belajar teknologi terbaru dan
+                  best practices dalam industri. Saya mencari kesempatan magang
+                  untuk mengaplikasikan ilmu yang telah dipelajari, mendapatkan
+                  pengalaman praktis di dunia profesional, serta berkontribusi
+                  dalam tim pengembangan yang dinamis.
                 </p>
               </AnimatedContent>
               {/* Quick Facts / Latar Belakang */}
@@ -1081,10 +1173,9 @@ export default function App() {
                     { icon: "🎓", text: "Mahasiswa IT UBSI", color: "#6366f1" },
                     {
                       icon: "📍",
-                      text: "Gunung Putri, Jawa Barat",
+                      text: "Kab. Bogor, Jawa Barat",
                       color: "#22d3ee",
                     },
-                    { icon: "📈", text: "XAUUSD Analyst", color: "#f59e0b" },
                   ].map((item, i) => (
                     <div
                       key={i}
@@ -1111,7 +1202,13 @@ export default function App() {
               </AnimatedContent>
               <AnimatedContent delay={0.4}>
                 <Magnet magnetStrength={0.25}>
-                  <StarBorder as="a" href="#" color="#6366f1" speed="3s">
+                  <StarBorder
+                    as="a"
+                    href="/CV_SENDI AWALUDIN.pdf"
+                    download="CV_SENDI AWALUDIN.pdf"
+                    color="#6366f1"
+                    speed="3s"
+                  >
                     <i className="fas fa-download" style={{ fontSize: 11 }} />{" "}
                     Unduh CV
                   </StarBorder>
@@ -1151,10 +1248,10 @@ export default function App() {
                     background: "#6366f1",
                   }}
                 />{" "}
-                TECH_STACK.EXE
+                TECH_STACK & TOOLS.EXE
               </span>
               <SplitText
-                text="Technical Mastery"
+                text="Amunisi Tech"
                 className="section-title-text"
                 style={{ textAlign: "center" }}
                 delay={40}
@@ -1209,17 +1306,33 @@ export default function App() {
                           e.currentTarget.style.transform = "";
                         }}
                       >
-                        <i
-                          className={sk.icon}
-                          style={{
-                            fontSize: 28,
-                            color: sk.color,
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                          }}
-                        />
+                        {sk.svgKey ? (
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            {SVG_ICONS[sk.svgKey]}
+                          </div>
+                        ) : (
+                          <i
+                            className={sk.icon}
+                            style={{
+                              fontSize: 28,
+                              color: sk.color,
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                            }}
+                          />
+                        )}
                       </div>
                       <span
                         style={{
@@ -1246,7 +1359,7 @@ export default function App() {
                       marginBottom: 32 /* Jarak bawah judul juga dirapatkan */,
                     }}
                   >
-                    Soft Skills
+                    Lebih dari Sekedar Code
                   </h3>
                 </AnimatedContent>
 
@@ -1260,10 +1373,10 @@ export default function App() {
                 >
                   {[
                     {
-                      name: "Kepemimpinan",
-                      icon: "fas fa-users-cog",
+                      name: "Disiplin",
+                      icon: "fas fa-medal",
                       color: "#f59e0b",
-                      desc: "Pengalaman memimpin organisasi & masyarakat desa",
+                      desc: "Konsisten menjalankan rutinitas, target, dan komitmen setiap hari",
                     },
                     {
                       name: "Komunikasi",
@@ -1412,6 +1525,40 @@ export default function App() {
               />
             </AnimatedContent>
 
+            {/* Scroll indicator */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                marginTop: 16,
+                marginBottom: -40,
+              }}
+            >
+              <span
+                style={{
+                  color: "#64748b",
+                  fontSize: 11,
+                  fontFamily: "monospace",
+                }}
+              >
+                scroll untuk lihat semua
+              </span>
+              <motion.div
+                animate={{ y: [0, 6, 0] }}
+                transition={{
+                  duration: 1.2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                <i
+                  className="fas fa-chevron-down"
+                  style={{ color: "#64748b", fontSize: 11 }}
+                />
+              </motion.div>
+            </div>
             <div
               className="custom-scroll"
               style={{
@@ -1536,6 +1683,17 @@ export default function App() {
                 ))}
               </div>
             </div>
+            <div
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: 100,
+                background: "linear-gradient(to top, #020510 10%, transparent)",
+                pointerEvents: "none",
+              }}
+            />
           </div>
         </section>
 
@@ -2038,6 +2196,15 @@ export default function App() {
           font-size: clamp(28px, 4vw, 52px);
           font-weight: 800;
           line-height: 1.1;
+          background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.7) 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        .about-title-text {
+          font-size: clamp(22px, 3vw, 38px);
+          font-weight: 800;
+          line-height: 1.2;
           background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.7) 100%);
           -webkit-background-clip: text;
           background-clip: text;
